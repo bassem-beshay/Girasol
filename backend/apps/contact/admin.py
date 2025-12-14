@@ -1,4 +1,6 @@
-ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\id_rsa" -C "you@example.com"ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\id_rsa" -C "you@example.com"ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\id_rsa" -C "you@example.com"from django.contrib import admin
+
+
+from django.contrib import admin
 from .models import Inquiry, InquiryResponse, Newsletter, FAQ, Office
 
 
