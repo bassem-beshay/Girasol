@@ -1,0 +1,302 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 24.6 95% 53.1%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 199.4 89.7% 48.4%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 24.6 95% 53.1%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
+}
+
+@layer components {
+  /* Container */
+  .container-custom {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Section spacing */
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  /* Heading styles */
+  .heading-1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight;
+  }
+
+  .heading-2 {
+    @apply text-3xl md:text-4xl font-display font-bold tracking-tight;
+  }
+
+  .heading-3 {
+    @apply text-2xl md:text-3xl font-display font-semibold;
+  }
+
+  .heading-4 {
+    @apply text-xl md:text-2xl font-semibold;
+  }
+
+  /* Button base styles */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-500 text-white hover:bg-primary-600;
+    @apply focus-visible:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-secondary-500 text-white hover:bg-secondary-600;
+    @apply focus-visible:ring-secondary-500;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-primary-500 text-primary-500;
+    @apply hover:bg-primary-500 hover:text-white;
+  }
+
+  .btn-ghost {
+    @apply btn hover:bg-gray-100;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .btn-md {
+    @apply px-5 py-2.5 text-base;
+  }
+
+  .btn-lg {
+    @apply px-8 py-3 text-lg;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-2xl shadow-card overflow-hidden;
+    @apply transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply hover:shadow-card-hover hover:-translate-y-1;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-800;
+  }
+
+  .badge-secondary {
+    @apply badge bg-secondary-100 text-secondary-800;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 text-green-800;
+  }
+
+  .badge-warning {
+    @apply badge bg-yellow-100 text-yellow-800;
+  }
+
+  .badge-error {
+    @apply badge bg-red-100 text-red-800;
+  }
+
+  /* Input styles */
+  .input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300;
+    @apply focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20;
+    @apply transition-all duration-200;
+    @apply placeholder:text-gray-400;
+  }
+
+  .input-error {
+    @apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
+  }
+
+  /* Rating stars */
+  .rating {
+    @apply flex items-center gap-0.5;
+  }
+
+  .star {
+    @apply w-4 h-4 text-gold-400;
+  }
+
+  .star-empty {
+    @apply w-4 h-4 text-gray-300;
+  }
+
+  /* Price display */
+  .price {
+    @apply text-2xl font-bold text-primary-600;
+  }
+
+  .price-old {
+    @apply text-gray-400 line-through text-sm;
+  }
+
+  /* Link hover effect */
+  .link-underline {
+    @apply relative;
+  }
+
+  .link-underline::after {
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300;
+    content: '';
+  }
+
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+
+  /* Gradient overlays */
+  .gradient-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent;
+  }
+
+  .gradient-overlay-light {
+    @apply absolute inset-0 bg-gradient-to-t from-black/50 to-transparent;
+  }
+
+  /* Image hover zoom */
+  .img-hover-zoom {
+    @apply overflow-hidden;
+  }
+
+  .img-hover-zoom img {
+    @apply transition-transform duration-500;
+  }
+
+  .img-hover-zoom:hover img {
+    @apply scale-110;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+
+  /* Divider */
+  .divider {
+    @apply h-px bg-gray-200 my-8;
+  }
+
+  /* Trust badges */
+  .trust-badge {
+    @apply flex items-center gap-2 text-sm text-gray-600;
+  }
+}
+
+@layer utilities {
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500;
+  }
+
+  /* Hide scrollbar */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+
+  /* Backdrop blur support */
+  .backdrop-blur-custom {
+    @apply backdrop-blur-md backdrop-saturate-150;
+  }
+
+  /* Aspect ratios */
+  .aspect-tour-card {
+    aspect-ratio: 4/3;
+  }
+
+  .aspect-hero {
+    aspect-ratio: 16/9;
+  }
+
+  /* Line clamp */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* RTL support */
+  [dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

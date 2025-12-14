@@ -1,0 +1,17 @@
+[Unit]
+Description=Next.js Frontend for Girasol Tours
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/girasol/frontend
+Environment="NODE_ENV=production"
+Environment="PORT=3000"
+ExecStart=/usr/bin/npm start
+
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

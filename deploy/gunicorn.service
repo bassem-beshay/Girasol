@@ -1,0 +1,21 @@
+[Unit]
+Description=Gunicorn daemon for Girasol Tours Django
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/girasol/backend
+Environment="PATH=/var/www/girasol/backend/venv/bin"
+ExecStart=/var/www/girasol/backend/venv/bin/gunicorn \
+    --workers 3 \
+    --bind 127.0.0.1:8000 \
+    --access-logfile /var/log/gunicorn/access.log \
+    --error-logfile /var/log/gunicorn/error.log \
+    config.wsgi:application
+
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
