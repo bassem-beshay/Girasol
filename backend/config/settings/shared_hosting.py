@@ -6,11 +6,15 @@ from .base import *
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Database - SQLite for shared hosting
+# Database - PostgreSQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'girasolt_girasol',
+        'USER': 'girasolt_db7',
+        'PASSWORD': '852456312002Bassem',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
