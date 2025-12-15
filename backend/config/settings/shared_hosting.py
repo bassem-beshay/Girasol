@@ -6,15 +6,18 @@ from .base import *
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Database - PostgreSQL
+# Database - MySQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'girasolt_girasol',
-        'USER': 'girasolt_db7',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'girasolt_gira',
+        'USER': 'girasolt_db9',
         'PASSWORD': '852456312002Bassem',
-        'HOST': '',  # Empty string uses Unix socket
-        'PORT': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
     }
 }
 
