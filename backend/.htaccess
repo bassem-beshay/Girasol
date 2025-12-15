@@ -1,0 +1,5 @@
+PassengerEnabled On
+PassengerAppRoot /home4/girasolt/girasol/backend
+PassengerAppType wsgi
+PassengerStartupFile app.py
+PassengerPython /home4/girasolt/girasol/backend/venv/bin/python3
