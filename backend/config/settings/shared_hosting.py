@@ -2,6 +2,9 @@
 Shared Hosting settings for Girasol Tours.
 Simple configuration for cPanel/shared hosting.
 """
+import pymysql
+pymysql.install_as_MySQLdb()
+
 from .base import *
 
 DEBUG = config('DEBUG', default=False, cast=bool)
