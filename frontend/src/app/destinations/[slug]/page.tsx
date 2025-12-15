@@ -103,7 +103,7 @@ export default function DestinationDetailPage() {
         <div className="container-custom">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Destination Not Found</h1>
-            <p className="text-gray-600 mb-8">The destination you're looking for doesn't exist.</p>
+            <p className="text-gray-600 mb-8">The destination you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/destinations" className="btn btn-primary btn-md">
               Browse All Destinations
             </Link>

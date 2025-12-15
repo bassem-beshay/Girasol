@@ -14,7 +14,6 @@ import {
   Calendar,
   Check,
   X,
-  ChevronRight,
   Phone,
   Mail,
   Heart,
@@ -114,7 +113,7 @@ export default function TourDetailPage() {
         <div className="container-custom">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Tour Not Found</h1>
-            <p className="text-gray-600 mb-8">The tour you're looking for doesn't exist.</p>
+            <p className="text-gray-600 mb-8">The tour you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/tours" className="btn btn-primary btn-md">
               Browse All Tours
             </Link>
@@ -294,7 +293,7 @@ export default function TourDetailPage() {
 
               {/* Inclusions */}
               <div className="bg-white rounded-2xl p-6 shadow-md">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">What's Included</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">What&apos;s Included</h2>
                 <div className="grid md:grid-cols-2 gap-8">
                   {included.length > 0 && (
                     <div>

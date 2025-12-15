@@ -135,7 +135,7 @@ export default function BlogPostPage() {
           <div className="text-center">
             <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Article Not Found</h1>
-            <p className="text-gray-600 mb-8">The article you're looking for doesn't exist.</p>
+            <p className="text-gray-600 mb-8">The article you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/blog" className="btn btn-primary btn-md">
               Back to Blog
             </Link>

@@ -26,13 +26,13 @@ export function formatCurrency(amount: number, currency = 'USD'): string {
 export function formatDate(date: string | Date, format: 'short' | 'long' | 'full' = 'short'): string {
   const d = new Date(date);
 
-  const options: Intl.DateTimeFormatOptions = {
+  const optionsMap: Record<'short' | 'long' | 'full', Intl.DateTimeFormatOptions> = {
     short: { month: 'short', day: 'numeric', year: 'numeric' },
     long: { month: 'long', day: 'numeric', year: 'numeric' },
     full: { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' },
-  }[format];
+  };
 
-  return d.toLocaleDateString('en-US', options);
+  return d.toLocaleDateString('en-US', optionsMap[format]);
 }
 
 /**
