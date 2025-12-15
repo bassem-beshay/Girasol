@@ -2,15 +2,25 @@
 Shared Hosting settings for Girasol Tours.
 Simple configuration for cPanel/shared hosting.
 """
+import pymysql
+pymysql.install_as_MySQLdb()
+
 from .base import *
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Database - SQLite (works on any hosting)
+# Database - MySQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'girasolt_gira',
+        'USER': 'girasolt_db9',
+        'PASSWORD': '852456312002Bassem*',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
     }
 }
 
