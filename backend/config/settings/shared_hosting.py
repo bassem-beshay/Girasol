@@ -13,8 +13,8 @@ DATABASES = {
         'NAME': 'girasolt_girasol',
         'USER': 'girasolt_db7',
         'PASSWORD': '852456312002Bassem',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': '',  # Empty string uses Unix socket
+        'PORT': '',
     }
 }
 
