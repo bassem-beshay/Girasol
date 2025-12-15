@@ -15,7 +15,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'girasolt_gira',
         'USER': 'girasolt_db9',
-        'PASSWORD': '852456312002Bassem',
+        'PASSWORD': '852456312002Bassem*',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
