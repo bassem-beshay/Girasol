@@ -3,9 +3,4 @@ PassengerAppRoot /home4/girasolt/girasol/backend
 PassengerAppType wsgi
 PassengerStartupFile passenger_wsgi.py
 PassengerPython /home4/girasolt/girasol/backend/venv/bin/python
-
-# Route all requests to Django
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ / [L,QSA]
+PassengerBaseURI /
