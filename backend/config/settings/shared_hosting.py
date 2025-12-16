@@ -9,6 +9,17 @@ from .base import *
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+# ALLOWED_HOSTS for production
+ALLOWED_HOSTS = [
+    'girasoltours.com',
+    'www.girasoltours.com',
+    'api.girasoltours.com',
+    'girasoltours.com.eg',
+    'www.girasoltours.com.eg',
+    'localhost',
+    '127.0.0.1',
+]
+
 # Database - MySQL
 DATABASES = {
     'default': {
@@ -43,6 +54,9 @@ CSRF_COOKIE_SECURE = False
 
 # Static files
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
+# Override STATICFILES_DIRS - don't require 'static' folder on shared hosting
+STATICFILES_DIRS = []
 
 # Media files - local storage
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -60,3 +74,46 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# CSRF Trusted Origins (required for Django 4.0+, safe for Django 3.2)
+CSRF_TRUSTED_ORIGINS = [
+    'https://girasoltours.com',
+    'https://www.girasoltours.com',
+    'http://girasoltours.com',
+    'http://www.girasoltours.com',
+]
+
+# Logging for debugging on shared hosting
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'django_error.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
