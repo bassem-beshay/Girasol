@@ -3,4 +3,3 @@ PassengerAppRoot /home4/girasolt/girasol/backend
 PassengerAppType wsgi
 PassengerStartupFile passenger_wsgi.py
 PassengerPython /home4/girasolt/girasol/backend/venv/bin/python
-PassengerBaseURI /
