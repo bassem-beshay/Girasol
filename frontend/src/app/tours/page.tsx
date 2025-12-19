@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import { toursApi } from '@/lib/api';
+import { toursApi, fixImageUrl } from '@/lib/api';
 import { MapPin, Clock, Star, Users } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -165,7 +165,7 @@ function ToursContent() {
                   <div className="relative h-56 bg-gray-200">
                     {tour.featured_image ? (
                       <Image
-                        src={tour.featured_image}
+                        src={fixImageUrl(tour.featured_image) || ''}
                         alt={tour.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"

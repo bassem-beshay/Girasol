@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { toursApi } from '@/lib/api';
+import { toursApi, fixImageUrl } from '@/lib/api';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -116,7 +116,7 @@ export function PopularTours() {
                   <div className="relative aspect-tour-card overflow-hidden">
                     {tour.featured_image ? (
                       <Image
-                        src={tour.featured_image}
+                        src={fixImageUrl(tour.featured_image) || ''}
                         alt={tour.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"

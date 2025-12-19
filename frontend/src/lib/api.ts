@@ -2,6 +2,14 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+// Helper function to fix image URLs (replace localhost with actual API URL)
+export const fixImageUrl = (url: string | null | undefined): string | null => {
+  if (!url) return null;
+  // Replace localhost:8000 with actual API URL
+  return url.replace(/http:\/\/localhost:8000/g, API_BASE_URL)
+            .replace(/http:\/\/127\.0\.0\.1:8000/g, API_BASE_URL);
+};
+
 export const api = axios.create({
   baseURL: `${API_BASE_URL}/api`,
   headers: {

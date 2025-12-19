@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { destinationsApi } from '@/lib/api';
+import { destinationsApi, fixImageUrl } from '@/lib/api';
 import { MapPin, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -121,7 +121,7 @@ export default function DestinationsPage() {
                   >
                     {destination.featured_image ? (
                       <Image
-                        src={destination.featured_image}
+                        src={fixImageUrl(destination.featured_image) || ''}
                         alt={destination.name}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -202,7 +202,7 @@ export default function DestinationsPage() {
                     <div className="relative h-48">
                       {destination.featured_image ? (
                         <Image
-                          src={destination.featured_image}
+                          src={fixImageUrl(destination.featured_image) || ''}
                           alt={destination.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
