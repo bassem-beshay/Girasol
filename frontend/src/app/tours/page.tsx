@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { toursApi } from '@/lib/api';
@@ -56,7 +57,28 @@ const typeTitles: Record<string, string> = {
   'package': 'Package Tours',
 };
 
+function ToursLoading() {
+  return (
+    <div className="min-h-screen pt-32 pb-16">
+      <div className="container-custom">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading tours...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ToursPage() {
+  return (
+    <Suspense fallback={<ToursLoading />}>
+      <ToursContent />
+    </Suspense>
+  );
+}
+
+function ToursContent() {
   const searchParams = useSearchParams();
   const typeParam = searchParams.get('type');
   const pageTitle = typeParam ? typeTitles[typeParam] || 'Tours' : 'Explore Our Tours';
