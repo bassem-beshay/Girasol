@@ -24,7 +24,7 @@ export function HeroSection() {
 
   return (
     <section className="relative h-[70vh] sm:h-[80vh] md:h-screen min-h-[400px] sm:min-h-[500px] md:min-h-[600px] max-h-[900px] overflow-hidden">
-      {/* Background Video */}
+      {/* Background Video - Optimized for performance */}
       <div className="absolute inset-0">
         <video
           ref={videoRef}
@@ -32,6 +32,7 @@ export function HeroSection() {
           muted
           loop
           playsInline
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover"
           poster="/images/hero/pyramids.jpg"
         >

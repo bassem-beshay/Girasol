@@ -37,7 +37,7 @@ export function Footer() {
           <div className="col-span-2 sm:col-span-2 md:col-span-1 lg:col-span-1 flex justify-center md:justify-start">
             <Link href="/" className="inline-block group">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt="Girasol Egypt"
                 width={400}
                 height={180}

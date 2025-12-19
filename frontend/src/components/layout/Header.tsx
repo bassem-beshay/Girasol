@@ -71,7 +71,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center group">
             <Image
-              src="/images/logo-navbar.png"
+              src="/images/logo-navbar.webp"
               alt="Girasol Egypt - Travel and Tours"
               width={180}
               height={70}
