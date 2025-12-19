@@ -28,7 +28,6 @@ from apps.tours.models import (
 from apps.blog.models import Category as BlogCategory, Tag, Post, Comment
 from apps.reviews.models import Review, Testimonial
 from apps.contact.models import FAQ, Office, Newsletter, Inquiry
-from apps.bookings.models import PromoCode
 
 User = get_user_model()
 

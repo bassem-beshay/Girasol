@@ -12,6 +12,16 @@ const nextConfig = {
         hostname: '*.s3.amazonaws.com',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: '50.6.250.81',
+        pathname: '/media/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/media/**',
+      },
     ],
   },
 };
