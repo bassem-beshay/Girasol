@@ -102,15 +102,7 @@ export function SpecialOffers() {
   return (
     <section className="relative py-24 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0">
-        <Image
-          src="/images/offers/special-bg.jpg"
-          alt="Special Offer"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-800/80 to-primary-600/70" />
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-primary-900 via-primary-800 to-primary-600" />
 
       {/* Pattern overlay */}
       <div className="absolute inset-0 bg-hero-pattern opacity-5" />
