@@ -20,10 +20,10 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.text import slugify
 
-from apps.destinations.models import Destination, DestinationImage, Area, Activity
+from apps.destinations.models import Destination, DestinationImage, Activity
 from apps.tours.models import (
-    TourCategory, Tour, TourImage, TourHighlight,
-    TourItinerary, TourInclusion, TourPricing, TourDeparture, TourFAQ, Addon
+    TourCategory, TourType, Tour, TourImage, TourHighlight,
+    TourItinerary, TourInclusion, TourPricing, TourDeparture, TourFAQ
 )
 from apps.blog.models import Category as BlogCategory, Tag, Post, Comment
 from apps.reviews.models import Review, Testimonial
@@ -167,9 +167,11 @@ With consistent sunshine and warm waters, Hurghada appeals to families, couples,
 ]
 
 for dest_data in destinations_data:
+    # Remove unsupported fields
+    clean_data = {k: v for k, v in dest_data.items() if k not in ['name_ar']}
     dest, created = Destination.objects.update_or_create(
-        slug=slugify(dest_data["name"]),
-        defaults=dest_data
+        slug=slugify(clean_data["name"]),
+        defaults=clean_data
     )
     status = "Created" if created else "Updated"
     print(f"  {status}: {dest.name}")
@@ -240,9 +242,10 @@ categories_data = [
 ]
 
 for cat_data in categories_data:
+    clean_data = {k: v for k, v in cat_data.items() if k not in ['name_ar']}
     cat, created = TourCategory.objects.update_or_create(
-        slug=slugify(cat_data["name"]),
-        defaults=cat_data
+        slug=slugify(clean_data["name"]),
+        defaults=clean_data
     )
     print(f"  {'Created' if created else 'Updated'}: {cat.name}")
 
@@ -717,9 +720,10 @@ tours_data = [
 
 for tour_data in tours_data:
     destinations = tour_data.pop("destinations")
+    clean_data = {k: v for k, v in tour_data.items() if k not in ['name_ar']}
     tour, created = Tour.objects.update_or_create(
-        slug=slugify(tour_data["name"]),
-        defaults=tour_data
+        slug=slugify(clean_data["name"]),
+        defaults=clean_data
     )
     tour.destinations.set(destinations)
     print(f"  {'Created' if created else 'Updated'}: {tour.name}")
@@ -790,9 +794,10 @@ blog_categories_data = [
 ]
 
 for cat_data in blog_categories_data:
+    clean_data = {k: v for k, v in cat_data.items() if k not in ['name_ar']}
     cat, created = BlogCategory.objects.update_or_create(
-        slug=slugify(cat_data["name"]),
-        defaults={**cat_data, "is_active": True}
+        slug=slugify(clean_data["name"]),
+        defaults={**clean_data, "is_active": True}
     )
     print(f"  {'Created' if created else 'Updated'} Category: {cat.name}")
 
@@ -1108,22 +1113,6 @@ for promo_data in promo_codes:
     )
     print(f"  {'Created' if created else 'Updated'}: Promo Code - {promo.code}")
 
-addons_data = [
-    {"name": "Hot Air Balloon Ride", "description": "Sunrise balloon flight over Luxor", "price": Decimal("120.00"), "is_per_person": True, "is_active": True},
-    {"name": "Pyramid Interior Entry", "description": "Enter inside the Great Pyramid", "price": Decimal("40.00"), "is_per_person": True, "is_active": True},
-    {"name": "Tutankhamun Tomb Entry", "description": "Visit the famous tomb", "price": Decimal("35.00"), "is_per_person": True, "is_active": True},
-    {"name": "Private Guide Upgrade", "description": "Private Egyptologist guide", "price": Decimal("150.00"), "is_per_person": False, "is_active": True},
-    {"name": "Hotel Upgrade (5-Star)", "description": "Upgrade to luxury hotels", "price": Decimal("100.00"), "is_per_person": True, "is_active": True},
-    {"name": "Camel Ride at Pyramids", "description": "30-minute camel ride", "price": Decimal("25.00"), "is_per_person": True, "is_active": True},
-]
-
-for addon_data in addons_data:
-    addon, created = Addon.objects.update_or_create(
-        name=addon_data["name"],
-        defaults=addon_data
-    )
-    addon.tours.set(Tour.objects.order_by('?')[:5])
-    print(f"  {'Created' if created else 'Updated'}: Add-on - {addon.name}")
 
 # ============================================================
 # SUMMARY
@@ -1141,7 +1130,6 @@ Summary:
 - Testimonials: {Testimonial.objects.count()}
 - FAQs: {FAQ.objects.count()}
 - Promo Codes: {PromoCode.objects.count()}
-- Add-ons: {Addon.objects.count()}
 
 Your Girasol Egypt database is now populated!
 """)
