@@ -23,7 +23,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative h-screen min-h-[500px] sm:min-h-[600px] max-h-[900px] overflow-hidden">
+    <section className="relative h-[70vh] sm:h-[80vh] md:h-screen min-h-[400px] sm:min-h-[500px] md:min-h-[600px] max-h-[900px] overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0">
         <video
