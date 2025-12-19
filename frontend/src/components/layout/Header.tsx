@@ -75,7 +75,7 @@ export function Header() {
               alt="Girasol Egypt - Travel and Tours"
               width={180}
               height={70}
-              className="h-16 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
               priority
             />
           </Link>
@@ -153,24 +153,25 @@ export function Header() {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t animate-slide-down">
-          <nav className="container-custom py-4 space-y-4">
+        <div className="lg:hidden bg-white border-t shadow-lg max-h-[80vh] overflow-y-auto">
+          <nav className="container-custom py-4 space-y-1">
             {navigation.map((item) => (
-              <div key={item.name}>
+              <div key={item.name} className="border-b border-gray-100 last:border-0">
                 <Link
                   href={item.href}
-                  className="block py-2 font-medium text-gray-900 hover:text-primary-500"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center justify-between py-3 font-medium text-gray-900 hover:text-primary-500 active:bg-primary-50 px-2 rounded-lg transition-colors"
+                  onClick={() => !item.children && setIsMobileMenuOpen(false)}
                 >
                   {item.name}
+                  {item.children && <ChevronDown className="w-4 h-4 text-gray-400" />}
                 </Link>
                 {item.children && (
-                  <div className="pl-4 space-y-2">
+                  <div className="pl-4 pb-2 space-y-1">
                     {item.children.map((child) => (
                       <Link
                         key={child.name}
                         href={child.href}
-                        className="block py-1 text-gray-600 hover:text-primary-500"
+                        className="block py-2 px-3 text-gray-600 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-colors text-sm"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         {child.name}
@@ -181,32 +182,32 @@ export function Header() {
               </div>
             ))}
             {/* Mobile Actions */}
-            <div className="pt-4 border-t space-y-3">
-              <div className="flex items-center justify-between">
+            <div className="pt-4 mt-2 border-t border-gray-200 space-y-3">
+              <div className="grid grid-cols-3 gap-2">
                 <Link
                   href="/profile"
-                  className="flex items-center gap-2 text-gray-700 hover:text-primary-500"
+                  className="flex flex-col items-center gap-1 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Heart className="w-5 h-5" />
-                  Wishlist
+                  <span className="text-xs">Wishlist</span>
                 </Link>
                 <Link
                   href="/auth/login"
-                  className="flex items-center gap-2 text-gray-700 hover:text-primary-500"
+                  className="flex flex-col items-center gap-1 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <User className="w-5 h-5" />
-                  Login
+                  <span className="text-xs">Login</span>
                 </Link>
-                <button className="flex items-center gap-1 text-gray-700 hover:text-primary-500">
+                <button className="flex flex-col items-center gap-1 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors">
                   <Globe className="w-5 h-5" />
-                  EN
+                  <span className="text-xs">EN</span>
                 </button>
               </div>
               <Link
                 href="/contact"
-                className="btn btn-primary btn-md w-full"
+                className="btn btn-primary w-full py-3 text-center font-semibold"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Get Free Quote

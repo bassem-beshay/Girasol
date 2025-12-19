@@ -23,7 +23,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden">
+    <section className="relative h-screen min-h-[500px] sm:min-h-[600px] max-h-[900px] overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0">
         <video
@@ -43,16 +43,16 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
 
       {/* Content */}
-      <div className="relative h-full container-custom flex flex-col justify-center">
-        <div className="max-w-2xl">
+      <div className="relative h-full container-custom flex flex-col justify-center px-4 sm:px-6">
+        <div className="max-w-2xl pt-16 sm:pt-0">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm mb-6">
-              <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse" />
+            <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-xs sm:text-sm mb-4 sm:mb-6">
+              <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-primary-500 animate-pulse" />
               Trusted by 50,000+ travelers worldwide
             </span>
           </motion.div>
@@ -62,7 +62,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="heading-1 text-white mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-3 sm:mb-4 leading-tight"
           >
             Discover Egypt with{' '}
             <span className="text-primary-400">25+ Years</span> of Excellence
@@ -73,7 +73,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="text-xl text-gray-200 mb-8"
+            className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 sm:mb-8 leading-relaxed"
           >
             Tailor-made tours, Nile cruises & unforgettable experiences.
             Let us craft your perfect Egyptian adventure.
@@ -84,15 +84,15 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="flex flex-wrap gap-4"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4"
           >
-            <Link href="/tours" className="btn btn-primary btn-lg">
+            <Link href="/tours" className="btn btn-primary py-3 sm:py-4 px-6 sm:px-8 text-center font-semibold">
               Explore Tours
-              <ChevronRight className="w-5 h-5 ml-1" />
+              <ChevronRight className="w-5 h-5 ml-1 inline" />
             </Link>
             <Link
               href="/contact"
-              className="btn btn-lg bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20"
+              className="btn py-3 sm:py-4 px-6 sm:px-8 bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20 text-center font-semibold"
             >
               Get Free Quote
             </Link>
@@ -103,12 +103,12 @@ export function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="flex flex-wrap gap-6 mt-12 pt-8 border-t border-white/20"
+            className="flex flex-wrap gap-4 sm:gap-6 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20"
           >
             {trustBadges.map((badge) => (
               <div key={badge.label} className="flex items-center gap-2 text-white/80">
-                <badge.icon className="w-5 h-5 text-primary-400" />
-                <span className="text-sm">{badge.label}</span>
+                <badge.icon className="w-4 sm:w-5 h-4 sm:h-5 text-primary-400" />
+                <span className="text-xs sm:text-sm">{badge.label}</span>
               </div>
             ))}
           </motion.div>
