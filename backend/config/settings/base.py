@@ -17,6 +17,9 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
+# Frontend URL for email links
+FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
+
 # Application definition
 DJANGO_APPS = [
     'jazzmin',  # Admin theme (must be before django.contrib.admin)
@@ -282,7 +285,6 @@ JAZZMIN_SETTINGS = {
     # Icons - Professional style
     'icons': {
         'users.User': 'fas fa-users',
-        'users.Wishlist': 'fas fa-heart',
         'tours.Tour': 'fas fa-compass',
         'tours.TourCategory': 'fas fa-th-large',
         'tours.TourDeparture': 'fas fa-calendar-alt',

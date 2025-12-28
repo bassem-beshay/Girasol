@@ -102,6 +102,10 @@ class Tour(TimeStampedModel, SluggedModel, SEOModel, PublishableModel):
     is_featured = models.BooleanField(default=False)
     is_best_seller = models.BooleanField(default=False)
     is_new = models.BooleanField(default=False)
+    is_multi_destination = models.BooleanField(
+        default=False,
+        help_text='Multi-country tour (e.g., Egypt & Jordan, Egypt & Dubai)'
+    )
     has_discount = models.BooleanField(default=False)
     discount_percentage = models.PositiveIntegerField(
         null=True, blank=True,
@@ -299,5 +303,158 @@ class TourFAQ(TimeStampedModel, SortableModel):
 
     def __str__(self):
         return f"{self.tour.name} - {self.question[:50]}"
+
+
+class EarlyBookingOffer(TimeStampedModel):
+    """
+    Early Booking Offers - Special discounts for booking in advance.
+
+    الحجز المبكر: خصومات للعملاء اللي بيحجزوا قبل ميعاد السفر بمدة طويلة
+    """
+
+    # Basic Info
+    title = models.CharField(max_length=200, default='Early Booking Offer')
+    title_ar = models.CharField('Title (Arabic)', max_length=200, blank=True)
+    subtitle = models.CharField(max_length=300, blank=True)
+    subtitle_ar = models.CharField('Subtitle (Arabic)', max_length=300, blank=True)
+    description = models.TextField(blank=True)
+    description_ar = models.TextField('Description (Arabic)', blank=True)
+
+    # Discount Settings
+    discount_percentage = models.PositiveIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(70)],
+        help_text='Discount percentage (1-70%)'
+    )
+
+    # Timing - When customers can book
+    offer_start_date = models.DateTimeField(
+        help_text='When this early booking offer becomes available'
+    )
+    offer_end_date = models.DateTimeField(
+        help_text='Deadline for early booking (countdown timer ends here)'
+    )
+
+    # Travel Period - When customers can travel
+    travel_start_date = models.DateField(
+        help_text='Earliest travel date for this offer'
+    )
+    travel_end_date = models.DateField(
+        help_text='Latest travel date for this offer'
+    )
+
+    # Minimum advance booking requirement
+    min_days_advance = models.PositiveIntegerField(
+        default=90,
+        help_text='Minimum days before travel date to qualify (e.g., 90 = must book 3 months ahead)'
+    )
+
+    # Tours included in this offer
+    tours = models.ManyToManyField(
+        Tour,
+        related_name='early_booking_offers',
+        blank=True,
+        help_text='Select tours included in this early booking offer'
+    )
+
+    # Benefits (shown as bullet points)
+    benefits = models.JSONField(
+        default=list,
+        blank=True,
+        help_text='List of benefits, e.g., ["Lower prices", "Better room selection", "Flexible dates"]'
+    )
+
+    # Terms & Conditions
+    terms_conditions = models.TextField(
+        blank=True,
+        help_text='Terms and conditions for this offer'
+    )
+    cancellation_policy = models.TextField(
+        blank=True,
+        help_text='Cancellation policy for early bookings'
+    )
+
+    # Display Settings
+    badge_text = models.CharField(
+        max_length=50,
+        default='Early Bird',
+        help_text='Badge text shown on tour cards'
+    )
+    banner_image = models.ImageField(
+        upload_to='offers/early_booking/',
+        null=True,
+        blank=True
+    )
+    background_color = models.CharField(
+        max_length=7,
+        default='#2563eb',
+        help_text='Hex color for offer background'
+    )
+
+    # Status
+    is_active = models.BooleanField(default=True)
+    is_featured = models.BooleanField(
+        default=False,
+        help_text='Show on homepage'
+    )
+    sort_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Early Booking Offer'
+        verbose_name_plural = 'Early Booking Offers'
+        ordering = ['-is_featured', 'sort_order', '-created_at']
+
+    def __str__(self):
+        return f"{self.title} - {self.discount_percentage}% OFF"
+
+    @property
+    def is_currently_active(self):
+        """Check if offer is currently active based on dates."""
+        from django.utils import timezone
+        now = timezone.now()
+        return (
+            self.is_active and
+            self.offer_start_date <= now <= self.offer_end_date
+        )
+
+    @property
+    def days_remaining(self):
+        """Days until offer expires."""
+        from django.utils import timezone
+        from datetime import timedelta
+        now = timezone.now()
+        if now > self.offer_end_date:
+            return 0
+        delta = self.offer_end_date - now
+        return delta.days
+
+    @property
+    def hours_remaining(self):
+        """Hours remaining (for countdown)."""
+        from django.utils import timezone
+        now = timezone.now()
+        if now > self.offer_end_date:
+            return 0
+        delta = self.offer_end_date - now
+        return int((delta.total_seconds() % 86400) // 3600)
+
+    @property
+    def minutes_remaining(self):
+        """Minutes remaining (for countdown)."""
+        from django.utils import timezone
+        now = timezone.now()
+        if now > self.offer_end_date:
+            return 0
+        delta = self.offer_end_date - now
+        return int((delta.total_seconds() % 3600) // 60)
+
+    @property
+    def seconds_remaining(self):
+        """Seconds remaining (for countdown)."""
+        from django.utils import timezone
+        now = timezone.now()
+        if now > self.offer_end_date:
+            return 0
+        delta = self.offer_end_date - now
+        return int(delta.total_seconds() % 60)
 
 

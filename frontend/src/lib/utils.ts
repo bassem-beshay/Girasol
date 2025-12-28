@@ -23,8 +23,14 @@ export function formatCurrency(amount: number, currency = 'USD'): string {
 /**
  * Format date
  */
-export function formatDate(date: string | Date, format: 'short' | 'long' | 'full' = 'short'): string {
+export function formatDate(date: string | Date | null | undefined, format: 'short' | 'long' | 'full' = 'short'): string {
+  // Handle null, undefined, or empty string
+  if (!date) return '';
+
   const d = new Date(date);
+
+  // Check if date is valid
+  if (isNaN(d.getTime())) return '';
 
   const optionsMap: Record<'short' | 'long' | 'full', Intl.DateTimeFormatOptions> = {
     short: { month: 'short', day: 'numeric', year: 'numeric' },

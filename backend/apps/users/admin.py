@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, UserProfile, Wishlist
+from .models import User, UserProfile
 
 
 class UserProfileInline(admin.StackedInline):
@@ -33,10 +33,3 @@ class UserAdmin(BaseUserAdmin):
     )
 
     inlines = [UserProfileInline]
-
-
-@admin.register(Wishlist)
-class WishlistAdmin(admin.ModelAdmin):
-    list_display = ['user', 'tour', 'created_at']
-    list_filter = ['created_at']
-    search_fields = ['user__email', 'tour__name']

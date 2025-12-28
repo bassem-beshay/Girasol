@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     TourCategory, TourType, Tour, TourImage, TourHighlight, TourItinerary,
-    TourInclusion, TourPricing, TourDeparture, TourFAQ
+    TourInclusion, TourPricing, TourDeparture, TourFAQ, EarlyBookingOffer
 )
 
 
@@ -58,15 +58,15 @@ class TourFAQInline(admin.StackedInline):
 class TourAdmin(admin.ModelAdmin):
     list_display = [
         'name', 'category', 'tour_type', 'days', 'price',
-        'is_featured', 'is_best_seller', 'is_published', 'average_rating'
+        'is_featured', 'is_best_seller', 'is_multi_destination', 'is_published', 'average_rating'
     ]
     list_filter = [
         'category', 'tour_type', 'is_published', 'is_featured',
-        'is_best_seller', 'has_discount', 'difficulty_level'
+        'is_best_seller', 'is_multi_destination', 'has_discount', 'difficulty_level'
     ]
     search_fields = ['name', 'description', 'short_description']
     prepopulated_fields = {'slug': ('name',)}
-    list_editable = ['is_featured', 'is_best_seller', 'is_published']
+    list_editable = ['is_featured', 'is_best_seller', 'is_multi_destination', 'is_published']
     filter_horizontal = ['destinations']
     date_hierarchy = 'created_at'
 
@@ -91,7 +91,7 @@ class TourAdmin(admin.ModelAdmin):
         }),
         ('Features', {
             'fields': (
-                'is_featured', 'is_best_seller', 'is_new',
+                'is_featured', 'is_best_seller', 'is_new', 'is_multi_destination',
                 'has_discount', 'discount_percentage',
                 'discount_start_date', 'discount_end_date'
             )
@@ -116,3 +116,56 @@ class TourAdmin(admin.ModelAdmin):
         TourImageInline, TourHighlightInline, TourItineraryInline,
         TourInclusionInline, TourPricingInline, TourDepartureInline, TourFAQInline
     ]
+
+
+@admin.register(EarlyBookingOffer)
+class EarlyBookingOfferAdmin(admin.ModelAdmin):
+    """
+    Admin for Early Booking Offers (الحجز المبكر)
+    """
+    list_display = [
+        'title', 'discount_percentage', 'offer_end_date',
+        'is_currently_active', 'is_featured', 'is_active', 'sort_order'
+    ]
+    list_display_links = ['title']
+    list_filter = ['is_active', 'is_featured', 'offer_start_date', 'offer_end_date']
+    list_editable = ['is_featured', 'is_active', 'sort_order']
+    search_fields = ['title', 'subtitle', 'description']
+    filter_horizontal = ['tours']
+    date_hierarchy = 'offer_start_date'
+    readonly_fields = ['is_currently_active', 'days_remaining', 'hours_remaining', 'minutes_remaining']
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'title_ar', 'subtitle', 'subtitle_ar', 'description', 'description_ar')
+        }),
+        ('Discount Settings', {
+            'fields': ('discount_percentage', 'min_days_advance')
+        }),
+        ('Offer Period (When customers can book)', {
+            'fields': ('offer_start_date', 'offer_end_date'),
+            'description': 'The period during which customers can take advantage of this early booking offer'
+        }),
+        ('Travel Period (When customers can travel)', {
+            'fields': ('travel_start_date', 'travel_end_date'),
+            'description': 'The period during which travel must occur to qualify for this offer'
+        }),
+        ('Tours Included', {
+            'fields': ('tours',),
+            'description': 'Select which tours are included in this early booking offer'
+        }),
+        ('Benefits & Terms', {
+            'fields': ('benefits', 'terms_conditions', 'cancellation_policy'),
+            'classes': ('collapse',)
+        }),
+        ('Display Settings', {
+            'fields': ('badge_text', 'banner_image', 'background_color')
+        }),
+        ('Status', {
+            'fields': ('is_active', 'is_featured', 'sort_order')
+        }),
+        ('Countdown Info (Read Only)', {
+            'fields': ('is_currently_active', 'days_remaining', 'hours_remaining', 'minutes_remaining'),
+            'classes': ('collapse',)
+        }),
+    )

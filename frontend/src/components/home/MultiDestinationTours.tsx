@@ -5,7 +5,7 @@ import { toursApi, fixImageUrl } from '@/lib/api';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight, Star, MapPin, Clock, Loader2, Sparkles } from 'lucide-react';
+import { ChevronRight, Star, MapPin, Clock, Loader2, Globe2, Plane } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 
 interface Tour {
@@ -27,12 +27,7 @@ interface Tour {
   is_best_seller: boolean;
   is_new: boolean;
   is_featured: boolean;
-  highlights: string[];
-  // Early Booking fields
-  is_early_booking: boolean;
-  early_booking_discount: number | null;
-  early_booking_price: number | null;
-  early_booking_badge: string | null;
+  is_multi_destination: boolean;
 }
 
 interface ToursResponse {
@@ -40,19 +35,24 @@ interface ToursResponse {
   results: Tour[];
 }
 
-export function PopularTours() {
+export function MultiDestinationTours() {
   const { data, isLoading, error } = useQuery<ToursResponse>({
-    queryKey: ['popular-tours'],
+    queryKey: ['multi-destination-tours'],
     queryFn: async () => {
-      const response = await toursApi.getPopular();
+      const response = await toursApi.getMultiDestination();
       return response.data;
     },
   });
 
-  const tours = data?.results?.slice(0, 4) || [];
+  const tours = data?.results?.slice(0, 6) || [];
+
+  // Don't render the section if no multi-destination tours
+  if (!isLoading && !error && tours.length === 0) {
+    return null;
+  }
 
   return (
-    <section className="section-padding">
+    <section className="section-padding bg-gradient-to-b from-blue-50/50 to-white">
       <div className="container-custom">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
@@ -61,9 +61,10 @@ export function PopularTours() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-primary-600 font-medium mb-2 block"
+              className="inline-flex items-center gap-2 text-blue-600 font-medium mb-2"
             >
-              Popular Tours
+              <Globe2 className="w-5 h-5" />
+              Multi-Destination Tours
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -72,8 +73,17 @@ export function PopularTours() {
               transition={{ delay: 0.1 }}
               className="heading-2 text-gray-900"
             >
-              Most Loved Tour Packages
+              Explore Multiple Countries
             </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+              className="text-gray-600 mt-2 max-w-xl"
+            >
+              Combine the wonders of Egypt with Jordan, Dubai, and more in one unforgettable journey
+            </motion.p>
           </div>
           <motion.div
             initial={{ opacity: 0 }}
@@ -81,10 +91,10 @@ export function PopularTours() {
             viewport={{ once: true }}
           >
             <Link
-              href="/tours"
-              className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700"
+              href="/tours?multi_destination=true"
+              className="inline-flex items-center text-blue-600 font-medium hover:text-blue-700"
             >
-              View All Tours
+              View All Multi-Destination Tours
               <ChevronRight className="w-5 h-5 ml-1" />
             </Link>
           </motion.div>
@@ -93,7 +103,7 @@ export function PopularTours() {
         {/* Loading state */}
         {isLoading && (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
+            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
             <span className="ml-3 text-gray-600">Loading tours...</span>
           </div>
         )}
@@ -107,7 +117,7 @@ export function PopularTours() {
 
         {/* Tours grid */}
         {!isLoading && !error && tours.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tours.map((tour, index) => (
               <motion.div
                 key={tour.id}
@@ -117,9 +127,9 @@ export function PopularTours() {
                 transition={{ delay: index * 0.1 }}
                 className="h-full"
               >
-                <Link href={`/tours/${tour.slug}`} className="card card-hover block group h-full flex flex-col">
+                <Link href={`/tours/${tour.slug}`} className="card card-hover block group h-full flex flex-col border-2 border-blue-100 hover:border-blue-200">
                   {/* Image */}
-                  <div className="relative aspect-tour-card overflow-hidden flex-shrink-0">
+                  <div className="relative aspect-[16/10] overflow-hidden flex-shrink-0">
                     {tour.featured_image ? (
                       <Image
                         src={fixImageUrl(tour.featured_image) || ''}
@@ -128,25 +138,20 @@ export function PopularTours() {
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                        <MapPin className="w-12 h-12 text-primary-400" />
+                      <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                        <Globe2 className="w-12 h-12 text-blue-400" />
                       </div>
                     )}
                     <div className="gradient-overlay-light" />
 
-                    {/* Badges */}
+                    {/* Multi-Destination Badge */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2">
-                      {tour.is_early_booking && (
-                        <span className="badge bg-gradient-to-r from-orange-500 to-amber-500 text-white flex items-center gap-1">
-                          <Sparkles className="w-3 h-3" />
-                          {tour.early_booking_badge || 'Early Bird'}
-                        </span>
-                      )}
+                      <span className="badge bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center gap-1.5 shadow-lg">
+                        <Plane className="w-3.5 h-3.5" />
+                        Multi-Country
+                      </span>
                       {tour.is_best_seller && (
-                        <span className="badge bg-primary-500 text-white">Best Seller</span>
-                      )}
-                      {tour.is_new && (
-                        <span className="badge bg-green-500 text-white">New</span>
+                        <span className="badge bg-amber-500 text-white">Best Seller</span>
                       )}
                       {tour.has_discount && tour.discount_percentage && (
                         <span className="badge bg-red-500 text-white">
@@ -166,18 +171,20 @@ export function PopularTours() {
 
                   {/* Content */}
                   <div className="p-5 flex flex-col flex-grow">
-                    {/* Title - Fixed height for 2 lines */}
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2 min-h-[3rem]">
+                    {/* Title */}
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[3rem]">
                       {tour.name}
                     </h3>
 
-                    {/* Destinations - Fixed height */}
-                    <div className="flex items-center text-gray-600 text-sm mb-3 h-5">
-                      <MapPin className="w-4 h-4 mr-1 text-primary-500 flex-shrink-0" />
-                      <span className="line-clamp-1">{tour.destination_names?.join(', ') || 'Egypt'}</span>
+                    {/* Destinations - Highlighted */}
+                    <div className="flex items-start text-gray-600 text-sm mb-3">
+                      <MapPin className="w-4 h-4 mr-1 text-blue-500 flex-shrink-0 mt-0.5" />
+                      <span className="line-clamp-2 font-medium text-blue-700">
+                        {tour.destination_names?.join(' • ') || 'Egypt'}
+                      </span>
                     </div>
 
-                    {/* Rating - Now aligned across all cards */}
+                    {/* Rating */}
                     <div className="flex items-center gap-2 mb-3">
                       <div className="flex items-center">
                         <Star className="w-4 h-4 text-gold-400 fill-current" />
@@ -186,24 +193,22 @@ export function PopularTours() {
                       <span className="text-gray-400 text-sm">({tour.review_count || 0} reviews)</span>
                     </div>
 
-                    {/* Price - Always at bottom */}
+                    {/* Price */}
                     <div className="flex items-center justify-between pt-3 border-t mt-auto">
                       <div>
-                        <span className="text-gray-500 text-sm">
-                          {tour.is_early_booking ? 'Early Bird' : 'From'}
-                        </span>
+                        <span className="text-gray-500 text-sm">From</span>
                         <div className="flex items-center gap-2">
-                          <span className={`text-xl font-bold ${tour.is_early_booking ? 'text-orange-500' : 'text-primary-600'}`}>
-                            {formatCurrency(tour.early_booking_price || parseFloat(tour.discounted_price || tour.price))}
+                          <span className="text-xl font-bold text-blue-600">
+                            {formatCurrency(parseFloat(tour.discounted_price || tour.price))}
                           </span>
-                          {(tour.has_discount || tour.is_early_booking) && (
+                          {tour.has_discount && (
                             <span className="text-sm text-gray-400 line-through">
                               {formatCurrency(parseFloat(tour.price))}
                             </span>
                           )}
                         </div>
                       </div>
-                      <span className="text-primary-600 font-medium group-hover:translate-x-1 transition-transform inline-flex items-center">
+                      <span className="text-blue-600 font-medium group-hover:translate-x-1 transition-transform inline-flex items-center">
                         Details
                         <ChevronRight className="w-4 h-4" />
                       </span>
@@ -212,14 +217,6 @@ export function PopularTours() {
                 </Link>
               </motion.div>
             ))}
-          </div>
-        )}
-
-        {/* Empty state */}
-        {!isLoading && !error && tours.length === 0 && (
-          <div className="text-center py-16">
-            <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No tours available at the moment.</p>
           </div>
         )}
       </div>

@@ -31,6 +31,7 @@ class TourFilter(django_filters.FilterSet):
 
     is_featured = django_filters.BooleanFilter()
     is_best_seller = django_filters.BooleanFilter()
+    is_multi_destination = django_filters.BooleanFilter()
     has_discount = django_filters.BooleanFilter()
 
     class Meta:
@@ -38,5 +39,5 @@ class TourFilter(django_filters.FilterSet):
         fields = [
             'destination', 'category', 'tour_type',
             'min_price', 'max_price', 'min_days', 'max_days',
-            'difficulty', 'is_featured', 'is_best_seller', 'has_discount'
+            'difficulty', 'is_featured', 'is_best_seller', 'is_multi_destination', 'has_discount'
         ]

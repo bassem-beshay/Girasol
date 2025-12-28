@@ -105,10 +105,11 @@ export function BlogPreview() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
+                className="h-full"
               >
-                <Link href={`/blog/${post.slug}`} className="card card-hover block group">
-                  {/* Image */}
-                  <div className="relative aspect-[16/10] overflow-hidden">
+                <Link href={`/blog/${post.slug}`} className="card card-hover h-full flex flex-col group">
+                  {/* Image - Fixed height */}
+                  <div className="relative aspect-[16/10] overflow-hidden flex-shrink-0">
                     {post.featured_image ? (
                       <Image
                         src={post.featured_image}
@@ -128,32 +129,34 @@ export function BlogPreview() {
                     )}
                   </div>
 
-                  {/* Content */}
-                  <div className="p-6">
+                  {/* Content - Flex grow to fill remaining space */}
+                  <div className="p-6 flex flex-col flex-grow">
                     {/* Meta */}
                     <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {formatDate(post.published_date)}
-                      </span>
+                      {formatDate(post.published_date) && (
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {formatDate(post.published_date)}
+                        </span>
+                      )}
                       <span className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
                         {post.reading_time} min read
                       </span>
                     </div>
 
-                    {/* Title */}
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
+                    {/* Title - Fixed 2 lines */}
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2 min-h-[3.5rem]">
                       {post.title}
                     </h3>
 
-                    {/* Excerpt */}
-                    <p className="text-gray-600 text-sm line-clamp-2">
+                    {/* Excerpt - Fixed 2 lines */}
+                    <p className="text-gray-600 text-sm line-clamp-2 min-h-[2.5rem]">
                       {post.excerpt}
                     </p>
 
-                    {/* Read more */}
-                    <span className="inline-flex items-center text-primary-600 font-medium mt-4 group-hover:translate-x-1 transition-transform">
+                    {/* Read more - Always at bottom */}
+                    <span className="inline-flex items-center text-primary-600 font-medium mt-auto pt-4 group-hover:translate-x-1 transition-transform">
                       Read More
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </span>

@@ -1,8 +1,12 @@
 """
 Contact models for Girasol Tours.
 """
+import uuid
+import logging
 from django.db import models
 from apps.core.models import TimeStampedModel
+
+logger = logging.getLogger(__name__)
 
 
 class InquiryType(models.TextChoices):
@@ -98,7 +102,7 @@ class InquiryResponse(TimeStampedModel):
 
 
 class Newsletter(TimeStampedModel):
-    """Newsletter subscribers."""
+    """Newsletter subscribers with double opt-in support."""
 
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100, blank=True)
@@ -106,11 +110,24 @@ class Newsletter(TimeStampedModel):
     subscribed_at = models.DateTimeField(auto_now_add=True)
     unsubscribed_at = models.DateTimeField(null=True, blank=True)
 
+    # Double Opt-In fields
+    confirmation_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    is_confirmed = models.BooleanField(default=False)
+    confirmed_at = models.DateTimeField(null=True, blank=True)
+    confirmation_sent_at = models.DateTimeField(null=True, blank=True)
+
+    # Unsubscribe token (for one-click unsubscribe in emails)
+    unsubscribe_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+
     # Preferences
     interests = models.CharField(max_length=200, blank=True)  # Comma-separated
 
     # Source
     source = models.CharField(max_length=50, blank=True)
+
+    # Email tracking
+    emails_sent = models.PositiveIntegerField(default=0)
+    last_email_sent_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = 'Newsletter Subscriber'
@@ -118,7 +135,15 @@ class Newsletter(TimeStampedModel):
         ordering = ['-subscribed_at']
 
     def __str__(self):
-        return self.email
+        status = "Confirmed" if self.is_confirmed else "Pending"
+        return f"{self.email} ({status})"
+
+    def regenerate_tokens(self):
+        """Regenerate confirmation and unsubscribe tokens."""
+        self.confirmation_token = uuid.uuid4()
+        self.unsubscribe_token = uuid.uuid4()
+        self.save(update_fields=['confirmation_token', 'unsubscribe_token'])
+        logger.info(f"Tokens regenerated for {self.email}")
 
 
 class FAQ(TimeStampedModel):
@@ -183,3 +208,36 @@ class Office(TimeStampedModel):
 
     def __str__(self):
         return f"{self.name} - {self.city}"
+
+
+class Statistic(TimeStampedModel):
+    """Company statistics for homepage display."""
+
+    ICON_CHOICES = [
+        ('clock', 'Clock - Years Experience'),
+        ('users', 'Users - Happy Travelers'),
+        ('map-pin', 'Map Pin - Local Offices'),
+        ('globe', 'Globe - Countries Partners'),
+        ('award', 'Award - Awards'),
+        ('star', 'Star - Rating'),
+        ('heart', 'Heart - Satisfaction'),
+        ('shield', 'Shield - Certified'),
+    ]
+
+    value = models.CharField(max_length=50, help_text="e.g., 25+, 50,000+, 6")
+    label = models.CharField(max_length=100, help_text="e.g., Years Experience")
+    label_es = models.CharField('Label (Spanish)', max_length=100, blank=True)
+    label_pt = models.CharField('Label (Portuguese)', max_length=100, blank=True)
+    icon = models.CharField(max_length=20, choices=ICON_CHOICES, default='star')
+    description = models.CharField(max_length=200, blank=True, help_text="Optional description")
+
+    is_active = models.BooleanField(default=True)
+    sort_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Statistic'
+        verbose_name_plural = 'Statistics'
+        ordering = ['sort_order']
+
+    def __str__(self):
+        return f"{self.value} - {self.label}"

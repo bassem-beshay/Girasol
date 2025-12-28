@@ -4,15 +4,42 @@ import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ChevronRight, Shield, Award, Clock } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { contactApi } from '@/lib/api';
 
-const trustBadges = [
-  { icon: Shield, label: 'IATA Certified' },
-  { icon: Award, label: '25+ Years Experience' },
-  { icon: Clock, label: '24/7 Support' },
-];
+interface Statistic {
+  id: number;
+  value: string;
+  label: string;
+}
+
+interface StatisticsResponse {
+  count: number;
+  results: Statistic[];
+}
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Fetch statistics from API
+  const { data: statisticsData } = useQuery<StatisticsResponse>({
+    queryKey: ['statistics'],
+    queryFn: async () => {
+      const response = await contactApi.getStatistics();
+      return response.data;
+    },
+  });
+
+  // Get dynamic values from API
+  const stats = statisticsData?.results || [];
+  const travelersCount = stats.find(s => s.label.toLowerCase().includes('traveler'))?.value || '50,000+';
+  const yearsExperience = stats.find(s => s.label.toLowerCase().includes('experience') || s.label.toLowerCase().includes('years'))?.value || '25+';
+
+  const trustBadges = [
+    { icon: Shield, label: 'IATA Certified' },
+    { icon: Award, label: `${yearsExperience} Years Experience` },
+    { icon: Clock, label: '24/7 Support' },
+  ];
 
   useEffect(() => {
     if (videoRef.current) {
@@ -53,7 +80,7 @@ export function HeroSection() {
           >
             <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-[10px] sm:text-xs md:text-sm mb-3 sm:mb-6">
               <span className="w-1 sm:w-1.5 md:w-2 h-1 sm:h-1.5 md:h-2 rounded-full bg-primary-500 animate-pulse" />
-              Trusted by 50,000+ travelers worldwide
+              Trusted by {travelersCount} travelers worldwide
             </span>
           </motion.div>
 
@@ -65,7 +92,7 @@ export function HeroSection() {
             className="text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-bold text-white mb-2 sm:mb-4 leading-tight"
           >
             Discover Egypt with{' '}
-            <span className="text-primary-400">25+ Years</span> of Excellence
+            <span className="text-primary-400">{yearsExperience} Years</span> of Excellence
           </motion.h1>
 
           {/* Subtitle */}

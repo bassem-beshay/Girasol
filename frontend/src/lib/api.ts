@@ -5,6 +5,12 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 // Helper function to fix image URLs (replace localhost with actual API URL)
 export const fixImageUrl = (url: string | null | undefined): string | null => {
   if (!url) return null;
+
+  // If it's a relative path starting with /media, prepend the API base URL
+  if (url.startsWith('/media')) {
+    return `${API_BASE_URL}${url}`;
+  }
+
   // Replace localhost:8000 with actual API URL
   return url.replace(/http:\/\/localhost:8000/g, API_BASE_URL)
             .replace(/http:\/\/127\.0\.0\.1:8000/g, API_BASE_URL);
@@ -73,11 +79,17 @@ export const toursApi = {
   getBySlug: (slug: string) => api.get(`/tours/${slug}/`),
   getFeatured: () => api.get('/tours/featured/'),
   getPopular: () => api.get('/tours/popular/'),
+  getMultiDestination: () => api.get('/tours/multi-destination/'),
   getByDestination: (slug: string) => api.get(`/tours/destination/${slug}/`),
   getByCategory: (slug: string) => api.get(`/tours/category/${slug}/`),
   getCategories: () => api.get('/tours/categories/'),
   getRelated: (slug: string) => api.get(`/tours/${slug}/related/`),
   getDepartures: (slug: string) => api.get(`/tours/${slug}/departures/`),
+  // Early Booking Offers (الحجز المبكر)
+  getEarlyBookingOffers: () => api.get('/tours/early-booking/'),
+  getFeaturedEarlyBooking: () => api.get('/tours/early-booking/featured/'),
+  getEarlyBookingCountdown: () => api.get('/tours/early-booking/countdown/'),
+  getEarlyBookingDetail: (id: number) => api.get(`/tours/early-booking/${id}/`),
 };
 
 // Destinations API
@@ -132,6 +144,7 @@ export const contactApi = {
   unsubscribeNewsletter: (email: string) => api.post('/contact/newsletter/unsubscribe/', { email }),
   getFaqs: (category?: string) => api.get('/contact/faq/', { params: { category } }),
   getOffices: () => api.get('/contact/offices/'),
+  getStatistics: () => api.get('/contact/statistics/'),
 };
 
 // Auth API
@@ -145,13 +158,6 @@ export const authApi = {
   changePassword: (data: unknown) => api.post('/auth/password/change/', data),
   resetPassword: (email: string) => api.post('/auth/password/reset/', { email }),
   confirmResetPassword: (data: unknown) => api.post('/auth/password/reset/confirm/', data),
-};
-
-// Wishlist API
-export const wishlistApi = {
-  getAll: () => api.get('/users/wishlist/'),
-  add: (tourId: number) => api.post('/users/wishlist/', { tour_id: tourId }),
-  remove: (tourId: number) => api.delete(`/users/wishlist/${tourId}/`),
 };
 
 export default api;

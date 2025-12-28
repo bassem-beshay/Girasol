@@ -93,18 +93,3 @@ class UserProfile(TimeStampedModel):
 
     def __str__(self):
         return f"Profile of {self.user.email}"
-
-
-class Wishlist(TimeStampedModel):
-    """User's wishlist for tours."""
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlists')
-    tour = models.ForeignKey('tours.Tour', on_delete=models.CASCADE, related_name='wishlisted_by')
-
-    class Meta:
-        verbose_name = 'Wishlist'
-        verbose_name_plural = 'Wishlists'
-        unique_together = ['user', 'tour']
-
-    def __str__(self):
-        return f"{self.user.email} - {self.tour.name}"

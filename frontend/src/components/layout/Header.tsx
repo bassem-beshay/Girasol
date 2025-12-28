@@ -11,8 +11,6 @@ import {
   ChevronDown,
   Globe,
   User,
-  Heart,
-  Search,
 } from 'lucide-react';
 
 const navigation = [
@@ -22,9 +20,10 @@ const navigation = [
     href: '/tours',
     children: [
       { name: 'All Tours', href: '/tours' },
+      { name: 'Package Tours', href: '/tours?type=package' },
       { name: 'Nile Cruises', href: '/tours?type=nile_cruise' },
       { name: 'Day Tours', href: '/tours?type=day_tour' },
-      { name: 'Multi-Country', href: '/tours?type=multi_country' },
+      { name: 'Multi Destination', href: '/tours?type=multi-destination' },
     ],
   },
   {
@@ -122,17 +121,11 @@ export function Header() {
 
           {/* Right Side - Actions */}
           <div className="hidden lg:flex items-center gap-3">
-            <button className={cn('p-2 hover:opacity-80', textColor)}>
-              <Search className="w-5 h-5" />
-            </button>
             <button className={cn('flex items-center gap-1 px-2 py-1 rounded hover:bg-black/10', textColor)}>
               <Globe className="w-4 h-4" />
               EN
               <ChevronDown className="w-3 h-3" />
             </button>
-            <Link href="/profile" className={cn('p-2 hover:opacity-80', textColor)} title="Wishlist">
-              <Heart className="w-5 h-5" />
-            </Link>
             <Link href="/auth/login" className={cn('p-2 hover:opacity-80', textColor)} title="Login">
               <User className="w-5 h-5" />
             </Link>
@@ -183,15 +176,7 @@ export function Header() {
             ))}
             {/* Mobile Actions */}
             <div className="pt-4 mt-2 border-t border-gray-200 space-y-3">
-              <div className="grid grid-cols-3 gap-2">
-                <Link
-                  href="/profile"
-                  className="flex flex-col items-center gap-1 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Heart className="w-5 h-5" />
-                  <span className="text-xs">Wishlist</span>
-                </Link>
+              <div className="grid grid-cols-2 gap-2">
                 <Link
                   href="/auth/login"
                   className="flex flex-col items-center gap-1 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors"

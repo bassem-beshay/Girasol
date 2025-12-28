@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsubscribed - Girasol Tours</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 40px 0;">
+                <table role="presentation" style="width: 600px; max-width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); padding: 40px 30px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 700;">
+                                Girasol Tours
+                            </h1>
+                            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 14px;">
+                                We're Sorry to See You Go
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px 30px; text-align: center;">
+                            <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; background-color: #f3f4f6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 40px;">&#128075;</span>
+                            </div>
+
+                            <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+                                You've Been Unsubscribed
+                            </h2>
+
+                            <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Hi {{ name }},
+                            </p>
+
+                            <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+                                You have been successfully unsubscribed from the Girasol Tours newsletter. We're sad to see you go, but we respect your decision.
+                            </p>
+
+                            <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+                                If you unsubscribed by mistake or change your mind, you can always resubscribe:
+                            </p>
+
+                            <!-- CTA Button -->
+                            <table role="presentation" style="margin: 0 auto;">
+                                <tr>
+                                    <td style="border-radius: 8px; background: linear-gradient(135deg, #c97b2c 0%, #a56321 100%);">
+                                        <a href="{{ resubscribe_url }}" style="display: inline-block; padding: 16px 40px; font-size: 16px; font-weight: 600; color: #ffffff; text-decoration: none; border-radius: 8px;">
+                                            Resubscribe
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #888888; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0;">
+                                Thank you for being part of our community. We hope to see you again soon!
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8f8f8; padding: 30px; text-align: center; border-top: 1px solid #eeeeee;">
+                            <p style="color: #888888; font-size: 14px; margin: 0;">
+                                {{ company_name }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

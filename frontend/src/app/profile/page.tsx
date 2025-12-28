@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,7 +15,6 @@ import {
   Phone,
   MapPin,
   Calendar,
-  Heart,
   Plane,
   Settings,
   LogOut,
@@ -28,16 +27,14 @@ import {
   Shield,
   CreditCard,
   Clock,
-  Star,
   ChevronRight,
   Loader2,
   AlertCircle,
   Lock,
-  Trash2,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@/store/authStore';
-import { bookingsApi, wishlistApi } from '@/lib/api';
+import { bookingsApi } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
 
 const profileSchema = z.object({
@@ -54,7 +51,7 @@ const profileSchema = z.object({
 
 type ProfileFormData = z.infer<typeof profileSchema>;
 
-type TabType = 'profile' | 'bookings' | 'wishlist' | 'settings';
+type TabType = 'profile' | 'bookings' | 'settings';
 
 interface Booking {
   id: number;
@@ -71,21 +68,8 @@ interface Booking {
   created_at: string;
 }
 
-interface WishlistItem {
-  id: number;
-  tour: {
-    id: number;
-    name: string;
-    slug: string;
-    featured_image: string | null;
-    price: string;
-    rating: number;
-  };
-}
-
 export default function ProfilePage() {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const { user, isAuthenticated, isLoading, updateProfile, logout } = useAuthStore();
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [isEditing, setIsEditing] = useState(false);
@@ -101,30 +85,7 @@ export default function ProfilePage() {
     enabled: isAuthenticated && activeTab === 'bookings',
   });
 
-  // Fetch wishlist
-  const { data: wishlistData, isLoading: wishlistLoading } = useQuery<{ results: WishlistItem[] }>({
-    queryKey: ['user-wishlist'],
-    queryFn: async () => {
-      const response = await wishlistApi.getAll();
-      return response.data;
-    },
-    enabled: isAuthenticated && activeTab === 'wishlist',
-  });
-
-  // Remove from wishlist mutation
-  const removeWishlistMutation = useMutation({
-    mutationFn: (tourId: number) => wishlistApi.remove(tourId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-wishlist'] });
-      toast.success('تم الإزالة من المفضلة');
-    },
-    onError: () => {
-      toast.error('فشل في الإزالة من المفضلة');
-    },
-  });
-
   const bookings = bookingsData?.results || [];
-  const wishlist = wishlistData?.results || [];
 
   const {
     register,
@@ -179,7 +140,6 @@ export default function ProfilePage() {
   const tabs = [
     { id: 'profile' as TabType, label: 'الملف الشخصي', icon: User },
     { id: 'bookings' as TabType, label: 'حجوزاتي', icon: Plane },
-    { id: 'wishlist' as TabType, label: 'المفضلة', icon: Heart },
     { id: 'settings' as TabType, label: 'الإعدادات', icon: Settings },
   ];
 
@@ -607,89 +567,6 @@ export default function ProfilePage() {
                       </div>
                     )}
                   </div>
-                </motion.div>
-              )}
-
-              {/* Wishlist Tab */}
-              {activeTab === 'wishlist' && (
-                <motion.div
-                  key="wishlist"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="bg-white rounded-2xl shadow-lg p-6"
-                >
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">قائمة المفضلة</h3>
-
-                  {wishlistLoading ? (
-                    <div className="flex items-center justify-center py-12">
-                      <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
-                      <span className="mr-3 text-gray-600">جاري تحميل المفضلة...</span>
-                    </div>
-                  ) : wishlist.length > 0 ? (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {wishlist.map((item) => (
-                        <div
-                          key={item.id}
-                          className="group bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-all"
-                        >
-                          <Link href={`/tours/${item.tour.slug}`}>
-                            <div className="h-32 relative">
-                              {item.tour.featured_image ? (
-                                <Image
-                                  src={item.tour.featured_image}
-                                  alt={item.tour.name}
-                                  fill
-                                  className="object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full bg-gradient-to-br from-secondary-400 to-secondary-600" />
-                              )}
-                            </div>
-                          </Link>
-                          <button
-                            onClick={() => removeWishlistMutation.mutate(item.tour.id)}
-                            disabled={removeWishlistMutation.isPending}
-                            className="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-red-500 hover:bg-white transition-colors"
-                          >
-                            {removeWishlistMutation.isPending ? (
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                              <Trash2 className="w-4 h-4" />
-                            )}
-                          </button>
-                          <div className="p-4">
-                            <Link href={`/tours/${item.tour.slug}`}>
-                              <h4 className="font-semibold text-gray-900 mb-2 hover:text-primary-600 transition-colors line-clamp-2">
-                                {item.tour.name}
-                              </h4>
-                            </Link>
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-1 text-sm text-yellow-500">
-                                <Star className="w-4 h-4 fill-current" />
-                                <span>{item.tour.rating?.toFixed(1) || 'N/A'}</span>
-                              </div>
-                              <p className="text-primary-600 font-bold">
-                                {formatCurrency(parseFloat(item.tour.price))}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                      <h4 className="text-lg font-medium text-gray-900 mb-2">القائمة فارغة</h4>
-                      <p className="text-gray-500 mb-4">أضف رحلاتك المفضلة للوصول إليها لاحقاً</p>
-                      <Link
-                        href="/tours"
-                        className="inline-block px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
-                      >
-                        تصفح الرحلات
-                      </Link>
-                    </div>
-                  )}
                 </motion.div>
               )}
 

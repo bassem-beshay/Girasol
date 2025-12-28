@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import {
   MapPin,
   Clock,
@@ -18,6 +19,8 @@ import {
   Mail,
   Heart,
   Share2,
+  Sparkles,
+  Timer,
 } from 'lucide-react';
 
 interface TourDetail {
@@ -79,6 +82,65 @@ interface TourDetail {
     meals_included: string;
     accommodation: string;
   }>;
+  // Early Booking fields
+  is_early_booking: boolean;
+  early_booking_discount: number | null;
+  early_booking_price: number | null;
+  early_booking_badge: string | null;
+  early_booking_end_date: string | null;
+}
+
+// Countdown Timer Component
+function CountdownTimer({ endDate }: { endDate: string }) {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const end = new Date(endDate).getTime();
+      const distance = end - now;
+
+      if (distance < 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      }
+
+      return {
+        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((distance % (1000 * 60)) / 1000),
+      };
+    };
+
+    setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
+    return () => clearInterval(timer);
+  }, [endDate]);
+
+  return (
+    <div className="flex items-center gap-2 text-sm">
+      <div className="bg-gray-900 text-white px-2 py-1 rounded font-mono">
+        {String(timeLeft.days).padStart(2, '0')}d
+      </div>
+      <span className="text-orange-500 font-bold">:</span>
+      <div className="bg-gray-900 text-white px-2 py-1 rounded font-mono">
+        {String(timeLeft.hours).padStart(2, '0')}h
+      </div>
+      <span className="text-orange-500 font-bold">:</span>
+      <div className="bg-gray-900 text-white px-2 py-1 rounded font-mono">
+        {String(timeLeft.minutes).padStart(2, '0')}m
+      </div>
+      <span className="text-orange-500 font-bold">:</span>
+      <div className="bg-gray-900 text-white px-2 py-1 rounded font-mono">
+        {String(timeLeft.seconds).padStart(2, '0')}s
+      </div>
+    </div>
+  );
 }
 
 export default function TourDetailPage() {
@@ -152,6 +214,12 @@ export default function TourDetailPage() {
             >
               {/* Badges */}
               <div className="flex flex-wrap gap-2 mb-4">
+                {tour.is_early_booking && (
+                  <span className="px-3 py-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-medium rounded-full flex items-center gap-1">
+                    <Sparkles className="w-4 h-4" />
+                    {tour.early_booking_badge || 'Early Bird'}
+                  </span>
+                )}
                 {tour.is_best_seller && (
                   <span className="px-3 py-1 bg-primary-500 text-white text-sm font-medium rounded-full">
                     Best Seller
@@ -335,21 +403,46 @@ export default function TourDetailPage() {
             <div className="lg:col-span-1">
               <div className="sticky top-32">
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
+                  {/* Early Bird Banner */}
+                  {tour.is_early_booking && tour.early_booking_end_date && (
+                    <div className="mb-6 -mx-6 -mt-6 p-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-t-2xl">
+                      <div className="flex items-center gap-2 text-white mb-2">
+                        <Sparkles className="w-5 h-5" />
+                        <span className="font-bold">{tour.early_booking_badge || 'Early Bird Offer'}</span>
+                        <span className="ml-auto bg-white/20 px-2 py-0.5 rounded text-sm">
+                          Save {tour.early_booking_discount}%
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-white/90 text-sm mb-3">
+                        <Timer className="w-4 h-4" />
+                        <span>Offer ends in:</span>
+                      </div>
+                      <CountdownTimer endDate={tour.early_booking_end_date} />
+                    </div>
+                  )}
+
                   {/* Price */}
                   <div className="mb-6">
-                    <span className="text-gray-500 text-sm">From</span>
+                    <span className="text-gray-500 text-sm">
+                      {tour.is_early_booking ? 'Early Bird Price' : 'From'}
+                    </span>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold text-primary-600">
-                        ${parseFloat(tour.discounted_price).toFixed(0)}
+                      <span className={`text-3xl font-bold ${tour.is_early_booking ? 'text-orange-500' : 'text-primary-600'}`}>
+                        ${tour.early_booking_price || parseFloat(tour.discounted_price).toFixed(0)}
                       </span>
-                      {tour.has_discount && (
+                      {(tour.has_discount || tour.is_early_booking) && (
                         <span className="text-lg text-gray-400 line-through">
                           ${parseFloat(tour.price).toFixed(0)}
                         </span>
                       )}
                       <span className="text-gray-500">/ person</span>
                     </div>
-                    {tour.has_discount && tour.discount_percentage && (
+                    {tour.is_early_booking && tour.early_booking_discount && (
+                      <span className="inline-block mt-2 px-2 py-1 bg-orange-100 text-orange-600 text-sm font-medium rounded">
+                        Early Bird: Save {tour.early_booking_discount}%
+                      </span>
+                    )}
+                    {!tour.is_early_booking && tour.has_discount && tour.discount_percentage && (
                       <span className="inline-block mt-2 px-2 py-1 bg-red-100 text-red-600 text-sm font-medium rounded">
                         Save {tour.discount_percentage}%
                       </span>
