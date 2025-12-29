@@ -10,6 +10,11 @@ class TourCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_active', 'sort_order']
     list_editable = ['is_active', 'sort_order']
     prepopulated_fields = {'slug': ('name',)}
+    fieldsets = (
+        ('Basic', {'fields': ('name', 'slug', 'icon', 'image', 'is_active', 'sort_order')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+        ('Translations', {'fields': ('name_es', 'name_pt'), 'classes': ('collapse',)}),
+    )
 
 
 @admin.register(TourType)
@@ -17,31 +22,52 @@ class TourTypeAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_active', 'sort_order']
     list_editable = ['is_active', 'sort_order']
     prepopulated_fields = {'slug': ('name',)}
+    fieldsets = (
+        ('Basic', {'fields': ('name', 'slug', 'icon', 'is_active', 'sort_order')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+        ('Translations', {'fields': ('name_es', 'name_pt'), 'classes': ('collapse',)}),
+    )
 
 
 class TourImageInline(admin.TabularInline):
     model = TourImage
     extra = 1
+    fields = ['image', 'caption', 'caption_es', 'caption_pt', 'alt_text', 'alt_text_es', 'alt_text_pt', 'sort_order']
 
 
-class TourHighlightInline(admin.TabularInline):
+class TourHighlightInline(admin.StackedInline):
     model = TourHighlight
     extra = 1
+    fieldsets = (
+        (None, {'fields': ('icon', 'sort_order')}),
+        ('Title', {'fields': ('title', 'title_es', 'title_pt')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+    )
 
 
 class TourItineraryInline(admin.StackedInline):
     model = TourItinerary
     extra = 1
+    fieldsets = (
+        ('Day', {'fields': ('day_number', 'image')}),
+        ('Title', {'fields': ('title', 'title_es', 'title_pt')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+        ('Locations', {'fields': ('locations', 'locations_es', 'locations_pt')}),
+        ('Meals', {'fields': ('meals_included', 'meals_included_es', 'meals_included_pt')}),
+        ('Accommodation', {'fields': ('accommodation', 'accommodation_es', 'accommodation_pt')}),
+    )
 
 
 class TourInclusionInline(admin.TabularInline):
     model = TourInclusion
     extra = 2
+    fields = ['item', 'item_es', 'item_pt', 'is_included', 'sort_order']
 
 
 class TourPricingInline(admin.TabularInline):
     model = TourPricing
     extra = 1
+    fields = ['season_name', 'season_name_es', 'season_name_pt', 'start_date', 'end_date', 'price_per_person', 'single_supplement']
 
 
 class TourDepartureInline(admin.TabularInline):
@@ -52,6 +78,11 @@ class TourDepartureInline(admin.TabularInline):
 class TourFAQInline(admin.StackedInline):
     model = TourFAQ
     extra = 0
+    fieldsets = (
+        ('Question', {'fields': ('question', 'question_es', 'question_pt')}),
+        ('Answer', {'fields': ('answer', 'answer_es', 'answer_pt')}),
+        ('Settings', {'fields': ('sort_order',)}),
+    )
 
 
 @admin.register(Tour)
@@ -137,7 +168,7 @@ class EarlyBookingOfferAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'title_ar', 'subtitle', 'subtitle_ar', 'description', 'description_ar')
+            'fields': ('title', 'title_es', 'title_pt', 'subtitle', 'subtitle_es', 'subtitle_pt', 'description', 'description_es', 'description_pt')
         }),
         ('Discount Settings', {
             'fields': ('discount_percentage', 'min_days_advance')
@@ -155,11 +186,11 @@ class EarlyBookingOfferAdmin(admin.ModelAdmin):
             'description': 'Select which tours are included in this early booking offer'
         }),
         ('Benefits & Terms', {
-            'fields': ('benefits', 'terms_conditions', 'cancellation_policy'),
+            'fields': ('benefits', 'terms_conditions', 'terms_conditions_es', 'terms_conditions_pt', 'cancellation_policy', 'cancellation_policy_es', 'cancellation_policy_pt'),
             'classes': ('collapse',)
         }),
         ('Display Settings', {
-            'fields': ('badge_text', 'banner_image', 'background_color')
+            'fields': ('badge_text', 'badge_text_es', 'badge_text_pt', 'banner_image', 'background_color')
         }),
         ('Status', {
             'fields': ('is_active', 'is_featured', 'sort_order')

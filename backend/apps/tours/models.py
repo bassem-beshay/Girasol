@@ -38,6 +38,8 @@ class TourType(TimeStampedModel, SluggedModel, SortableModel):
     name_es = models.CharField('Name (Spanish)', max_length=100, blank=True)
     name_pt = models.CharField('Name (Portuguese)', max_length=100, blank=True)
     description = models.TextField(blank=True)
+    description_es = models.TextField('Description (Spanish)', blank=True)
+    description_pt = models.TextField('Description (Portuguese)', blank=True)
     icon = models.CharField(max_length=50, blank=True, help_text='Icon class name')
     is_active = models.BooleanField(default=True)
 
@@ -172,7 +174,11 @@ class TourImage(TimeStampedModel, SortableModel):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='tours/gallery/')
     caption = models.CharField(max_length=200, blank=True)
+    caption_es = models.CharField('Caption (Spanish)', max_length=200, blank=True)
+    caption_pt = models.CharField('Caption (Portuguese)', max_length=200, blank=True)
     alt_text = models.CharField(max_length=200, blank=True)
+    alt_text_es = models.CharField('Alt Text (Spanish)', max_length=200, blank=True)
+    alt_text_pt = models.CharField('Alt Text (Portuguese)', max_length=200, blank=True)
 
     class Meta:
         verbose_name = 'Tour Image'
@@ -188,7 +194,11 @@ class TourHighlight(TimeStampedModel, SortableModel):
 
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='highlights')
     title = models.CharField(max_length=200)
+    title_es = models.CharField('Title (Spanish)', max_length=200, blank=True)
+    title_pt = models.CharField('Title (Portuguese)', max_length=200, blank=True)
     description = models.TextField(blank=True)
+    description_es = models.TextField('Description (Spanish)', blank=True)
+    description_pt = models.TextField('Description (Portuguese)', blank=True)
     icon = models.CharField(max_length=50, blank=True)
 
     class Meta:
@@ -206,13 +216,23 @@ class TourItinerary(TimeStampedModel, SortableModel):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='itinerary')
     day_number = models.PositiveIntegerField()
     title = models.CharField(max_length=200)
+    title_es = models.CharField('Title (Spanish)', max_length=200, blank=True)
+    title_pt = models.CharField('Title (Portuguese)', max_length=200, blank=True)
     description = models.TextField()
+    description_es = models.TextField('Description (Spanish)', blank=True)
+    description_pt = models.TextField('Description (Portuguese)', blank=True)
     locations = models.CharField(max_length=300, blank=True)
+    locations_es = models.CharField('Locations (Spanish)', max_length=300, blank=True)
+    locations_pt = models.CharField('Locations (Portuguese)', max_length=300, blank=True)
     meals_included = models.CharField(
         max_length=50, blank=True,
         help_text='e.g., Breakfast, Lunch, Dinner'
     )
+    meals_included_es = models.CharField('Meals Included (Spanish)', max_length=50, blank=True)
+    meals_included_pt = models.CharField('Meals Included (Portuguese)', max_length=50, blank=True)
     accommodation = models.CharField(max_length=200, blank=True)
+    accommodation_es = models.CharField('Accommodation (Spanish)', max_length=200, blank=True)
+    accommodation_pt = models.CharField('Accommodation (Portuguese)', max_length=200, blank=True)
     image = models.ImageField(upload_to='tours/itinerary/', null=True, blank=True)
 
     class Meta:
@@ -229,6 +249,8 @@ class TourInclusion(TimeStampedModel, SortableModel):
 
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='inclusions')
     item = models.CharField(max_length=200)
+    item_es = models.CharField('Item (Spanish)', max_length=200, blank=True)
+    item_pt = models.CharField('Item (Portuguese)', max_length=200, blank=True)
     is_included = models.BooleanField(default=True)  # True = Included, False = Excluded
 
     class Meta:
@@ -246,6 +268,8 @@ class TourPricing(TimeStampedModel):
 
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='seasonal_pricing')
     season_name = models.CharField(max_length=50)  # e.g., Low Season, High Season
+    season_name_es = models.CharField('Season Name (Spanish)', max_length=50, blank=True)
+    season_name_pt = models.CharField('Season Name (Portuguese)', max_length=50, blank=True)
     start_date = models.DateField()
     end_date = models.DateField()
     price_per_person = models.DecimalField(max_digits=10, decimal_places=2)
@@ -294,7 +318,11 @@ class TourFAQ(TimeStampedModel, SortableModel):
 
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='faqs')
     question = models.CharField(max_length=300)
+    question_es = models.CharField('Question (Spanish)', max_length=300, blank=True)
+    question_pt = models.CharField('Question (Portuguese)', max_length=300, blank=True)
     answer = models.TextField()
+    answer_es = models.TextField('Answer (Spanish)', blank=True)
+    answer_pt = models.TextField('Answer (Portuguese)', blank=True)
 
     class Meta:
         verbose_name = 'Tour FAQ'
@@ -314,11 +342,14 @@ class EarlyBookingOffer(TimeStampedModel):
 
     # Basic Info
     title = models.CharField(max_length=200, default='Early Booking Offer')
-    title_ar = models.CharField('Title (Arabic)', max_length=200, blank=True)
+    title_es = models.CharField('Title (Spanish)', max_length=200, blank=True)
+    title_pt = models.CharField('Title (Portuguese)', max_length=200, blank=True)
     subtitle = models.CharField(max_length=300, blank=True)
-    subtitle_ar = models.CharField('Subtitle (Arabic)', max_length=300, blank=True)
+    subtitle_es = models.CharField('Subtitle (Spanish)', max_length=300, blank=True)
+    subtitle_pt = models.CharField('Subtitle (Portuguese)', max_length=300, blank=True)
     description = models.TextField(blank=True)
-    description_ar = models.TextField('Description (Arabic)', blank=True)
+    description_es = models.TextField('Description (Spanish)', blank=True)
+    description_pt = models.TextField('Description (Portuguese)', blank=True)
 
     # Discount Settings
     discount_percentage = models.PositiveIntegerField(
@@ -368,10 +399,14 @@ class EarlyBookingOffer(TimeStampedModel):
         blank=True,
         help_text='Terms and conditions for this offer'
     )
+    terms_conditions_es = models.TextField('Terms & Conditions (Spanish)', blank=True)
+    terms_conditions_pt = models.TextField('Terms & Conditions (Portuguese)', blank=True)
     cancellation_policy = models.TextField(
         blank=True,
         help_text='Cancellation policy for early bookings'
     )
+    cancellation_policy_es = models.TextField('Cancellation Policy (Spanish)', blank=True)
+    cancellation_policy_pt = models.TextField('Cancellation Policy (Portuguese)', blank=True)
 
     # Display Settings
     badge_text = models.CharField(
@@ -379,6 +414,8 @@ class EarlyBookingOffer(TimeStampedModel):
         default='Early Bird',
         help_text='Badge text shown on tour cards'
     )
+    badge_text_es = models.CharField('Badge Text (Spanish)', max_length=50, blank=True)
+    badge_text_pt = models.CharField('Badge Text (Portuguese)', max_length=50, blank=True)
     banner_image = models.ImageField(
         upload_to='offers/early_booking/',
         null=True,

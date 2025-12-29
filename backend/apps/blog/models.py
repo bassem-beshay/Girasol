@@ -38,6 +38,8 @@ class Tag(TimeStampedModel, SluggedModel):
     """Blog tag."""
 
     name = models.CharField(max_length=50)
+    name_es = models.CharField('Name (Spanish)', max_length=50, blank=True)
+    name_pt = models.CharField('Name (Portuguese)', max_length=50, blank=True)
 
     class Meta:
         verbose_name = 'Tag'
@@ -68,6 +70,8 @@ class Post(TimeStampedModel, SluggedModel, SEOModel, PublishableModel):
     # Media
     featured_image = models.ImageField(upload_to='blog/posts/')
     featured_image_alt = models.CharField(max_length=200, blank=True)
+    featured_image_alt_es = models.CharField('Alt Text (Spanish)', max_length=200, blank=True)
+    featured_image_alt_pt = models.CharField('Alt Text (Portuguese)', max_length=200, blank=True)
 
     # Classification
     category = models.ForeignKey(

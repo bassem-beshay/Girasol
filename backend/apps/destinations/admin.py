@@ -5,11 +5,18 @@ from .models import Destination, DestinationImage, Activity
 class DestinationImageInline(admin.TabularInline):
     model = DestinationImage
     extra = 1
+    fields = ['image', 'caption', 'caption_es', 'caption_pt', 'alt_text', 'alt_text_es', 'alt_text_pt', 'sort_order']
 
 
-class ActivityInline(admin.TabularInline):
+class ActivityInline(admin.StackedInline):
     model = Activity
     extra = 0
+    fieldsets = (
+        ('Basic', {'fields': ('image', 'sort_order')}),
+        ('Name', {'fields': ('name', 'name_es', 'name_pt')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+        ('Details', {'fields': ('price_from', 'price_to', 'duration')}),
+    )
 
 
 @admin.register(Destination)
@@ -38,3 +45,9 @@ class ActivityAdmin(admin.ModelAdmin):
     list_display = ['name', 'destination', 'price_from', 'duration', 'sort_order']
     list_filter = ['destination']
     search_fields = ['name', 'description']
+    fieldsets = (
+        ('Basic', {'fields': ('destination', 'image', 'sort_order')}),
+        ('Name', {'fields': ('name', 'name_es', 'name_pt')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+        ('Details', {'fields': ('price_from', 'price_to', 'duration')}),
+    )

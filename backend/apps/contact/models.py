@@ -184,8 +184,14 @@ class Office(TimeStampedModel):
     """Company office locations."""
 
     name = models.CharField(max_length=100)
+    name_es = models.CharField('Name (Spanish)', max_length=100, blank=True)
+    name_pt = models.CharField('Name (Portuguese)', max_length=100, blank=True)
     city = models.CharField(max_length=100)
+    city_es = models.CharField('City (Spanish)', max_length=100, blank=True)
+    city_pt = models.CharField('City (Portuguese)', max_length=100, blank=True)
     address = models.TextField()
+    address_es = models.TextField('Address (Spanish)', blank=True)
+    address_pt = models.TextField('Address (Portuguese)', blank=True)
     phone = models.CharField(max_length=50)
     email = models.EmailField()
     whatsapp = models.CharField(max_length=20, blank=True)
@@ -196,6 +202,8 @@ class Office(TimeStampedModel):
 
     # Hours
     working_hours = models.CharField(max_length=200, blank=True)
+    working_hours_es = models.CharField('Working Hours (Spanish)', max_length=200, blank=True)
+    working_hours_pt = models.CharField('Working Hours (Portuguese)', max_length=200, blank=True)
 
     is_headquarters = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -230,6 +238,8 @@ class Statistic(TimeStampedModel):
     label_pt = models.CharField('Label (Portuguese)', max_length=100, blank=True)
     icon = models.CharField(max_length=20, choices=ICON_CHOICES, default='star')
     description = models.CharField(max_length=200, blank=True, help_text="Optional description")
+    description_es = models.CharField('Description (Spanish)', max_length=200, blank=True)
+    description_pt = models.CharField('Description (Portuguese)', max_length=200, blank=True)
 
     is_active = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)

@@ -62,7 +62,11 @@ class DestinationImage(TimeStampedModel, SortableModel):
     )
     image = models.ImageField(upload_to='destinations/gallery/')
     caption = models.CharField(max_length=200, blank=True)
+    caption_es = models.CharField('Caption (Spanish)', max_length=200, blank=True)
+    caption_pt = models.CharField('Caption (Portuguese)', max_length=200, blank=True)
     alt_text = models.CharField(max_length=200, blank=True)
+    alt_text_es = models.CharField('Alt Text (Spanish)', max_length=200, blank=True)
+    alt_text_pt = models.CharField('Alt Text (Portuguese)', max_length=200, blank=True)
 
     class Meta:
         verbose_name = 'Destination Image'
@@ -80,7 +84,11 @@ class Activity(TimeStampedModel, SortableModel):
         Destination, on_delete=models.CASCADE, related_name='activities'
     )
     name = models.CharField(max_length=100)
+    name_es = models.CharField('Name (Spanish)', max_length=100, blank=True)
+    name_pt = models.CharField('Name (Portuguese)', max_length=100, blank=True)
     description = models.TextField()
+    description_es = models.TextField('Description (Spanish)', blank=True)
+    description_pt = models.TextField('Description (Portuguese)', blank=True)
     image = models.ImageField(upload_to='destinations/activities/', null=True, blank=True)
     price_from = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     price_to = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)

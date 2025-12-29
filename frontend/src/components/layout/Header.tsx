@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -11,7 +11,9 @@ import {
   ChevronDown,
   Globe,
   User,
+  Check,
 } from 'lucide-react';
+import { useLanguageStore, languages, Language } from '@/store/languageStore';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -47,7 +49,32 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const langDropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  // Language store
+  const { language, setLanguage } = useLanguageStore();
+  const currentLangOption = languages.find(l => l.code === language) || languages[0];
+
+  // Handle language change
+  const handleLanguageChange = (langCode: Language) => {
+    setLanguage(langCode);
+    setIsLangDropdownOpen(false);
+    // Trigger a page refresh to reload data with new language
+    window.location.reload();
+  };
+
+  // Close language dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+        setIsLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -121,11 +148,48 @@ export function Header() {
 
           {/* Right Side - Actions */}
           <div className="hidden lg:flex items-center gap-3">
-            <button className={cn('flex items-center gap-1 px-2 py-1 rounded hover:bg-black/10', textColor)}>
-              <Globe className="w-4 h-4" />
-              EN
-              <ChevronDown className="w-3 h-3" />
-            </button>
+            {/* Language Selector */}
+            <div className="relative" ref={langDropdownRef}>
+              <button
+                onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+                className={cn(
+                  'flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-black/10 transition-colors',
+                  textColor
+                )}
+              >
+                <Globe className="w-4 h-4" />
+                <span className="text-sm font-medium">{currentLangOption.code.toUpperCase()}</span>
+                <ChevronDown className={cn('w-3 h-3 transition-transform', isLangDropdownOpen && 'rotate-180')} />
+              </button>
+
+              {/* Language Dropdown */}
+              {isLangDropdownOpen && (
+                <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-100 py-1 min-w-[160px] animate-fade-in z-50">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLanguageChange(lang.code)}
+                      className={cn(
+                        'w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-primary-50 transition-colors',
+                        language === lang.code ? 'text-primary-600 bg-primary-50/50' : 'text-gray-700'
+                      )}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-lg">{lang.flag}</span>
+                        <div>
+                          <div className="font-medium text-sm">{lang.nativeName}</div>
+                          <div className="text-xs text-gray-500">{lang.name}</div>
+                        </div>
+                      </div>
+                      {language === lang.code && (
+                        <Check className="w-4 h-4 text-primary-600" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Link href="/auth/login" className={cn('p-2 hover:opacity-80', textColor)} title="Login">
               <User className="w-5 h-5" />
             </Link>
@@ -176,19 +240,37 @@ export function Header() {
             ))}
             {/* Mobile Actions */}
             <div className="pt-4 mt-2 border-t border-gray-200 space-y-3">
-              <div className="grid grid-cols-2 gap-2">
+              {/* Language Selection for Mobile */}
+              <div className="mb-3">
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 px-2">Language</p>
+                <div className="flex gap-2">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLanguageChange(lang.code)}
+                      className={cn(
+                        'flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border transition-all',
+                        language === lang.code
+                          ? 'border-primary-500 bg-primary-50 text-primary-700'
+                          : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                      )}
+                    >
+                      <span>{lang.flag}</span>
+                      <span className="text-sm font-medium">{lang.code.toUpperCase()}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-2">
                 <Link
                   href="/auth/login"
-                  className="flex flex-col items-center gap-1 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors"
+                  className="flex items-center justify-center gap-2 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors border border-gray-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <User className="w-5 h-5" />
-                  <span className="text-xs">Login</span>
+                  <span className="text-sm font-medium">Login / Register</span>
                 </Link>
-                <button className="flex flex-col items-center gap-1 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors">
-                  <Globe className="w-5 h-5" />
-                  <span className="text-xs">EN</span>
-                </button>
               </div>
               <Link
                 href="/contact"

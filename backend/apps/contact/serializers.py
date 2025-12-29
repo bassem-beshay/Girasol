@@ -2,6 +2,7 @@
 Contact serializers for API.
 """
 from rest_framework import serializers
+from apps.core.serializers import MultiLanguageSerializerMixin
 from .models import Inquiry, Newsletter, FAQ, Office, Statistic
 
 
@@ -49,7 +50,9 @@ class NewsletterSerializer(serializers.ModelSerializer):
         return newsletter
 
 
-class FAQSerializer(serializers.ModelSerializer):
+class FAQSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['question', 'answer']
+
     class Meta:
         model = FAQ
         fields = [
@@ -58,19 +61,28 @@ class FAQSerializer(serializers.ModelSerializer):
         ]
 
 
-class OfficeSerializer(serializers.ModelSerializer):
+class OfficeSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['name', 'city', 'address', 'working_hours']
+
     class Meta:
         model = Office
         fields = [
-            'id', 'name', 'city', 'address', 'phone', 'email', 'whatsapp',
-            'latitude', 'longitude', 'working_hours', 'is_headquarters'
+            'id', 'name', 'name_es', 'name_pt',
+            'city', 'city_es', 'city_pt',
+            'address', 'address_es', 'address_pt',
+            'phone', 'email', 'whatsapp',
+            'latitude', 'longitude',
+            'working_hours', 'working_hours_es', 'working_hours_pt',
+            'is_headquarters'
         ]
 
 
-class StatisticSerializer(serializers.ModelSerializer):
+class StatisticSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['label', 'description']
+
     class Meta:
         model = Statistic
         fields = [
             'id', 'value', 'label', 'label_es', 'label_pt',
-            'icon', 'description', 'sort_order'
+            'icon', 'description', 'description_es', 'description_pt', 'sort_order'
         ]

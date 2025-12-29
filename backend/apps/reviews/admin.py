@@ -5,6 +5,7 @@ from .models import Review, ReviewImage, Testimonial
 class ReviewImageInline(admin.TabularInline):
     model = ReviewImage
     extra = 1
+    fields = ['image', 'caption', 'caption_es', 'caption_pt']
 
 
 @admin.register(Review)
@@ -23,7 +24,7 @@ class ReviewAdmin(admin.ModelAdmin):
             'fields': ('user', 'reviewer_name', 'reviewer_country', 'reviewer_avatar')
         }),
         ('Review', {
-            'fields': ('tour', 'booking', 'rating', 'title', 'content', 'travel_date')
+            'fields': ('tour', 'rating', 'title', 'title_es', 'title_pt', 'content', 'content_es', 'content_pt', 'travel_date')
         }),
         ('Status', {
             'fields': ('is_verified', 'is_approved', 'is_featured')
@@ -43,3 +44,9 @@ class TestimonialAdmin(admin.ModelAdmin):
     list_filter = ['is_active', 'rating']
     search_fields = ['name', 'quote']
     list_editable = ['is_active', 'sort_order']
+    fieldsets = (
+        ('Customer', {'fields': ('name', 'country', 'avatar')}),
+        ('Content', {'fields': ('quote', 'quote_es', 'quote_pt', 'rating')}),
+        ('Related', {'fields': ('tour',)}),
+        ('Settings', {'fields': ('is_active', 'sort_order')}),
+    )

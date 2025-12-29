@@ -33,7 +33,11 @@ class Review(TimeStampedModel):
 
     # Content
     title = models.CharField(max_length=200, blank=True)
+    title_es = models.CharField('Title (Spanish)', max_length=200, blank=True)
+    title_pt = models.CharField('Title (Portuguese)', max_length=200, blank=True)
     content = models.TextField()
+    content_es = models.TextField('Content (Spanish)', blank=True)
+    content_pt = models.TextField('Content (Portuguese)', blank=True)
 
     # Travel date
     travel_date = models.DateField(null=True, blank=True)
@@ -76,6 +80,8 @@ class ReviewImage(TimeStampedModel):
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='reviews/images/')
     caption = models.CharField(max_length=200, blank=True)
+    caption_es = models.CharField('Caption (Spanish)', max_length=200, blank=True)
+    caption_pt = models.CharField('Caption (Portuguese)', max_length=200, blank=True)
 
     class Meta:
         verbose_name = 'Review Image'
@@ -95,6 +101,8 @@ class Testimonial(TimeStampedModel):
 
     # Content
     quote = models.TextField()
+    quote_es = models.TextField('Quote (Spanish)', blank=True)
+    quote_pt = models.TextField('Quote (Portuguese)', blank=True)
     rating = models.PositiveIntegerField(
         default=5,
         validators=[MinValueValidator(1), MaxValueValidator(5)]

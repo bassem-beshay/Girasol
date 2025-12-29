@@ -7,12 +7,21 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'post_count', 'is_active']
     prepopulated_fields = {'slug': ('name',)}
     list_editable = ['is_active']
+    fieldsets = (
+        ('Basic', {'fields': ('name', 'slug', 'image', 'is_active')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+        ('Translations', {'fields': ('name_es', 'name_pt'), 'classes': ('collapse',)}),
+    )
 
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
+    fieldsets = (
+        ('Basic', {'fields': ('name', 'slug')}),
+        ('Translations', {'fields': ('name_es', 'name_pt'), 'classes': ('collapse',)}),
+    )
 
 
 class CommentInline(admin.TabularInline):
@@ -36,10 +45,10 @@ class PostAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Content', {
-            'fields': ('title', 'title_ar', 'slug', 'excerpt', 'content', 'content_ar')
+            'fields': ('title', 'title_es', 'title_pt', 'slug', 'excerpt', 'excerpt_es', 'excerpt_pt', 'content', 'content_es', 'content_pt')
         }),
         ('Media', {
-            'fields': ('featured_image', 'featured_image_alt')
+            'fields': ('featured_image', 'featured_image_alt', 'featured_image_alt_es', 'featured_image_alt_pt')
         }),
         ('Classification', {
             'fields': ('category', 'tags')

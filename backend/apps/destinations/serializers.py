@@ -2,22 +2,28 @@
 Destination serializers for API.
 """
 from rest_framework import serializers
+from apps.core.serializers import MultiLanguageSerializerMixin
 from .models import Destination, DestinationImage, Activity
 
 
-class DestinationImageSerializer(serializers.ModelSerializer):
+class DestinationImageSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['caption', 'alt_text']
+
     class Meta:
         model = DestinationImage
-        fields = ['id', 'image', 'caption', 'alt_text']
+        fields = ['id', 'image', 'caption', 'caption_es', 'caption_pt', 'alt_text', 'alt_text_es', 'alt_text_pt']
 
 
-class ActivitySerializer(serializers.ModelSerializer):
+class ActivitySerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['name', 'description']
+
     class Meta:
         model = Activity
-        fields = ['id', 'name', 'description', 'image', 'price_from', 'price_to', 'duration']
+        fields = ['id', 'name', 'name_es', 'name_pt', 'description', 'description_es', 'description_pt', 'image', 'price_from', 'price_to', 'duration']
 
 
-class DestinationListSerializer(serializers.ModelSerializer):
+class DestinationListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['name', 'tagline']
     tour_count = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -28,7 +34,8 @@ class DestinationListSerializer(serializers.ModelSerializer):
         ]
 
 
-class DestinationDetailSerializer(serializers.ModelSerializer):
+class DestinationDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['name', 'tagline', 'description']
     images = DestinationImageSerializer(many=True, read_only=True)
     activities = ActivitySerializer(many=True, read_only=True)
     tour_count = serializers.IntegerField(read_only=True)

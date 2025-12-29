@@ -97,6 +97,11 @@ class FAQAdmin(admin.ModelAdmin):
     list_filter = ['category', 'is_active']
     search_fields = ['question', 'answer']
     list_editable = ['is_active', 'sort_order']
+    fieldsets = (
+        ('Question', {'fields': ('question', 'question_es', 'question_pt')}),
+        ('Answer', {'fields': ('answer', 'answer_es', 'answer_pt')}),
+        ('Settings', {'fields': ('category', 'is_active', 'sort_order')}),
+    )
 
 
 @admin.register(Office)
@@ -104,6 +109,13 @@ class OfficeAdmin(admin.ModelAdmin):
     list_display = ['name', 'city', 'phone', 'is_headquarters', 'is_active', 'sort_order']
     list_filter = ['is_headquarters', 'is_active']
     list_editable = ['is_active', 'sort_order']
+    fieldsets = (
+        ('Basic', {'fields': ('name', 'name_es', 'name_pt')}),
+        ('Location', {'fields': ('city', 'city_es', 'city_pt', 'address', 'address_es', 'address_pt', 'latitude', 'longitude')}),
+        ('Contact', {'fields': ('phone', 'email', 'whatsapp')}),
+        ('Hours', {'fields': ('working_hours', 'working_hours_es', 'working_hours_pt')}),
+        ('Settings', {'fields': ('is_headquarters', 'is_active', 'sort_order')}),
+    )
 
 
 @admin.register(Statistic)
@@ -117,7 +129,10 @@ class StatisticAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('value', 'label', 'description')
+            'fields': ('value', 'label', 'icon')
+        }),
+        ('Description', {
+            'fields': ('description', 'description_es', 'description_pt')
         }),
         ('Translations', {
             'fields': ('label_es', 'label_pt'),

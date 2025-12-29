@@ -2,16 +2,20 @@
 Review serializers for API.
 """
 from rest_framework import serializers
+from apps.core.serializers import MultiLanguageSerializerMixin
 from .models import Review, ReviewImage, Testimonial
 
 
-class ReviewImageSerializer(serializers.ModelSerializer):
+class ReviewImageSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['caption']
+
     class Meta:
         model = ReviewImage
-        fields = ['id', 'image', 'caption']
+        fields = ['id', 'image', 'caption', 'caption_es', 'caption_pt']
 
 
-class ReviewSerializer(serializers.ModelSerializer):
+class ReviewSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['title', 'content']
     images = ReviewImageSerializer(many=True, read_only=True)
     tour_name = serializers.CharField(source='tour.name', read_only=True)
 
@@ -19,7 +23,9 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = [
             'id', 'reviewer_name', 'reviewer_country', 'reviewer_avatar',
-            'tour', 'tour_name', 'rating', 'title', 'content',
+            'tour', 'tour_name', 'rating',
+            'title', 'title_es', 'title_pt',
+            'content', 'content_es', 'content_pt',
             'travel_date', 'is_verified', 'images',
             'admin_response', 'admin_response_at', 'created_at'
         ]
@@ -55,12 +61,14 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         return review
 
 
-class TestimonialSerializer(serializers.ModelSerializer):
+class TestimonialSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['quote']
     tour_name = serializers.CharField(source='tour.name', read_only=True)
 
     class Meta:
         model = Testimonial
         fields = [
-            'id', 'name', 'country', 'avatar', 'quote',
+            'id', 'name', 'country', 'avatar',
+            'quote', 'quote_es', 'quote_pt',
             'rating', 'tour', 'tour_name'
         ]

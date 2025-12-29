@@ -24,13 +24,28 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// Request interceptor for adding auth token
+// Request interceptor for adding auth token and language
 api.interceptors.request.use(
   (config) => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Add language header from localStorage (set by languageStore)
+    if (typeof window !== 'undefined') {
+      const languageStorage = localStorage.getItem('language-storage');
+      if (languageStorage) {
+        try {
+          const parsed = JSON.parse(languageStorage);
+          const language = parsed.state?.language || 'en';
+          config.headers['Accept-Language'] = language;
+        } catch {
+          config.headers['Accept-Language'] = 'en';
+        }
+      }
+    }
+
     return config;
   },
   (error) => {

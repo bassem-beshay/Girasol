@@ -2,10 +2,12 @@
 Blog serializers for API.
 """
 from rest_framework import serializers
+from apps.core.serializers import MultiLanguageSerializerMixin
 from .models import Category, Tag, Post, Comment
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['name', 'description']
     post_count = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -17,10 +19,12 @@ class CategorySerializer(serializers.ModelSerializer):
         ]
 
 
-class TagSerializer(serializers.ModelSerializer):
+class TagSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['name']
+
     class Meta:
         model = Tag
-        fields = ['id', 'name', 'slug']
+        fields = ['id', 'name', 'name_es', 'name_pt', 'slug']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -56,7 +60,8 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-class PostListSerializer(serializers.ModelSerializer):
+class PostListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['title', 'excerpt']
     category = CategorySerializer(read_only=True)
     author_display = serializers.SerializerMethodField()
     comment_count = serializers.SerializerMethodField()
@@ -81,7 +86,8 @@ class PostListSerializer(serializers.ModelSerializer):
         return obj.comments.filter(is_approved=True, parent=None).count()
 
 
-class PostDetailSerializer(serializers.ModelSerializer):
+class PostDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
+    TRANSLATABLE_FIELDS = ['title', 'excerpt', 'content']
     category = CategorySerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     author_display = serializers.SerializerMethodField()
@@ -94,7 +100,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'id', 'title', 'title_es', 'title_pt', 'slug',
             'excerpt', 'excerpt_es', 'excerpt_pt',
             'content', 'content_es', 'content_pt',
-            'featured_image', 'featured_image_alt',
+            'featured_image', 'featured_image_alt', 'featured_image_alt_es', 'featured_image_alt_pt',
             'category', 'tags', 'author_display',
             'published_at', 'reading_time', 'view_count',
             'comments', 'allow_comments', 'related_posts',
