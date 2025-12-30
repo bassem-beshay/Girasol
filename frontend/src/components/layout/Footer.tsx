@@ -182,29 +182,6 @@ export function Footer() {
                 </li>
               </ul>
 
-              {/* Memberships */}
-              <div className="mt-10">
-                <p className="text-white/70 text-base uppercase tracking-wider mb-4 font-medium">
-                  Member of
-                </p>
-                <div className="flex items-center flex-wrap gap-4">
-                  {memberships.map((member) => (
-                    <div
-                      key={member.name}
-                      className="hover:scale-110 transition-transform duration-300"
-                      title={member.name}
-                    >
-                      <Image
-                        src={member.logo}
-                        alt={member.name}
-                        width={200}
-                        height={100}
-                        className="h-24 lg:h-28 w-auto object-contain"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
 
             {/* Social Links */}
@@ -229,6 +206,32 @@ export function Footer() {
               <p className="mt-4 text-white/50 text-sm">
                 Follow us for the latest updates and travel inspiration.
               </p>
+            </div>
+          </div>
+
+          {/* Memberships - Full Width Row */}
+          <div className="mt-12 pt-10 border-t border-white/10">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+              <p className="text-white/70 text-base uppercase tracking-wider font-medium">
+                Member of
+              </p>
+              <div className="flex items-center gap-6 lg:gap-8">
+                {memberships.map((member) => (
+                  <div
+                    key={member.name}
+                    className="hover:scale-110 transition-transform duration-300"
+                    title={member.name}
+                  >
+                    <Image
+                      src={member.logo}
+                      alt={member.name}
+                      width={150}
+                      height={75}
+                      className="h-14 lg:h-16 w-auto object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

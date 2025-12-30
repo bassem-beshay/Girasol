@@ -14,6 +14,7 @@ import {
   Check,
 } from 'lucide-react';
 import { useLanguageStore, languages, Language } from '@/store/languageStore';
+import { useUserStore } from '@/store/userStore';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -56,6 +57,9 @@ export function Header() {
   // Language store
   const { language, setLanguage } = useLanguageStore();
   const currentLangOption = languages.find(l => l.code === language) || languages[0];
+
+  // User store
+  const { user, isLoggedIn, getInitial, logout } = useUserStore();
 
   // Handle language change
   const handleLanguageChange = (langCode: Language) => {
@@ -190,9 +194,31 @@ export function Header() {
               )}
             </div>
 
-            <Link href="/auth/login" className={cn('p-2 hover:opacity-80', textColor)} title="Login">
-              <User className="w-5 h-5" />
-            </Link>
+{isLoggedIn && user ? (
+              <div className="relative group">
+                <button
+                  className={cn(
+                    'w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-md hover:shadow-lg transition-shadow',
+                    'ring-2 ring-white/30'
+                  )}
+                  title={user.fullName}
+                >
+                  {getInitial()}
+                </button>
+                <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-100 py-2 min-w-[180px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <p className="font-medium text-gray-900 text-sm truncate">{user.fullName}</p>
+                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                  </div>
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            ) : null}
             <Link href="/contact" className="btn btn-primary btn-md">
               Get Free Quote
             </Link>
@@ -262,16 +288,28 @@ export function Header() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-2">
-                <Link
-                  href="/auth/login"
-                  className="flex items-center justify-center gap-2 p-3 text-gray-700 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-colors border border-gray-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <User className="w-5 h-5" />
-                  <span className="text-sm font-medium">Login / Register</span>
-                </Link>
-              </div>
+{isLoggedIn && user && (
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                      {getInitial()}
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">{user.fullName}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-sm text-red-600 hover:text-red-700 font-medium"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
               <Link
                 href="/contact"
                 className="btn btn-primary w-full py-3 text-center font-semibold"

@@ -5,6 +5,7 @@ import { reviewsApi } from '@/lib/api';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Star, Quote, Loader2, User } from 'lucide-react';
+import { useInView } from '@/hooks/useInView';
 
 interface Testimonial {
   id: number;
@@ -23,12 +24,16 @@ interface TestimonialsResponse {
 }
 
 export function Testimonials() {
+  const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+
   const { data, isLoading, error } = useQuery<TestimonialsResponse>({
     queryKey: ['testimonials'],
     queryFn: async () => {
       const response = await reviewsApi.getTestimonials();
       return response.data;
     },
+    enabled: isInView,
+    staleTime: 5 * 60 * 1000,
   });
 
   const testimonials = data?.results?.slice(0, 3) || [];
@@ -39,7 +44,7 @@ export function Testimonials() {
     : '5.0';
 
   return (
-    <section className="section-padding">
+    <section ref={ref} className="section-padding">
       <div className="container-custom">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">

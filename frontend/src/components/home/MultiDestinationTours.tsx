@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, Star, MapPin, Clock, Loader2, Globe2, Plane } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { useInView } from '@/hooks/useInView';
 
 interface Tour {
   id: number;
@@ -36,23 +37,27 @@ interface ToursResponse {
 }
 
 export function MultiDestinationTours() {
+  const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+
   const { data, isLoading, error } = useQuery<ToursResponse>({
     queryKey: ['multi-destination-tours'],
     queryFn: async () => {
       const response = await toursApi.getMultiDestination();
       return response.data;
     },
+    enabled: isInView,
+    staleTime: 5 * 60 * 1000,
   });
 
   const tours = data?.results?.slice(0, 6) || [];
 
   // Don't render the section if no multi-destination tours
-  if (!isLoading && !error && tours.length === 0) {
+  if (!isLoading && !error && tours.length === 0 && isInView) {
     return null;
   }
 
   return (
-    <section className="section-padding bg-gradient-to-b from-blue-50/50 to-white">
+    <section ref={ref} className="section-padding bg-gradient-to-b from-blue-50/50 to-white">
       <div className="container-custom">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">

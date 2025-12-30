@@ -14,6 +14,7 @@ import {
   ArrowRight,
   Loader2,
 } from 'lucide-react';
+import { useInView } from '@/hooks/useInView';
 
 interface EarlyBookingTour {
   id: number;
@@ -124,6 +125,7 @@ function CountdownTimer({ endDate }: { endDate: string }) {
 export function EarlyBookingSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
 
   const { data, isLoading, error } = useQuery<EarlyBookingResponse>({
     queryKey: ['early-booking-slider'],
@@ -131,6 +133,8 @@ export function EarlyBookingSlider() {
       const response = await toursApi.getEarlyBookingOffers();
       return response.data;
     },
+    enabled: isInView,
+    staleTime: 5 * 60 * 1000,
   });
 
   const offers = data?.results?.filter(o => o.is_currently_active) || [];
@@ -154,9 +158,9 @@ export function EarlyBookingSlider() {
     return () => clearInterval(interval);
   }, [offers.length, isPaused, nextSlide]);
 
-  if (isLoading) {
+  if (isLoading || !isInView) {
     return (
-      <section className="py-16 bg-gray-100">
+      <section ref={ref} className="py-16 bg-gray-100">
         <div className="container-custom">
           <div className="flex items-center justify-center py-20">
             <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
@@ -167,7 +171,7 @@ export function EarlyBookingSlider() {
   }
 
   if (error || offers.length === 0) {
-    return null;
+    return <section ref={ref} className="hidden" />;
   }
 
   const currentOffer = offers[currentSlide];

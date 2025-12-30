@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, Star, MapPin, Clock, Loader2, Sparkles } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { useInView } from '@/hooks/useInView';
 
 interface Tour {
   id: number;
@@ -41,18 +42,22 @@ interface ToursResponse {
 }
 
 export function PopularTours() {
+  const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+
   const { data, isLoading, error } = useQuery<ToursResponse>({
     queryKey: ['popular-tours'],
     queryFn: async () => {
       const response = await toursApi.getPopular();
       return response.data;
     },
+    enabled: isInView, // Only fetch when section is in view
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
 
   const tours = data?.results?.slice(0, 4) || [];
 
   return (
-    <section className="section-padding">
+    <section ref={ref} className="section-padding">
       <div className="container-custom">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">

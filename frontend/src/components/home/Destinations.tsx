@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, MapPin, Loader2 } from 'lucide-react';
+import { useInView } from '@/hooks/useInView';
 
 interface Destination {
   id: number;
@@ -24,18 +25,22 @@ interface DestinationsResponse {
 }
 
 export function Destinations() {
+  const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+
   const { data, isLoading, error } = useQuery<DestinationsResponse>({
     queryKey: ['featured-destinations'],
     queryFn: async () => {
       const response = await destinationsApi.getFeatured();
       return response.data;
     },
+    enabled: isInView,
+    staleTime: 5 * 60 * 1000,
   });
 
   const destinations = data?.results?.slice(0, 6) || [];
 
   return (
-    <section className="section-padding bg-gray-50">
+    <section ref={ref} className="section-padding bg-gray-50">
       <div className="container-custom">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">

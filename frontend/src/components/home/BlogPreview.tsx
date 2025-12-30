@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, Calendar, Clock, Loader2, BookOpen } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
+import { useInView } from '@/hooks/useInView';
 
 interface BlogCategory {
   id: number;
@@ -31,18 +32,22 @@ interface BlogResponse {
 }
 
 export function BlogPreview() {
+  const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+
   const { data, isLoading, error } = useQuery<BlogResponse>({
     queryKey: ['latest-blog'],
     queryFn: async () => {
       const response = await blogApi.getLatest();
       return response.data;
     },
+    enabled: isInView,
+    staleTime: 5 * 60 * 1000,
   });
 
   const blogPosts = data?.results?.slice(0, 3) || [];
 
   return (
-    <section className="section-padding bg-gray-50">
+    <section ref={ref} className="section-padding bg-gray-50">
       <div className="container-custom">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
