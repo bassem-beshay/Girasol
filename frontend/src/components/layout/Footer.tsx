@@ -211,28 +211,26 @@ export function Footer() {
 
           {/* Memberships - Centered Layout */}
           <div className="mt-12 pt-10 border-t border-white/10">
-            <div className="flex flex-col items-center gap-8">
+            <div className="flex flex-col items-center gap-6">
               <p className="text-white text-lg uppercase tracking-widest font-semibold">
                 Member of
               </p>
-              <div className="flex items-center justify-center gap-10 lg:gap-16 flex-wrap">
+              <div className="flex items-center justify-center gap-8 lg:gap-12">
                 {memberships.map((member, index) => (
                   <div
                     key={member.name}
-                    className="flex flex-col items-center gap-3 group"
+                    className="flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300"
                     title={member.name}
                   >
-                    <div className="bg-white/95 rounded-xl p-4 lg:p-5 shadow-lg group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300">
-                      <Image
-                        src={member.logo}
-                        alt={member.name}
-                        width={200}
-                        height={100}
-                        className="h-20 lg:h-24 w-auto object-contain"
-                      />
-                    </div>
+                    <Image
+                      src={member.logo}
+                      alt={member.name}
+                      width={180}
+                      height={90}
+                      className="h-16 lg:h-20 w-auto object-contain"
+                    />
                     {index === 0 && (
-                      <span className="text-orange-300 text-sm font-medium">
+                      <span className="text-orange-300 text-xs font-medium">
                         Licence number: 2208 A
                       </span>
                     )}
