@@ -190,6 +190,13 @@ CORS_ALLOWED_ORIGINS = config(
 )
 CORS_ALLOW_CREDENTIALS = True
 
+# CSRF Trusted Origins (required for Django 4.0+)
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='http://localhost:3000,http://127.0.0.1:3000',
+    cast=Csv()
+)
+
 # AllAuth Configuration (Updated for django-allauth 0.63+)
 # Use the correct allauth setting names for email-only authentication
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
