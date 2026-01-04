@@ -12,7 +12,7 @@ from .models import Inquiry, Newsletter, FAQ, Office, Statistic
 from .serializers import (
     InquirySerializer, NewsletterSerializer, FAQSerializer, OfficeSerializer, StatisticSerializer
 )
-from .tasks import send_confirmation_email_task, send_welcome_email_task, send_unsubscribe_confirmation_task
+from .emails import send_confirmation_email, send_welcome_email, send_unsubscribe_confirmation_email
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +89,7 @@ class NewsletterSubscribeView(generics.CreateAPIView):
 
             else:
                 # Not confirmed yet, resend confirmation
-                send_confirmation_email_task.delay(existing.id)
+                send_confirmation_email(existing)
 
                 logger.info(f"Confirmation email resent to {email}")
 
@@ -103,8 +103,8 @@ class NewsletterSubscribeView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         subscriber = serializer.save()
 
-        # Send confirmation email via Celery (async)
-        send_confirmation_email_task.delay(subscriber.id)
+        # Send confirmation email
+        send_confirmation_email(subscriber)
 
         logger.info(f"New newsletter subscription: {email}")
 
@@ -138,8 +138,8 @@ class NewsletterConfirmView(APIView):
             subscriber.is_active = True
             subscriber.save(update_fields=['is_confirmed', 'confirmed_at', 'is_active'])
 
-            # Send welcome email via Celery
-            send_welcome_email_task.delay(subscriber.id)
+            # Send welcome email
+            send_welcome_email(subscriber)
 
             logger.info(f"Newsletter confirmed for {subscriber.email}")
 
@@ -189,7 +189,7 @@ class NewsletterUnsubscribeView(APIView):
             subscriber.save(update_fields=['is_active', 'unsubscribed_at'])
 
             # Send unsubscribe confirmation email
-            send_unsubscribe_confirmation_task.delay(subscriber.id)
+            send_unsubscribe_confirmation_email(subscriber)
 
             logger.info(f"Newsletter unsubscribed: {subscriber.email}")
 
@@ -230,7 +230,7 @@ class NewsletterUnsubscribeView(APIView):
             subscriber.save(update_fields=['is_active', 'unsubscribed_at'])
 
             # Send unsubscribe confirmation
-            send_unsubscribe_confirmation_task.delay(subscriber.id)
+            send_unsubscribe_confirmation_email(subscriber)
 
             logger.info(f"Newsletter unsubscribed via email: {email}")
 

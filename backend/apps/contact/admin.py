@@ -78,12 +78,12 @@ class NewsletterAdmin(admin.ModelAdmin):
 
     @admin.action(description='Resend confirmation email')
     def resend_confirmation(self, request, queryset):
-        from .tasks import send_confirmation_email_task
+        from .emails import send_confirmation_email
         count = 0
         for subscriber in queryset.filter(is_confirmed=False):
-            send_confirmation_email_task.delay(subscriber.id)
+            send_confirmation_email(subscriber)
             count += 1
-        self.message_user(request, f'Confirmation emails queued for {count} subscribers.')
+        self.message_user(request, f'Confirmation emails sent to {count} subscribers.')
 
     @admin.action(description='Mark as confirmed (manual)')
     def mark_as_confirmed(self, request, queryset):
