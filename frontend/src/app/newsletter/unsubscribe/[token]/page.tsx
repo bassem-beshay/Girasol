@@ -17,7 +17,7 @@ export default function NewsletterUnsubscribePage() {
     const unsubscribe = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/contact/newsletter/unsubscribe/${params.token}/`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/contact/newsletter/unsubscribe/${params.token}/`
         );
 
         const data = await response.json();

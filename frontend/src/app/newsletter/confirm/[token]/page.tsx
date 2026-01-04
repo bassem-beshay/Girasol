@@ -18,7 +18,7 @@ export default function NewsletterConfirmPage() {
     const confirmSubscription = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/contact/newsletter/confirm/${params.token}/`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/contact/newsletter/confirm/${params.token}/`
         );
 
         const data = await response.json();
