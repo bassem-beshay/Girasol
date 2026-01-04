@@ -146,6 +146,55 @@ class Newsletter(TimeStampedModel):
         logger.info(f"Tokens regenerated for {self.email}")
 
 
+class NewsletterCampaign(TimeStampedModel):
+    """Newsletter campaigns to send to subscribers."""
+
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('scheduled', 'Scheduled'),
+        ('sending', 'Sending'),
+        ('sent', 'Sent'),
+        ('failed', 'Failed'),
+    ]
+
+    title = models.CharField(max_length=200, help_text="Internal title for this campaign")
+    subject = models.CharField(max_length=200, help_text="Email subject line")
+    preview_text = models.CharField(max_length=200, blank=True, help_text="Preview text shown in inbox")
+
+    # Content
+    content = models.TextField(help_text="Email content (HTML supported)")
+
+    # Status
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+
+    # Scheduling
+    scheduled_at = models.DateTimeField(null=True, blank=True)
+    sent_at = models.DateTimeField(null=True, blank=True)
+
+    # Stats
+    recipients_count = models.PositiveIntegerField(default=0)
+    sent_count = models.PositiveIntegerField(default=0)
+    failed_count = models.PositiveIntegerField(default=0)
+
+    # Created by
+    created_by = models.ForeignKey(
+        'users.User', on_delete=models.SET_NULL,
+        null=True, blank=True, related_name='newsletter_campaigns'
+    )
+
+    class Meta:
+        verbose_name = 'Newsletter Campaign'
+        verbose_name_plural = 'Newsletter Campaigns'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.title} ({self.status})"
+
+    def get_active_subscribers(self):
+        """Get all active and confirmed subscribers."""
+        return Newsletter.objects.filter(is_active=True, is_confirmed=True)
+
+
 class FAQ(TimeStampedModel):
     """Frequently asked questions."""
 
