@@ -1,7 +1,11 @@
 
 
 from django.contrib import admin
-from .models import Inquiry, InquiryResponse, Newsletter, FAQ, Office, Statistic
+from django.utils.html import format_html
+from django.urls import path, reverse
+from django.shortcuts import redirect
+from django.contrib import messages
+from .models import Inquiry, InquiryResponse, Newsletter, NewsletterCampaign, FAQ, Office, Statistic
 
 
 class InquiryResponseInline(admin.StackedInline):
@@ -142,3 +146,134 @@ class StatisticAdmin(admin.ModelAdmin):
             'fields': ('is_active', 'sort_order')
         }),
     )
+
+
+@admin.register(NewsletterCampaign)
+class NewsletterCampaignAdmin(admin.ModelAdmin):
+    list_display = ['title', 'subject', 'status', 'recipients_display', 'sent_display', 'created_at', 'send_button']
+    list_filter = ['status', 'created_at']
+    search_fields = ['title', 'subject']
+    readonly_fields = ['status', 'recipients_count', 'sent_count', 'failed_count', 'sent_at', 'created_at', 'updated_at']
+    date_hierarchy = 'created_at'
+
+    fieldsets = (
+        ('Campaign Info', {
+            'fields': ('title', 'subject', 'preview_text')
+        }),
+        ('Content', {
+            'fields': ('content',),
+            'description': 'HTML content is supported. Use basic HTML for email compatibility.'
+        }),
+        ('Status & Stats', {
+            'fields': ('status', 'scheduled_at', 'sent_at', 'recipients_count', 'sent_count', 'failed_count'),
+            'classes': ('collapse',)
+        }),
+        ('Metadata', {
+            'fields': ('created_by', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def recipients_display(self, obj):
+        count = Newsletter.objects.filter(is_active=True, is_confirmed=True).count()
+        return f"{count} subscribers"
+    recipients_display.short_description = 'Recipients'
+
+    def sent_display(self, obj):
+        if obj.sent_count > 0:
+            return format_html(
+                '<span style="color: green;">{} sent</span> / <span style="color: red;">{} failed</span>',
+                obj.sent_count, obj.failed_count
+            )
+        return '-'
+    sent_display.short_description = 'Sent/Failed'
+
+    def send_button(self, obj):
+        if obj.status == 'draft':
+            url = reverse('admin:contact_newslettercampaign_send', args=[obj.pk])
+            return format_html(
+                '<a class="button" href="{}" style="background-color: #ea580c; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;">Send Now</a>',
+                url
+            )
+        elif obj.status == 'sent':
+            return format_html('<span style="color: green;">✓ Sent</span>')
+        elif obj.status == 'sending':
+            return format_html('<span style="color: orange;">⏳ Sending...</span>')
+        return '-'
+    send_button.short_description = 'Action'
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('<int:campaign_id>/send/', self.admin_site.admin_view(self.send_campaign), name='contact_newslettercampaign_send'),
+        ]
+        return custom_urls + urls
+
+    def send_campaign(self, request, campaign_id):
+        from django.core.mail import send_mail
+        from django.template.loader import render_to_string
+        from django.conf import settings
+        from django.utils import timezone
+
+        campaign = NewsletterCampaign.objects.get(pk=campaign_id)
+
+        if campaign.status != 'draft':
+            messages.error(request, 'This campaign has already been sent or is currently sending.')
+            return redirect('admin:contact_newslettercampaign_changelist')
+
+        # Get active subscribers
+        subscribers = Newsletter.objects.filter(is_active=True, is_confirmed=True)
+        campaign.recipients_count = subscribers.count()
+        campaign.status = 'sending'
+        campaign.save()
+
+        sent_count = 0
+        failed_count = 0
+
+        for subscriber in subscribers:
+            try:
+                # Render email content
+                html_content = render_to_string('emails/newsletter_campaign.html', {
+                    'name': subscriber.name,
+                    'content': campaign.content,
+                    'subject': campaign.subject,
+                    'preview_text': campaign.preview_text,
+                    'unsubscribe_url': f"{settings.FRONTEND_URL}/newsletter/unsubscribe/{subscriber.unsubscribe_token}/",
+                    'website_url': settings.FRONTEND_URL,
+                })
+
+                send_mail(
+                    subject=campaign.subject,
+                    message='',  # Plain text fallback
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[subscriber.email],
+                    html_message=html_content,
+                    fail_silently=False,
+                )
+                sent_count += 1
+
+                # Update subscriber stats
+                subscriber.emails_sent += 1
+                subscriber.last_email_sent_at = timezone.now()
+                subscriber.save(update_fields=['emails_sent', 'last_email_sent_at'])
+
+            except Exception as e:
+                failed_count += 1
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Failed to send to {subscriber.email}: {e}")
+
+        # Update campaign stats
+        campaign.sent_count = sent_count
+        campaign.failed_count = failed_count
+        campaign.status = 'sent'
+        campaign.sent_at = timezone.now()
+        campaign.save()
+
+        messages.success(request, f'Campaign sent successfully! {sent_count} emails sent, {failed_count} failed.')
+        return redirect('admin:contact_newslettercampaign_changelist')
+
+    def save_model(self, request, obj, form, change):
+        if not change:  # New campaign
+            obj.created_by = request.user
+        super().save_model(request, obj, form, change)
