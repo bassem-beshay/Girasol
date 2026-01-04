@@ -1,57 +1,34 @@
 {% extends "emails/base_email.html" %}
 
-{% block title %}Confirm Your Subscription - Girasol Tours{% endblock %}
-
-{% block header_icon %}
-<div style="width: 70px; height: 70px; background-color: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 20px auto; line-height: 70px;">
-    <span style="font-size: 32px;">&#9993;</span>
-</div>
-{% endblock %}
-
-{% block header_title %}Confirm Your Email{% endblock %}
-{% block header_subtitle %}Just one more step to join our community{% endblock %}
+{% block title %}Confirm Subscription{% endblock %}
+{% block header_subtitle %}Confirm your email{% endblock %}
 
 {% block content %}
-<h2 style="color: #1f2937; margin: 0 0 20px 0; font-size: 22px; font-weight: 600;">
-    Hello {{ name|default:"there" }}! &#128075;
-</h2>
-
-<p style="color: #4b5563; font-size: 15px; line-height: 1.7; margin: 0 0 20px 0;">
-    Thank you for subscribing to the <strong>Girasol Tours</strong> newsletter! We're excited to have you join our community of travel enthusiasts.
+<p style="color: #333; font-size: 14px; margin: 0 0 15px 0;">
+    Hello {{ name|default:"there" }},
 </p>
 
-<p style="color: #4b5563; font-size: 15px; line-height: 1.7; margin: 0 0 30px 0;">
-    Please click the button below to confirm your email address and start receiving exclusive travel deals, insider tips, and updates about Egypt's most incredible destinations.
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 20px 0;">
+    Thank you for subscribing to Girasol Tours newsletter. Please confirm your email to receive travel updates and exclusive offers.
 </p>
 
-<!-- CTA Button -->
-<table role="presentation" style="margin: 0 auto 30px auto;">
+<table role="presentation" style="margin: 0 auto 20px auto;">
     <tr>
-        <td style="border-radius: 10px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);">
-            <a href="{{ confirm_url }}" style="display: inline-block; padding: 16px 45px; font-size: 16px; font-weight: 600; color: #ffffff; text-decoration: none; border-radius: 10px;">
-                &#10003; Confirm Subscription
+        <td style="background-color: #ea580c; border-radius: 5px;">
+            <a href="{{ confirm_url }}" style="display: inline-block; padding: 12px 30px; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: bold;">
+                Confirm Email
             </a>
         </td>
     </tr>
 </table>
 
-<!-- Info Box -->
-<table role="presentation" style="width: 100%; background-color: #fef3c7; border-radius: 10px; border-left: 4px solid #f59e0b;">
-    <tr>
-        <td style="padding: 15px 20px;">
-            <p style="color: #92400e; font-size: 13px; margin: 0; line-height: 1.5;">
-                <strong>&#128338; Note:</strong> This confirmation link will expire in 7 days. If you didn't request this subscription, you can safely ignore this email.
-            </p>
-        </td>
-    </tr>
-</table>
-
-<p style="color: #9ca3af; font-size: 12px; line-height: 1.6; margin: 25px 0 0 0;">
-    If the button doesn't work, copy and paste this link into your browser:<br>
-    <a href="{{ confirm_url }}" style="color: #f97316; word-break: break-all;">{{ confirm_url }}</a>
+<p style="color: #888; font-size: 11px; margin: 0;">
+    This link expires in 7 days. If you did not subscribe, please ignore this email.
 </p>
 {% endblock %}
 
 {% block footer_links %}
-<a href="{{ website_url|default:'http://50.6.250.81:3000' }}" style="color: rgba(255,255,255,0.5); text-decoration: underline;">Visit Website</a>
+<p style="margin: 10px 0 0 0;">
+    <a href="{{ website_url|default:'http://50.6.250.81:3000' }}" style="color: #ea580c; font-size: 11px; text-decoration: none;">Visit Website</a>
+</p>
 {% endblock %}

@@ -1,83 +1,35 @@
 {% extends "emails/base_email.html" %}
 
 {% block title %}Welcome to Girasol Tours{% endblock %}
-
-{% block header_icon %}
-<div style="width: 70px; height: 70px; background-color: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 20px auto; line-height: 70px;">
-    <span style="font-size: 32px;">&#127881;</span>
-</div>
-{% endblock %}
-
-{% block header_title %}Welcome Aboard!{% endblock %}
-{% block header_subtitle %}Your Egyptian Adventure Awaits{% endblock %}
+{% block header_subtitle %}Welcome aboard{% endblock %}
 
 {% block content %}
-<h2 style="color: #1f2937; margin: 0 0 20px 0; font-size: 22px; font-weight: 600;">
-    Hi {{ name|default:"there" }}! &#128075;
-</h2>
-
-<p style="color: #4b5563; font-size: 15px; line-height: 1.7; margin: 0 0 25px 0;">
-    Thank you for confirming your subscription! You're now part of our exclusive community of travelers who share a passion for discovering <strong>Egypt's timeless wonders</strong>.
+<p style="color: #333; font-size: 14px; margin: 0 0 15px 0;">
+    Hi {{ name|default:"there" }},
 </p>
 
-<!-- What to Expect Section -->
-<table role="presentation" style="width: 100%; background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-radius: 12px; margin-bottom: 30px;">
-    <tr>
-        <td style="padding: 25px;">
-            <h3 style="color: #c2410c; font-size: 16px; margin: 0 0 20px 0; font-weight: 600;">
-                &#127775; What You'll Receive:
-            </h3>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 15px 0;">
+    Welcome to Girasol Tours! You are now subscribed to receive our latest travel updates, exclusive offers, and tips for exploring Egypt.
+</p>
 
-            <table role="presentation" style="width: 100%;">
-                <tr>
-                    <td style="padding: 8px 0; vertical-align: top; width: 30px;">
-                        <span style="color: #f97316; font-size: 16px;">&#10004;</span>
-                    </td>
-                    <td style="padding: 8px 0; color: #4b5563; font-size: 14px; line-height: 1.5;">
-                        <strong>Exclusive Deals</strong> - Early access to special offers and discounts
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px 0; vertical-align: top; width: 30px;">
-                        <span style="color: #f97316; font-size: 16px;">&#10004;</span>
-                    </td>
-                    <td style="padding: 8px 0; color: #4b5563; font-size: 14px; line-height: 1.5;">
-                        <strong>New Tours</strong> - Be the first to know about our latest experiences
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px 0; vertical-align: top; width: 30px;">
-                        <span style="color: #f97316; font-size: 16px;">&#10004;</span>
-                    </td>
-                    <td style="padding: 8px 0; color: #4b5563; font-size: 14px; line-height: 1.5;">
-                        <strong>Travel Tips</strong> - Insider advice for your Egyptian journey
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px 0; vertical-align: top; width: 30px;">
-                        <span style="color: #f97316; font-size: 16px;">&#10004;</span>
-                    </td>
-                    <td style="padding: 8px 0; color: #4b5563; font-size: 14px; line-height: 1.5;">
-                        <strong>Hidden Gems</strong> - Discover secret spots only locals know
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 20px 0;">
+    <strong>What you will receive:</strong>
+</p>
 
-<!-- CTA Button -->
-<table role="presentation" style="margin: 0 auto 25px auto;">
+<ul style="color: #555; font-size: 13px; line-height: 1.8; margin: 0 0 20px 0; padding-left: 20px;">
+    <li>Special offers and discounts</li>
+    <li>New tour announcements</li>
+    <li>Travel tips and guides</li>
+    <li>Egypt destination highlights</li>
+</ul>
+
+<table role="presentation" style="margin: 0 auto 15px auto;">
     <tr>
-        <td style="border-radius: 10px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);">
-            <a href="{{ tours_url }}" style="display: inline-block; padding: 16px 45px; font-size: 16px; font-weight: 600; color: #ffffff; text-decoration: none; border-radius: 10px;">
-                &#128205; Explore Our Tours
+        <td style="background-color: #ea580c; border-radius: 5px;">
+            <a href="{{ tours_url }}" style="display: inline-block; padding: 12px 30px; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: bold;">
+                Explore Tours
             </a>
         </td>
     </tr>
 </table>
-
-<p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0; text-align: center;">
-    Ready to start your adventure? Browse our tours and find your perfect Egyptian experience.
-</p>
 {% endblock %}

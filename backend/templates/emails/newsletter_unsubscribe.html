@@ -1,49 +1,38 @@
 {% extends "emails/base_email.html" %}
 
-{% block title %}Unsubscribed - Girasol Tours{% endblock %}
-
-{% block header_icon %}
-<div style="width: 70px; height: 70px; background-color: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 20px auto; line-height: 70px;">
-    <span style="font-size: 32px;">&#128546;</span>
-</div>
-{% endblock %}
-
-{% block header_title %}We're Sad to See You Go{% endblock %}
-{% block header_subtitle %}You've been successfully unsubscribed{% endblock %}
+{% block title %}Unsubscribed{% endblock %}
+{% block header_subtitle %}Unsubscribed{% endblock %}
 
 {% block content %}
-<h2 style="color: #1f2937; margin: 0 0 20px 0; font-size: 22px; font-weight: 600;">
-    Goodbye {{ name|default:"there" }}! &#128075;
-</h2>
-
-<p style="color: #4b5563; font-size: 15px; line-height: 1.7; margin: 0 0 20px 0;">
-    You have been successfully unsubscribed from the <strong>Girasol Tours</strong> newsletter. You will no longer receive our travel updates and special offers.
+<p style="color: #333; font-size: 14px; margin: 0 0 15px 0;">
+    Hi {{ name|default:"there" }},
 </p>
 
-<p style="color: #4b5563; font-size: 15px; line-height: 1.7; margin: 0 0 30px 0;">
-    We hope you enjoyed being part of our community. If you ever want to explore Egypt's wonders again, we'll be here waiting for you!
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 15px 0;">
+    You have been unsubscribed from Girasol Tours newsletter. You will no longer receive emails from us.
 </p>
 
-<!-- Info Box -->
-<table role="presentation" style="width: 100%; background-color: #f3f4f6; border-radius: 12px; margin-bottom: 25px;">
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 20px 0;">
+    Changed your mind? You can subscribe again anytime.
+</p>
+
+<table role="presentation" style="margin: 0 auto 15px auto;">
     <tr>
-        <td style="padding: 25px; text-align: center;">
-            <p style="color: #6b7280; font-size: 14px; margin: 0 0 15px 0;">
-                Changed your mind? You can always resubscribe:
-            </p>
-            <a href="{{ resubscribe_url }}" style="display: inline-block; padding: 12px 30px; font-size: 14px; font-weight: 600; color: #f97316; text-decoration: none; border: 2px solid #f97316; border-radius: 8px;">
-                &#10140; Subscribe Again
+        <td style="border: 1px solid #ea580c; border-radius: 5px;">
+            <a href="{{ resubscribe_url }}" style="display: inline-block; padding: 10px 25px; color: #ea580c; text-decoration: none; font-size: 13px;">
+                Subscribe Again
             </a>
         </td>
     </tr>
 </table>
 
-<p style="color: #9ca3af; font-size: 13px; line-height: 1.6; margin: 0; text-align: center;">
-    Thank you for being part of our journey.<br>
-    We wish you safe travels wherever your adventures take you!
+<p style="color: #888; font-size: 11px; margin: 0; text-align: center;">
+    Thank you for being part of our community.
 </p>
 {% endblock %}
 
 {% block footer_links %}
-<a href="{{ website_url|default:'http://50.6.250.81:3000' }}" style="color: rgba(255,255,255,0.5); text-decoration: underline;">Visit Website</a>
+<p style="margin: 10px 0 0 0;">
+    <a href="{{ website_url|default:'http://50.6.250.81:3000' }}" style="color: #ea580c; font-size: 11px; text-decoration: none;">Visit Website</a>
+</p>
 {% endblock %}
