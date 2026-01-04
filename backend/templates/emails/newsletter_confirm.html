@@ -1,80 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirm Your Subscription</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
-    <table role="presentation" style="width: 100%; border-collapse: collapse;">
-        <tr>
-            <td align="center" style="padding: 40px 0;">
-                <table role="presentation" style="width: 600px; max-width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <!-- Header -->
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #c97b2c 0%, #a56321 100%); padding: 40px 30px; text-align: center;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 700;">
-                                Girasol Tours
-                            </h1>
-                            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 14px;">
-                                Discover Egypt's Wonders
-                            </p>
-                        </td>
-                    </tr>
+{% extends "emails/base_email.html" %}
 
-                    <!-- Content -->
-                    <tr>
-                        <td style="padding: 40px 30px;">
-                            <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
-                                Confirm Your Subscription
-                            </h2>
+{% block title %}Confirm Your Subscription - Girasol Tours{% endblock %}
 
-                            <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                                Hi {{ name }},
-                            </p>
+{% block header_icon %}
+<div style="width: 70px; height: 70px; background-color: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 20px auto; line-height: 70px;">
+    <span style="font-size: 32px;">&#9993;</span>
+</div>
+{% endblock %}
 
-                            <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
-                                Thank you for subscribing to the Girasol Tours newsletter! Please click the button below to confirm your email address and start receiving exclusive travel deals, tips, and updates about Egypt's most incredible destinations.
-                            </p>
+{% block header_title %}Confirm Your Email{% endblock %}
+{% block header_subtitle %}Just one more step to join our community{% endblock %}
 
-                            <!-- CTA Button -->
-                            <table role="presentation" style="margin: 0 auto;">
-                                <tr>
-                                    <td style="border-radius: 8px; background: linear-gradient(135deg, #c97b2c 0%, #a56321 100%);">
-                                        <a href="{{ confirm_url }}" style="display: inline-block; padding: 16px 40px; font-size: 16px; font-weight: 600; color: #ffffff; text-decoration: none; border-radius: 8px;">
-                                            Confirm Subscription
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
+{% block content %}
+<h2 style="color: #1f2937; margin: 0 0 20px 0; font-size: 22px; font-weight: 600;">
+    Hello {{ name|default:"there" }}! &#128075;
+</h2>
 
-                            <p style="color: #888888; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0; text-align: center;">
-                                This link will expire in 7 days.
-                            </p>
+<p style="color: #4b5563; font-size: 15px; line-height: 1.7; margin: 0 0 20px 0;">
+    Thank you for subscribing to the <strong>Girasol Tours</strong> newsletter! We're excited to have you join our community of travel enthusiasts.
+</p>
 
-                            <p style="color: #888888; font-size: 14px; line-height: 1.6; margin: 20px 0 0 0;">
-                                If the button doesn't work, copy and paste this link into your browser:
-                            </p>
-                            <p style="color: #c97b2c; font-size: 12px; word-break: break-all; margin: 10px 0 0 0;">
-                                {{ confirm_url }}
-                            </p>
-                        </td>
-                    </tr>
+<p style="color: #4b5563; font-size: 15px; line-height: 1.7; margin: 0 0 30px 0;">
+    Please click the button below to confirm your email address and start receiving exclusive travel deals, insider tips, and updates about Egypt's most incredible destinations.
+</p>
 
-                    <!-- Footer -->
-                    <tr>
-                        <td style="background-color: #f8f8f8; padding: 30px; text-align: center; border-top: 1px solid #eeeeee;">
-                            <p style="color: #888888; font-size: 14px; margin: 0 0 10px 0;">
-                                {{ company_name }}
-                            </p>
-                            <p style="color: #aaaaaa; font-size: 12px; margin: 0;">
-                                If you didn't request this subscription, you can safely ignore this email.
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
+<!-- CTA Button -->
+<table role="presentation" style="margin: 0 auto 30px auto;">
+    <tr>
+        <td style="border-radius: 10px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);">
+            <a href="{{ confirm_url }}" style="display: inline-block; padding: 16px 45px; font-size: 16px; font-weight: 600; color: #ffffff; text-decoration: none; border-radius: 10px;">
+                &#10003; Confirm Subscription
+            </a>
+        </td>
+    </tr>
+</table>
+
+<!-- Info Box -->
+<table role="presentation" style="width: 100%; background-color: #fef3c7; border-radius: 10px; border-left: 4px solid #f59e0b;">
+    <tr>
+        <td style="padding: 15px 20px;">
+            <p style="color: #92400e; font-size: 13px; margin: 0; line-height: 1.5;">
+                <strong>&#128338; Note:</strong> This confirmation link will expire in 7 days. If you didn't request this subscription, you can safely ignore this email.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<p style="color: #9ca3af; font-size: 12px; line-height: 1.6; margin: 25px 0 0 0;">
+    If the button doesn't work, copy and paste this link into your browser:<br>
+    <a href="{{ confirm_url }}" style="color: #f97316; word-break: break-all;">{{ confirm_url }}</a>
+</p>
+{% endblock %}
+
+{% block footer_links %}
+<a href="{{ website_url|default:'http://50.6.250.81:3000' }}" style="color: rgba(255,255,255,0.5); text-decoration: underline;">Visit Website</a>
+{% endblock %}
