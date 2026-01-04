@@ -209,17 +209,17 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Memberships - Full Width Row */}
+          {/* Memberships - Centered Layout */}
           <div className="mt-12 pt-10 border-t border-white/10">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col items-center gap-6">
               <p className="text-white/70 text-base uppercase tracking-wider font-medium">
                 Member of
               </p>
-              <div className="flex items-center gap-6 lg:gap-8">
-                {memberships.map((member) => (
+              <div className="flex items-center justify-center gap-8 lg:gap-12 flex-wrap">
+                {memberships.map((member, index) => (
                   <div
                     key={member.name}
-                    className="hover:scale-110 transition-transform duration-300"
+                    className="flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300"
                     title={member.name}
                   >
                     <Image
@@ -227,8 +227,13 @@ export function Footer() {
                       alt={member.name}
                       width={150}
                       height={75}
-                      className="h-14 lg:h-16 w-auto object-contain"
+                      className="h-16 lg:h-20 w-auto object-contain"
                     />
+                    {index === 0 && (
+                      <span className="text-white/60 text-sm">
+                        Licence number: 2208 A
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>
