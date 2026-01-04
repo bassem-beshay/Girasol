@@ -26,6 +26,7 @@ class InquiryCreateView(generics.CreateAPIView):
     """Submit a contact inquiry."""
     serializer_class = InquirySerializer
     permission_classes = [permissions.AllowAny]
+    authentication_classes = []  # Disable auth/CSRF for public endpoint
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -48,11 +49,12 @@ class NewsletterSubscribeView(generics.CreateAPIView):
     Flow:
     1. User submits email
     2. Email saved with is_confirmed=False
-    3. Confirmation email sent via Celery
+    3. Confirmation email sent
     4. User clicks link to confirm
     """
     serializer_class = NewsletterSerializer
     permission_classes = [permissions.AllowAny]
+    authentication_classes = []  # Disable auth/CSRF for public endpoint
     throttle_classes = [NewsletterThrottle]
 
     def create(self, request, *args, **kwargs):
@@ -121,6 +123,7 @@ class NewsletterConfirmView(APIView):
     GET /api/contact/newsletter/confirm/<token>/
     """
     permission_classes = [permissions.AllowAny]
+    authentication_classes = []
 
     def get(self, request, token):
         try:
@@ -166,6 +169,7 @@ class NewsletterUnsubscribeView(APIView):
     2. GET with token (one-click from email)
     """
     permission_classes = [permissions.AllowAny]
+    authentication_classes = []
 
     def get(self, request, token=None):
         """One-click unsubscribe via token in email."""
@@ -249,6 +253,7 @@ class NewsletterUnsubscribeView(APIView):
 class NewsletterStatusView(APIView):
     """Check newsletter subscription status."""
     permission_classes = [permissions.AllowAny]
+    authentication_classes = []
 
     def get(self, request):
         email = request.query_params.get('email', '').lower().strip()
