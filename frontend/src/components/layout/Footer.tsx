@@ -27,10 +27,10 @@ const socialLinks = [
 ];
 
 const memberships = [
-  { name: 'Ministry of Tourism & Antiquities', logo: '/images/memberships/ministry-tourism.png' },
-  { name: 'Girassol Group', logo: '/images/memberships/girassol-group.png' },
-  { name: 'IATA', logo: '/images/memberships/iata.png' },
-  { name: 'Egyptian Travel Agents Association', logo: '/images/memberships/etaa.png' },
+  { name: 'Ministry of Tourism & Antiquities', logo: '/images/memberships/ministry-tourism.png', size: 'h-16 lg:h-20' },
+  { name: 'Girassol Group', logo: '/images/memberships/girassol-group.png', size: 'h-16 lg:h-20' },
+  { name: 'IATA', logo: '/images/memberships/iata.png', size: 'h-24 lg:h-32' },
+  { name: 'Egyptian Travel Agents Association', logo: '/images/memberships/etaa.png', size: 'h-16 lg:h-20' },
 ];
 
 export function Footer() {
@@ -225,9 +225,9 @@ export function Footer() {
                     <Image
                       src={member.logo}
                       alt={member.name}
-                      width={180}
-                      height={90}
-                      className="h-16 lg:h-20 w-auto object-contain"
+                      width={200}
+                      height={100}
+                      className={`${member.size} w-auto object-contain`}
                     />
                     {index === 0 && (
                       <span className="text-orange-300 text-xs font-medium">
