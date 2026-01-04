@@ -238,8 +238,8 @@ CELERY_TIMEZONE = TIME_ZONE
 # Cache Configuration
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': config('REDIS_URL', default='redis://localhost:6379/1'),
+        'BACKEND': config('CACHE_BACKEND', default='django.core.cache.backends.locmem.LocMemCache'),
+        'LOCATION': config('CACHE_LOCATION', default='unique-snowflake'),
     }
 }
 
