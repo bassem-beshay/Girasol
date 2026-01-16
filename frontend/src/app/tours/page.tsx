@@ -150,7 +150,7 @@ function ToursContent() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className={`relative h-48 sm:h-56 md:h-64 ${
+      <section className={`relative h-[50vh] min-h-[400px] ${
         isEarlyBookingFilter
           ? 'bg-gradient-to-r from-orange-500 to-amber-600'
           : isMultiDestFilter
