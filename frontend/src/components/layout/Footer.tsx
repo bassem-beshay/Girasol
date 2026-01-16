@@ -33,17 +33,17 @@ const memberships = [
     licence: '2208 A'
   },
   {
-    name: 'Girassol Group',
+    name: 'IATA',
     logo: '/images/memberships/girassol-group.png',
     licence: null
   },
   {
-    name: 'IATA',
+    name: 'Egyptian Travel Agents Association',
     logo: '/images/memberships/new-logo.png',
     licence: null
   },
   {
-    name: 'Egyptian Travel Agents Association',
+    name: 'Girassol Group',
     logo: '/images/memberships/etaa.png',
     licence: null
   },
