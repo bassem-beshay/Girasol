@@ -162,8 +162,8 @@ export default function BlogPostPage() {
           <div className="w-full h-full bg-gradient-to-br from-primary-500 to-primary-700" />
         )}
 
-        <div className="absolute inset-0 z-20 flex items-end">
-          <div className="container-custom pb-12">
+        <div className="absolute inset-0 z-20 flex items-center">
+          <div className="container-custom">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
