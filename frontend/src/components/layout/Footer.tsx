@@ -118,20 +118,20 @@ export function Footer() {
               {memberships.map((member) => (
                 <div
                   key={member.name}
-                  className="bg-white/10 rounded-lg p-3 flex flex-col items-center justify-center"
+                  className="bg-white/10 rounded-lg p-4 flex flex-col items-center justify-center min-h-[120px]"
                 >
                   <Image
                     src={member.logo}
                     alt={member.name}
-                    width={80}
-                    height={40}
-                    className="h-8 w-auto object-contain mb-2"
+                    width={120}
+                    height={60}
+                    className="h-14 w-auto object-contain mb-2"
                   />
-                  <span className="text-white/70 text-[10px] text-center leading-tight">
+                  <span className="text-white/80 text-[11px] text-center leading-tight font-medium">
                     {member.name}
                   </span>
                   {member.licence && (
-                    <span className="text-orange-300 text-[9px] mt-1">
+                    <span className="text-orange-300 text-[10px] mt-1 font-medium">
                       Lic: {member.licence}
                     </span>
                   )}
@@ -248,26 +248,26 @@ export function Footer() {
               <p className="text-white text-lg uppercase tracking-widest font-semibold">
                 Member of
               </p>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-5xl">
                 {memberships.map((member) => (
                   <div
                     key={member.name}
-                    className="group bg-white/5 hover:bg-white/10 rounded-xl p-6 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105"
+                    className="group bg-white/5 hover:bg-white/10 rounded-xl p-6 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 min-h-[180px]"
                   >
-                    <div className="h-16 flex items-center justify-center mb-4">
+                    <div className="h-24 flex items-center justify-center mb-4">
                       <Image
                         src={member.logo}
                         alt={member.name}
-                        width={120}
-                        height={60}
-                        className="max-h-14 w-auto object-contain group-hover:brightness-110 transition-all"
+                        width={180}
+                        height={90}
+                        className="max-h-24 w-auto object-contain group-hover:brightness-110 transition-all"
                       />
                     </div>
-                    <span className="text-white/80 text-xs text-center font-medium leading-tight">
+                    <span className="text-white/90 text-sm text-center font-medium leading-tight">
                       {member.name}
                     </span>
                     {member.licence && (
-                      <span className="text-orange-300 text-xs mt-2 font-semibold">
+                      <span className="text-orange-300 text-sm mt-2 font-semibold">
                         Licence: {member.licence}
                       </span>
                     )}
