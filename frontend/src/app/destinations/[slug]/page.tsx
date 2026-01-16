@@ -118,7 +118,7 @@ export default function DestinationDetailPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[500px]">
+      <section className="relative h-[75vh] min-h-[600px]">
         <div className="absolute inset-0 bg-black/40 z-10" />
         {destination.featured_image ? (
           <Image
