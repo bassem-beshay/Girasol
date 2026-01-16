@@ -27,10 +27,26 @@ const socialLinks = [
 ];
 
 const memberships = [
-  { name: 'Ministry of Tourism & Antiquities', logo: '/images/memberships/ministry-tourism.png', size: 'h-16 lg:h-20' },
-  { name: 'Girassol Group', logo: '/images/memberships/girassol-group.png', size: 'h-16 lg:h-20' },
-  { name: 'IATA', logo: '/images/memberships/new-logo.png', size: 'h-16 lg:h-20 w-48 lg:w-64' },
-  { name: 'Egyptian Travel Agents Association', logo: '/images/memberships/etaa.png', size: 'h-16 lg:h-20' },
+  {
+    name: 'Ministry of Tourism & Antiquities',
+    logo: '/images/memberships/ministry-tourism.png',
+    licence: '2208 A'
+  },
+  {
+    name: 'Girassol Group',
+    logo: '/images/memberships/girassol-group.png',
+    licence: null
+  },
+  {
+    name: 'IATA',
+    logo: '/images/memberships/new-logo.png',
+    licence: null
+  },
+  {
+    name: 'Egyptian Travel Agents Association',
+    logo: '/images/memberships/etaa.png',
+    licence: null
+  },
 ];
 
 export function Footer() {
@@ -93,18 +109,35 @@ export function Footer() {
             </a>
           </div>
 
-          {/* Memberships - Small */}
-          <div className="flex justify-center items-center gap-3 mb-4">
-            {memberships.map((member) => (
-              <Image
-                key={member.name}
-                src={member.logo}
-                alt={member.name}
-                width={100}
-                height={50}
-                className="h-10 w-auto object-contain opacity-80"
-              />
-            ))}
+          {/* Memberships - Mobile */}
+          <div className="mb-6">
+            <p className="text-white/60 text-xs uppercase tracking-wider text-center mb-4">
+              Member of
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {memberships.map((member) => (
+                <div
+                  key={member.name}
+                  className="bg-white/10 rounded-lg p-3 flex flex-col items-center justify-center"
+                >
+                  <Image
+                    src={member.logo}
+                    alt={member.name}
+                    width={80}
+                    height={40}
+                    className="h-8 w-auto object-contain mb-2"
+                  />
+                  <span className="text-white/70 text-[10px] text-center leading-tight">
+                    {member.name}
+                  </span>
+                  {member.licence && (
+                    <span className="text-orange-300 text-[9px] mt-1">
+                      Lic: {member.licence}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -211,27 +244,31 @@ export function Footer() {
 
           {/* Memberships - Centered Layout */}
           <div className="mt-12 pt-10 border-t border-white/10">
-            <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-col items-center gap-8">
               <p className="text-white text-lg uppercase tracking-widest font-semibold">
                 Member of
               </p>
-              <div className="flex items-center justify-center gap-8 lg:gap-12">
-                {memberships.map((member, index) => (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl">
+                {memberships.map((member) => (
                   <div
                     key={member.name}
-                    className="flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300"
-                    title={member.name}
+                    className="group bg-white/5 hover:bg-white/10 rounded-xl p-6 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105"
                   >
-                    <Image
-                      src={member.logo}
-                      alt={member.name}
-                      width={200}
-                      height={100}
-                      className={`${member.size} w-auto object-contain`}
-                    />
-                    {index === 0 && (
-                      <span className="text-orange-300 text-xs font-medium">
-                        Licence number: 2208 A
+                    <div className="h-16 flex items-center justify-center mb-4">
+                      <Image
+                        src={member.logo}
+                        alt={member.name}
+                        width={120}
+                        height={60}
+                        className="max-h-14 w-auto object-contain group-hover:brightness-110 transition-all"
+                      />
+                    </div>
+                    <span className="text-white/80 text-xs text-center font-medium leading-tight">
+                      {member.name}
+                    </span>
+                    {member.licence && (
+                      <span className="text-orange-300 text-xs mt-2 font-semibold">
+                        Licence: {member.licence}
                       </span>
                     )}
                   </div>
