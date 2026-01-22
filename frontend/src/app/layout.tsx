@@ -105,6 +105,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${cairo.variable}`}>
+      <head>
+        {/* Trustpilot Widget Script */}
+        <script
+          type="text/javascript"
+          src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+          async
+        />
+      </head>
       <body className="font-sans antialiased">
         <Providers>
           <div className="flex min-h-screen flex-col">
