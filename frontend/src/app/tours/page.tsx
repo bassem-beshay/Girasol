@@ -105,11 +105,11 @@ function ToursContent() {
     queryKey: ['tours', typeParam, earlyBookingParam, multiDestParam],
     queryFn: async () => {
       const params: Record<string, string> = {};
-      if (typeParam) {
-        params.tour_type = typeParam;
-      }
+      // For multi-destination, only use is_multi_destination filter (not tour_type)
       if (isMultiDestFilter) {
         params.is_multi_destination = 'true';
+      } else if (typeParam) {
+        params.tour_type = typeParam;
       }
       const response = await toursApi.getAll(params);
       return response.data;
