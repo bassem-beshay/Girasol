@@ -11,6 +11,7 @@ interface Statistic {
   id: number;
   value: string;
   label: string;
+  icon: string;
 }
 
 interface StatisticsResponse {
@@ -30,10 +31,10 @@ export function HeroSection() {
     },
   });
 
-  // Get dynamic values from API
+  // Get dynamic values from API using icon field (doesn't change with language)
   const stats = statisticsData?.results || [];
-  const travelersCount = stats.find(s => s.label.toLowerCase().includes('traveler'))?.value || '50,000+';
-  const yearsExperience = stats.find(s => s.label.toLowerCase().includes('experience') || s.label.toLowerCase().includes('years'))?.value || '25+';
+  const travelersCount = stats.find(s => s.icon === 'users')?.value || '50,000+';
+  const yearsExperience = stats.find(s => s.icon === 'clock')?.value || '25+';
 
   const trustBadges = [
     { icon: Shield, label: 'IATA Certified' },
