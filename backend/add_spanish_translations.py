@@ -179,7 +179,7 @@ def add_spanish_translations():
             # Update itinerary
             for item in translations['itinerary_es']:
                 try:
-                    itinerary = TourItinerary.objects.get(tour=tour, day=item['day'])
+                    itinerary = TourItinerary.objects.get(tour=tour, day_number=item['day'])
                     itinerary.title_es = item['title']
                     itinerary.description_es = item['description']
                     itinerary.save()
