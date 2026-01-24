@@ -6,9 +6,10 @@ import sys
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.base')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 django.setup()
 
-from tours.models import Tour, TourItinerary
+from apps.tours.models import Tour, TourItinerary
 
 TRANSLATIONS = {
     'Magic of the White Desert with Cairo and Alexandria': {
