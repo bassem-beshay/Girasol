@@ -24,21 +24,25 @@ const getFeatures = (yearsExperience: string) => [
     icon: Award,
     title: 'Experts in Egypt',
     description: `When traveling with Girasol Egypt Travel and Tours, you choose a team of professionals and experts in Egypt with over ${yearsExperience} years of experience. We care for every detail of your journey to ensure an unforgettable experience.`,
+    link: '/about/who-we-are',
   },
   {
     icon: MapPin,
     title: 'Privileges & Facilities',
     description: 'With local offices in Cairo, Luxor, Aswan, Sharm El Sheikh, Hurghada, and partners in various countries worldwide. You will receive high-quality services and on-ground support wherever you travel.',
+    link: '/about/booking',
   },
   {
     icon: Headphones,
     title: '24/7 Dedicated Support',
     description: 'We care about all your requirements, making your reservations quick and efficient. Our dedicated team is available around the clock via WhatsApp, phone, or email to serve you whenever and wherever you are.',
+    link: '/about/service-quality',
   },
   {
     icon: Heart,
     title: 'Our Working Style',
     description: 'Love and care for your needs and requests is our working style with all our clients. Our professional team realizes and advises on all your requirements with personalized attention and genuine hospitality.',
+    link: '/about/our-philosophy',
   },
 ];
 
@@ -146,7 +150,7 @@ export function WhyChooseUs() {
                     {feature.description}
                   </p>
                   <Link
-                    href="/about"
+                    href={feature.link}
                     className="inline-flex items-center gap-2 bg-primary-50 text-primary-600 font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-primary-600 hover:text-white transition-all duration-300 group/link"
                   >
                     Read More
