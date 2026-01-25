@@ -21,6 +21,8 @@ import {
   Share2,
   Sparkles,
   Timer,
+  ChevronDown,
+  HelpCircle,
 } from 'lucide-react';
 import { InquiryForm } from '@/components/tours/InquiryForm';
 
@@ -83,12 +85,54 @@ interface TourDetail {
     meals_included: string;
     accommodation: string;
   }>;
+  faqs: Array<{
+    id: number;
+    question: string;
+    answer: string;
+  }>;
   // Early Booking fields
   is_early_booking: boolean;
   early_booking_discount: number | null;
   early_booking_price: number | null;
   early_booking_badge: string | null;
   early_booking_end_date: string | null;
+}
+
+// FAQ Accordion Item Component
+function FAQItem({ question, answer, isOpen, onClick }: {
+  question: string;
+  answer: string;
+  isOpen: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden">
+      <button
+        onClick={onClick}
+        className="w-full flex items-center justify-between p-5 text-left bg-white hover:bg-gray-50 transition-colors"
+      >
+        <span className="font-medium text-gray-900 pr-4">{question}</span>
+        <ChevronDown
+          className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+      <motion.div
+        initial={false}
+        animate={{
+          height: isOpen ? 'auto' : 0,
+          opacity: isOpen ? 1 : 0,
+        }}
+        transition={{ duration: 0.2 }}
+        className="overflow-hidden"
+      >
+        <div className="p-5 pt-0 text-gray-600 leading-relaxed">
+          {answer}
+        </div>
+      </motion.div>
+    </div>
+  );
 }
 
 // Countdown Timer Component
@@ -147,6 +191,7 @@ function CountdownTimer({ endDate }: { endDate: string }) {
 export default function TourDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
   const { data: tour, isLoading, error } = useQuery<TourDetail>({
     queryKey: ['tour', slug],
@@ -398,6 +443,29 @@ export default function TourDetailPage() {
                   )}
                 </div>
               </div>
+
+              {/* FAQs */}
+              {tour.faqs && tour.faqs.length > 0 && (
+                <div className="bg-white rounded-2xl p-6 shadow-md">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                      <HelpCircle className="w-6 h-6 text-primary-600" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
+                  </div>
+                  <div className="space-y-3">
+                    {tour.faqs.map((faq, index) => (
+                      <FAQItem
+                        key={faq.id}
+                        question={faq.question}
+                        answer={faq.answer}
+                        isOpen={openFAQ === index}
+                        onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Right Column - Booking Card */}
