@@ -25,6 +25,10 @@ import {
   HelpCircle,
   DollarSign,
   User,
+  CalendarDays,
+  Plane,
+  CheckCircle,
+  AlertCircle,
 } from 'lucide-react';
 import { InquiryForm } from '@/components/tours/InquiryForm';
 
@@ -99,6 +103,15 @@ interface TourDetail {
     end_date: string;
     price_per_person: string;
     single_supplement: string;
+  }>;
+  departures: Array<{
+    id: number;
+    departure_date: string;
+    return_date: string;
+    price: string;
+    available_spots: number;
+    is_guaranteed: boolean;
+    status: string;
   }>;
   // Early Booking fields
   is_early_booking: boolean;
@@ -518,6 +531,81 @@ export default function TourDetailPage() {
                       <strong>Note:</strong> Prices are per person based on double occupancy. Single supplement applies for solo travelers requiring a private room.
                     </p>
                   </div>
+                </div>
+              )}
+
+              {/* Upcoming Departures */}
+              {tour.departures && tour.departures.length > 0 && (
+                <div className="bg-white rounded-2xl p-6 shadow-md">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <CalendarDays className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900">Upcoming Departures</h2>
+                      <p className="text-sm text-gray-500">Choose your preferred travel date</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {tour.departures.slice(0, 8).map((departure) => (
+                      <div
+                        key={departure.id}
+                        className={`flex flex-wrap items-center justify-between p-4 rounded-xl border-2 transition-colors ${
+                          departure.status === 'available'
+                            ? 'border-gray-200 hover:border-primary-300 bg-white'
+                            : 'border-orange-200 bg-orange-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-gray-900">
+                              {new Date(departure.departure_date).getDate()}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {new Date(departure.departure_date).toLocaleDateString('en-US', { month: 'short' })}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <Plane className="w-4 h-4 text-gray-400" />
+                              <span className="font-medium text-gray-900">
+                                {new Date(departure.departure_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
+                              <span>Returns: {new Date(departure.return_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                              {departure.is_guaranteed && (
+                                <span className="flex items-center gap-1 text-green-600">
+                                  <CheckCircle className="w-4 h-4" />
+                                  Guaranteed
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4 mt-3 sm:mt-0">
+                          <div className="text-right">
+                            <div className="text-xl font-bold text-primary-600">
+                              ${parseFloat(departure.price).toFixed(0)}
+                            </div>
+                            <div className={`text-sm flex items-center gap-1 ${
+                              departure.available_spots <= 5 ? 'text-orange-600' : 'text-gray-500'
+                            }`}>
+                              {departure.available_spots <= 5 && <AlertCircle className="w-4 h-4" />}
+                              {departure.available_spots} spots left
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {tour.departures.length > 8 && (
+                    <div className="mt-4 text-center">
+                      <p className="text-sm text-gray-500">
+                        + {tour.departures.length - 8} more departure dates available
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 
