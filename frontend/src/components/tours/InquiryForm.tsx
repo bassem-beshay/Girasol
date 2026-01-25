@@ -14,13 +14,73 @@ interface InquiryFormProps {
 
 const nationalities = [
   'Select Nationality',
-  'American', 'British', 'Canadian', 'Australian', 'German', 'French', 'Italian', 'Spanish',
-  'Dutch', 'Belgian', 'Swiss', 'Austrian', 'Swedish', 'Norwegian', 'Danish', 'Finnish',
-  'Russian', 'Chinese', 'Japanese', 'Korean', 'Indian', 'Brazilian', 'Mexican', 'Argentinian',
-  'Saudi', 'Emirati', 'Kuwaiti', 'Qatari', 'Egyptian', 'Jordanian', 'Lebanese', 'Moroccan',
-  'Turkish', 'Greek', 'Polish', 'Czech', 'Hungarian', 'Romanian', 'Bulgarian',
-  'South African', 'Nigerian', 'Kenyan', 'Malaysian', 'Singaporean', 'Thai', 'Vietnamese',
-  'Indonesian', 'Filipino', 'Pakistani', 'Bangladeshi', 'Sri Lankan', 'Other'
+  // A
+  'Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguan', 'Argentine',
+  'Armenian', 'Australian', 'Austrian', 'Azerbaijani',
+  // B
+  'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Belarusian', 'Belgian', 'Belizean',
+  'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Botswanan', 'Brazilian', 'British',
+  'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian',
+  // C
+  'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian',
+  'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Costa Rican', 'Croatian',
+  'Cuban', 'Cypriot', 'Czech',
+  // D
+  'Danish', 'Djiboutian', 'Dominican', 'Dutch',
+  // E
+  'East Timorese', 'Ecuadorian', 'Egyptian', 'Emirati', 'Equatorial Guinean', 'Eritrean',
+  'Estonian', 'Ethiopian',
+  // F
+  'Fijian', 'Filipino', 'Finnish', 'French',
+  // G
+  'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan',
+  'Guinean', 'Guyanese',
+  // H
+  'Haitian', 'Honduran', 'Hungarian',
+  // I
+  'Icelandic', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian',
+  'Ivorian',
+  // J
+  'Jamaican', 'Japanese', 'Jordanian',
+  // K
+  'Kazakh', 'Kenyan', 'Kiribati', 'Korean', 'Kosovar', 'Kuwaiti', 'Kyrgyz',
+  // L
+  'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian',
+  'Luxembourgish',
+  // M
+  'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivian', 'Malian', 'Maltese',
+  'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan',
+  'Monacan', 'Mongolian', 'Montenegrin', 'Moroccan', 'Mozambican',
+  // N
+  'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan', 'Nigerian', 'Nigerien',
+  'Norwegian',
+  // O
+  'Omani',
+  // P
+  'Pakistani', 'Palauan', 'Palestinian', 'Panamanian', 'Papua New Guinean', 'Paraguayan',
+  'Peruvian', 'Polish', 'Portuguese',
+  // Q
+  'Qatari',
+  // R
+  'Romanian', 'Russian', 'Rwandan',
+  // S
+  'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi',
+  'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovak',
+  'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Sudanese', 'Spanish',
+  'Sri Lankan', 'Sudanese', 'Surinamese', 'Swazi', 'Swedish', 'Swiss', 'Syrian',
+  // T
+  'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian', 'Tunisian',
+  'Turkish', 'Turkmen', 'Tuvaluan',
+  // U
+  'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbek',
+  // V
+  'Vanuatuan', 'Vatican', 'Venezuelan', 'Vietnamese',
+  // Y
+  'Yemeni',
+  // Z
+  'Zambian', 'Zimbabwean',
+  // Other
+  'Other'
 ];
 
 export function InquiryForm({ tourName, tourSlug, tourPrice, tourDuration }: InquiryFormProps) {
