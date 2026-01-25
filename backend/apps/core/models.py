@@ -63,8 +63,14 @@ class PublishableModel(models.Model):
 class SEOModel(models.Model):
     """Abstract model for SEO fields."""
     meta_title = models.CharField(max_length=70, blank=True)
+    meta_title_es = models.CharField('Meta Title (Spanish)', max_length=70, blank=True)
+    meta_title_pt = models.CharField('Meta Title (Portuguese)', max_length=70, blank=True)
     meta_description = models.CharField(max_length=160, blank=True)
+    meta_description_es = models.CharField('Meta Description (Spanish)', max_length=160, blank=True)
+    meta_description_pt = models.CharField('Meta Description (Portuguese)', max_length=160, blank=True)
     meta_keywords = models.CharField(max_length=255, blank=True)
+    meta_keywords_es = models.CharField('Meta Keywords (Spanish)', max_length=255, blank=True)
+    meta_keywords_pt = models.CharField('Meta Keywords (Portuguese)', max_length=255, blank=True)
 
     class Meta:
         abstract = True

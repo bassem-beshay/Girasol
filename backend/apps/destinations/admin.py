@@ -32,8 +32,21 @@ class DestinationAdmin(admin.ModelAdmin):
         ('Content', {'fields': ('description', 'description_es', 'description_pt')}),
         ('Media', {'fields': ('featured_image', 'banner_image', 'video_url')}),
         ('Location', {'fields': ('country', 'region', 'latitude', 'longitude')}),
-        ('Travel Info', {'fields': ('best_time_to_visit', 'getting_there', 'climate_info')}),
-        ('SEO', {'fields': ('meta_title', 'meta_description', 'meta_keywords'), 'classes': ('collapse',)}),
+        ('Travel Info', {
+            'fields': (
+                'best_time_to_visit', 'best_time_to_visit_es', 'best_time_to_visit_pt',
+                'getting_there', 'getting_there_es', 'getting_there_pt',
+                'climate_info', 'climate_info_es', 'climate_info_pt'
+            )
+        }),
+        ('SEO', {
+            'fields': (
+                'meta_title', 'meta_title_es', 'meta_title_pt',
+                'meta_description', 'meta_description_es', 'meta_description_pt',
+                'meta_keywords', 'meta_keywords_es', 'meta_keywords_pt'
+            ),
+            'classes': ('collapse',)
+        }),
         ('Settings', {'fields': ('is_featured', 'is_active', 'sort_order')}),
     )
 

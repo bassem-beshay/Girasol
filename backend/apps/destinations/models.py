@@ -31,8 +31,14 @@ class Destination(TimeStampedModel, SluggedModel, SEOModel, SortableModel):
 
     # Info
     best_time_to_visit = models.TextField(blank=True)
+    best_time_to_visit_es = models.TextField('Best Time to Visit (Spanish)', blank=True)
+    best_time_to_visit_pt = models.TextField('Best Time to Visit (Portuguese)', blank=True)
     getting_there = models.TextField(blank=True)
+    getting_there_es = models.TextField('Getting There (Spanish)', blank=True)
+    getting_there_pt = models.TextField('Getting There (Portuguese)', blank=True)
     climate_info = models.TextField(blank=True)
+    climate_info_es = models.TextField('Climate Info (Spanish)', blank=True)
+    climate_info_pt = models.TextField('Climate Info (Portuguese)', blank=True)
 
     # Status
     is_featured = models.BooleanField(default=False)

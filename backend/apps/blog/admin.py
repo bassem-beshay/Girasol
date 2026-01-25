@@ -64,7 +64,11 @@ class PostAdmin(admin.ModelAdmin):
             'fields': ('is_published', 'published_at', 'is_featured', 'allow_comments')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description', 'meta_keywords'),
+            'fields': (
+                'meta_title', 'meta_title_es', 'meta_title_pt',
+                'meta_description', 'meta_description_es', 'meta_description_pt',
+                'meta_keywords', 'meta_keywords_es', 'meta_keywords_pt'
+            ),
             'classes': ('collapse',)
         }),
         ('Stats', {
