@@ -23,6 +23,8 @@ import {
   Timer,
   ChevronDown,
   HelpCircle,
+  DollarSign,
+  User,
 } from 'lucide-react';
 import { InquiryForm } from '@/components/tours/InquiryForm';
 
@@ -89,6 +91,14 @@ interface TourDetail {
     id: number;
     question: string;
     answer: string;
+  }>;
+  seasonal_pricing: Array<{
+    id: number;
+    season_name: string;
+    start_date: string;
+    end_date: string;
+    price_per_person: string;
+    single_supplement: string;
   }>;
   // Early Booking fields
   is_early_booking: boolean;
@@ -443,6 +453,73 @@ export default function TourDetailPage() {
                   )}
                 </div>
               </div>
+
+              {/* Seasonal Pricing */}
+              {tour.seasonal_pricing && tour.seasonal_pricing.length > 0 && (
+                <div className="bg-white rounded-2xl p-6 shadow-md">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <DollarSign className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900">Seasonal Pricing</h2>
+                      <p className="text-sm text-gray-500">Prices vary by season</p>
+                    </div>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-gray-200">
+                          <th className="text-left py-3 px-4 font-semibold text-gray-700">Season</th>
+                          <th className="text-left py-3 px-4 font-semibold text-gray-700">Period</th>
+                          <th className="text-right py-3 px-4 font-semibold text-gray-700">Price/Person</th>
+                          <th className="text-right py-3 px-4 font-semibold text-gray-700">Single Supplement</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {tour.seasonal_pricing.map((pricing, index) => (
+                          <tr
+                            key={pricing.id}
+                            className={`border-b border-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : ''}`}
+                          >
+                            <td className="py-4 px-4">
+                              <span className={`inline-flex items-center gap-2 font-medium ${
+                                pricing.season_name === 'High Season'
+                                  ? 'text-red-600'
+                                  : pricing.season_name === 'Low Season'
+                                  ? 'text-green-600'
+                                  : 'text-amber-600'
+                              }`}>
+                                {pricing.season_name === 'High Season' && '🔥'}
+                                {pricing.season_name === 'Low Season' && '💰'}
+                                {pricing.season_name === 'Shoulder Season' && '⭐'}
+                                {pricing.season_name}
+                              </span>
+                            </td>
+                            <td className="py-4 px-4 text-gray-600 text-sm">
+                              {new Date(pricing.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {new Date(pricing.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </td>
+                            <td className="py-4 px-4 text-right">
+                              <span className="font-bold text-gray-900">${parseFloat(pricing.price_per_person).toFixed(0)}</span>
+                            </td>
+                            <td className="py-4 px-4 text-right">
+                              <span className="text-gray-600 flex items-center justify-end gap-1">
+                                <User className="w-4 h-4" />
+                                +${parseFloat(pricing.single_supplement).toFixed(0)}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="mt-4 p-4 bg-blue-50 rounded-xl">
+                    <p className="text-sm text-blue-800">
+                      <strong>Note:</strong> Prices are per person based on double occupancy. Single supplement applies for solo travelers requiring a private room.
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* FAQs */}
               {tour.faqs && tour.faqs.length > 0 && (
