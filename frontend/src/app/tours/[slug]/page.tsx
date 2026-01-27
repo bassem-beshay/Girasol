@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   MapPin,
   Clock,
@@ -29,6 +29,9 @@ import {
   Plane,
   CheckCircle,
   AlertCircle,
+  Camera,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { InquiryForm } from '@/components/tours/InquiryForm';
 
@@ -113,6 +116,12 @@ interface TourDetail {
     is_guaranteed: boolean;
     status: string;
   }>;
+  images: Array<{
+    id: number;
+    image: string;
+    caption: string;
+    alt_text: string;
+  }>;
   // Early Booking fields
   is_early_booking: boolean;
   early_booking_discount: number | null;
@@ -191,20 +200,20 @@ function CountdownTimer({ endDate }: { endDate: string }) {
   }, [endDate]);
 
   return (
-    <div className="flex items-center gap-2 text-sm">
-      <div className="bg-gray-900 text-white px-2 py-1 rounded font-mono">
+    <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+      <div className="bg-gray-900 text-white px-1.5 sm:px-2 py-1 rounded font-mono">
         {String(timeLeft.days).padStart(2, '0')}d
       </div>
       <span className="text-orange-500 font-bold">:</span>
-      <div className="bg-gray-900 text-white px-2 py-1 rounded font-mono">
+      <div className="bg-gray-900 text-white px-1.5 sm:px-2 py-1 rounded font-mono">
         {String(timeLeft.hours).padStart(2, '0')}h
       </div>
       <span className="text-orange-500 font-bold">:</span>
-      <div className="bg-gray-900 text-white px-2 py-1 rounded font-mono">
+      <div className="bg-gray-900 text-white px-1.5 sm:px-2 py-1 rounded font-mono">
         {String(timeLeft.minutes).padStart(2, '0')}m
       </div>
       <span className="text-orange-500 font-bold">:</span>
-      <div className="bg-gray-900 text-white px-2 py-1 rounded font-mono">
+      <div className="bg-gray-900 text-white px-1.5 sm:px-2 py-1 rounded font-mono">
         {String(timeLeft.seconds).padStart(2, '0')}s
       </div>
     </div>
@@ -215,6 +224,51 @@ export default function TourDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeSection, setActiveSection] = useState('overview');
+
+  // Section refs for scrolling
+  const sectionRefs = {
+    overview: useRef<HTMLDivElement>(null),
+    gallery: useRef<HTMLDivElement>(null),
+    highlights: useRef<HTMLDivElement>(null),
+    itinerary: useRef<HTMLDivElement>(null),
+    inclusions: useRef<HTMLDivElement>(null),
+    pricing: useRef<HTMLDivElement>(null),
+    departures: useRef<HTMLDivElement>(null),
+    faqs: useRef<HTMLDivElement>(null),
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const ref = sectionRefs[sectionId as keyof typeof sectionRefs];
+    if (ref?.current) {
+      const yOffset = -120; // Offset for fixed header
+      const y = ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      setActiveSection(sectionId);
+    }
+  };
+
+  // Track active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150;
+
+      for (const [key, ref] of Object.entries(sectionRefs)) {
+        if (ref.current) {
+          const { offsetTop, offsetHeight } = ref.current;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(key);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const { data: tour, isLoading, error } = useQuery<TourDetail>({
     queryKey: ['tour', slug],
@@ -311,7 +365,7 @@ export default function TourDetailPage() {
                 )}
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-white mb-4 break-words">
                 {tour.name}
               </h1>
 
@@ -334,6 +388,38 @@ export default function TourDetailPage() {
         </div>
       </section>
 
+      {/* Section Navigation */}
+      <div className="sticky top-[72px] z-40 bg-white border-b shadow-sm">
+        <div className="container-custom">
+          <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
+            {[
+              { id: 'overview', label: 'Overview' },
+              { id: 'gallery', label: 'Photos', show: tour.images && tour.images.length > 0 },
+              { id: 'highlights', label: 'Highlights', show: tour.highlights && tour.highlights.length > 0 },
+              { id: 'itinerary', label: 'Itinerary', show: tour.itinerary && tour.itinerary.length > 0 },
+              { id: 'inclusions', label: 'Inclusions', show: tour.inclusions && tour.inclusions.length > 0 },
+              { id: 'pricing', label: 'Pricing', show: tour.seasonal_pricing && tour.seasonal_pricing.length > 0 },
+              { id: 'departures', label: 'Departures', show: tour.departures && tour.departures.length > 0 },
+              { id: 'faqs', label: 'FAQs', show: tour.faqs && tour.faqs.length > 0 },
+            ]
+              .filter(item => item.show !== false)
+              .map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    activeSection === item.id
+                      ? 'bg-primary-500 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+          </div>
+        </div>
+      </div>
+
       {/* Main Content */}
       <section className="py-12">
         <div className="container-custom">
@@ -341,7 +427,7 @@ export default function TourDetailPage() {
             {/* Left Column - Tour Details */}
             <div className="lg:col-span-2 space-y-8">
               {/* Overview */}
-              <div className="bg-white rounded-2xl p-6 shadow-md">
+              <div ref={sectionRefs.overview} className="bg-white rounded-2xl p-6 shadow-md">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
                 <p className="text-gray-600 leading-relaxed">{tour.description}</p>
 
@@ -370,9 +456,51 @@ export default function TourDetailPage() {
                 </div>
               </div>
 
+              {/* Photo Gallery */}
+              {tour.images && tour.images.length > 0 && (
+                <div ref={sectionRefs.gallery} className="bg-white rounded-2xl p-6 shadow-md">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Camera className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900">Photo Gallery</h2>
+                      <p className="text-sm text-gray-500">{tour.images.length} photos</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {tour.images.map((image, index) => (
+                      <div
+                        key={image.id}
+                        className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group"
+                        onClick={() => {
+                          setCurrentImageIndex(index);
+                          setGalleryOpen(true);
+                        }}
+                      >
+                        <Image
+                          src={image.image}
+                          alt={image.alt_text || image.caption || `Tour photo ${index + 1}`}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                          <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                        {image.caption && (
+                          <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
+                            <p className="text-white text-sm truncate">{image.caption}</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Highlights */}
               {tour.highlights && tour.highlights.length > 0 && (
-                <div className="bg-white rounded-2xl p-6 shadow-md">
+                <div ref={sectionRefs.highlights} className="bg-white rounded-2xl p-6 shadow-md">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Tour Highlights</h2>
                   <div className="grid md:grid-cols-2 gap-4">
                     {tour.highlights.map((highlight) => (
@@ -392,7 +520,7 @@ export default function TourDetailPage() {
 
               {/* Itinerary */}
               {tour.itinerary && tour.itinerary.length > 0 && (
-                <div className="bg-white rounded-2xl p-6 shadow-md">
+                <div ref={sectionRefs.itinerary} className="bg-white rounded-2xl p-6 shadow-md">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Day by Day Itinerary</h2>
                   <div className="space-y-4">
                     {tour.itinerary.map((day) => (
@@ -404,21 +532,21 @@ export default function TourDetailPage() {
                           <h3 className="text-lg font-semibold text-gray-900">{day.title}</h3>
                         </div>
                         <p className="text-gray-600 mb-4">{day.description}</p>
-                        <div className="grid grid-cols-3 gap-4 text-sm">
+                        <div className="flex flex-wrap gap-3 text-sm">
                           {day.locations && (
                             <div className="flex items-center gap-2 text-gray-500">
-                              <MapPin className="w-4 h-4" />
-                              {day.locations}
+                              <MapPin className="w-4 h-4 flex-shrink-0" />
+                              <span className="break-words">{day.locations}</span>
                             </div>
                           )}
                           {day.meals_included && (
                             <div className="flex items-center gap-2 text-gray-500">
-                              <span>Meals: {day.meals_included}</span>
+                              <span className="break-words">Meals: {day.meals_included}</span>
                             </div>
                           )}
                           {day.accommodation && (
                             <div className="flex items-center gap-2 text-gray-500">
-                              <span>Stay: {day.accommodation}</span>
+                              <span className="break-words">Stay: {day.accommodation}</span>
                             </div>
                           )}
                         </div>
@@ -429,7 +557,7 @@ export default function TourDetailPage() {
               )}
 
               {/* Inclusions */}
-              <div className="bg-white rounded-2xl p-6 shadow-md">
+              <div ref={sectionRefs.inclusions} className="bg-white rounded-2xl p-6 shadow-md">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">What&apos;s Included</h2>
                 <div className="grid md:grid-cols-2 gap-8">
                   {included.length > 0 && (
@@ -469,7 +597,7 @@ export default function TourDetailPage() {
 
               {/* Seasonal Pricing */}
               {tour.seasonal_pricing && tour.seasonal_pricing.length > 0 && (
-                <div className="bg-white rounded-2xl p-6 shadow-md">
+                <div ref={sectionRefs.pricing} className="bg-white rounded-2xl p-6 shadow-md">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                       <DollarSign className="w-6 h-6 text-green-600" />
@@ -479,7 +607,40 @@ export default function TourDetailPage() {
                       <p className="text-sm text-gray-500">Prices vary by season</p>
                     </div>
                   </div>
-                  <div className="overflow-x-auto">
+                  {/* Mobile View - Cards */}
+                  <div className="md:hidden space-y-3">
+                    {tour.seasonal_pricing.map((pricing) => (
+                      <div
+                        key={pricing.id}
+                        className="bg-gray-50 rounded-xl p-4"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <span className={`inline-flex items-center gap-2 font-medium ${
+                            pricing.season_name === 'High Season'
+                              ? 'text-red-600'
+                              : pricing.season_name === 'Low Season'
+                              ? 'text-green-600'
+                              : 'text-amber-600'
+                          }`}>
+                            {pricing.season_name === 'High Season' && '🔥'}
+                            {pricing.season_name === 'Low Season' && '💰'}
+                            {pricing.season_name === 'Shoulder Season' && '⭐'}
+                            {pricing.season_name}
+                          </span>
+                          <span className="font-bold text-lg text-gray-900">${parseFloat(pricing.price_per_person).toFixed(0)}</span>
+                        </div>
+                        <div className="text-sm text-gray-600 mb-2">
+                          {new Date(pricing.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {new Date(pricing.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </div>
+                        <div className="text-sm text-gray-500 flex items-center gap-1">
+                          <User className="w-4 h-4" />
+                          Single Supplement: +${parseFloat(pricing.single_supplement).toFixed(0)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Desktop View - Table */}
+                  <div className="hidden md:block overflow-x-auto">
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-gray-200">
@@ -536,7 +697,7 @@ export default function TourDetailPage() {
 
               {/* Upcoming Departures */}
               {tour.departures && tour.departures.length > 0 && (
-                <div className="bg-white rounded-2xl p-6 shadow-md">
+                <div ref={sectionRefs.departures} className="bg-white rounded-2xl p-6 shadow-md">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                       <CalendarDays className="w-6 h-6 text-blue-600" />
@@ -550,49 +711,94 @@ export default function TourDetailPage() {
                     {tour.departures.slice(0, 8).map((departure) => (
                       <div
                         key={departure.id}
-                        className={`flex flex-wrap items-center justify-between p-4 rounded-xl border-2 transition-colors ${
+                        className={`p-4 rounded-xl border-2 transition-colors ${
                           departure.status === 'available'
                             ? 'border-gray-200 hover:border-primary-300 bg-white'
                             : 'border-orange-200 bg-orange-50'
                         }`}
                       >
-                        <div className="flex items-center gap-4">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-gray-900">
-                              {new Date(departure.departure_date).getDate()}
+                        {/* Mobile Layout */}
+                        <div className="sm:hidden">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <div className="text-center min-w-[50px]">
+                                <div className="text-2xl font-bold text-gray-900">
+                                  {new Date(departure.departure_date).getDate()}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  {new Date(departure.departure_date).toLocaleDateString('en-US', { month: 'short' })}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900 text-sm">
+                                  {new Date(departure.departure_date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                </div>
+                                <div className="text-xs text-gray-500 mt-1">
+                                  Returns: {new Date(departure.return_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm text-gray-500">
-                              {new Date(departure.departure_date).toLocaleDateString('en-US', { month: 'short' })}
+                            <div className="text-right">
+                              <div className="text-lg font-bold text-primary-600">
+                                ${parseFloat(departure.price).toFixed(0)}
+                              </div>
                             </div>
                           </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <Plane className="w-4 h-4 text-gray-400" />
-                              <span className="font-medium text-gray-900">
-                                {new Date(departure.departure_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
-                              <span>Returns: {new Date(departure.return_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                              {departure.is_guaranteed && (
-                                <span className="flex items-center gap-1 text-green-600">
-                                  <CheckCircle className="w-4 h-4" />
-                                  Guaranteed
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-4 mt-3 sm:mt-0">
-                          <div className="text-right">
-                            <div className="text-xl font-bold text-primary-600">
-                              ${parseFloat(departure.price).toFixed(0)}
-                            </div>
-                            <div className={`text-sm flex items-center gap-1 ${
+                          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                            <div className={`text-xs flex items-center gap-1 ${
                               departure.available_spots <= 5 ? 'text-orange-600' : 'text-gray-500'
                             }`}>
-                              {departure.available_spots <= 5 && <AlertCircle className="w-4 h-4" />}
+                              {departure.available_spots <= 5 && <AlertCircle className="w-3 h-3" />}
                               {departure.available_spots} spots left
+                            </div>
+                            {departure.is_guaranteed && (
+                              <span className="flex items-center gap-1 text-green-600 text-xs">
+                                <CheckCircle className="w-3 h-3" />
+                                Guaranteed
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        {/* Desktop Layout */}
+                        <div className="hidden sm:flex sm:flex-wrap sm:items-center sm:justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-gray-900">
+                                {new Date(departure.departure_date).getDate()}
+                              </div>
+                              <div className="text-sm text-gray-500">
+                                {new Date(departure.departure_date).toLocaleDateString('en-US', { month: 'short' })}
+                              </div>
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <Plane className="w-4 h-4 text-gray-400" />
+                                <span className="font-medium text-gray-900">
+                                  {new Date(departure.departure_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
+                                <span>Returns: {new Date(departure.return_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                {departure.is_guaranteed && (
+                                  <span className="flex items-center gap-1 text-green-600">
+                                    <CheckCircle className="w-4 h-4" />
+                                    Guaranteed
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-4 mt-3 sm:mt-0">
+                            <div className="text-right">
+                              <div className="text-xl font-bold text-primary-600">
+                                ${parseFloat(departure.price).toFixed(0)}
+                              </div>
+                              <div className={`text-sm flex items-center gap-1 justify-end ${
+                                departure.available_spots <= 5 ? 'text-orange-600' : 'text-gray-500'
+                              }`}>
+                                {departure.available_spots <= 5 && <AlertCircle className="w-4 h-4" />}
+                                {departure.available_spots} spots left
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -611,7 +817,7 @@ export default function TourDetailPage() {
 
               {/* FAQs */}
               {tour.faqs && tour.faqs.length > 0 && (
-                <div className="bg-white rounded-2xl p-6 shadow-md">
+                <div ref={sectionRefs.faqs} className="bg-white rounded-2xl p-6 shadow-md">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
                       <HelpCircle className="w-6 h-6 text-primary-600" />
@@ -734,6 +940,78 @@ export default function TourDetailPage() {
           </div>
         </div>
       </section>
+
+      {/* Image Lightbox Modal */}
+      {galleryOpen && tour.images && tour.images.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          onClick={() => setGalleryOpen(false)}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setGalleryOpen(false)}
+            className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Previous Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentImageIndex((prev) =>
+                prev === 0 ? tour.images.length - 1 : prev - 1
+              );
+            }}
+            className="absolute left-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Image */}
+          <div
+            className="relative w-full max-w-5xl h-[80vh] mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={tour.images[currentImageIndex].image}
+              alt={tour.images[currentImageIndex].alt_text || tour.images[currentImageIndex].caption || ''}
+              fill
+              className="object-contain"
+            />
+            {tour.images[currentImageIndex].caption && (
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                <p className="text-white text-center text-lg">
+                  {tour.images[currentImageIndex].caption}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Next Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentImageIndex((prev) =>
+                prev === tour.images.length - 1 ? 0 : prev + 1
+              );
+            }}
+            className="absolute right-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Image Counter */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 rounded-full">
+            <span className="text-white text-sm">
+              {currentImageIndex + 1} / {tour.images.length}
+            </span>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }
