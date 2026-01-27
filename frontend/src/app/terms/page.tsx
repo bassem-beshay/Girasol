@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { FileText, ArrowLeft, Shield, Passport, Plane, Hotel, Ship, Bus, Baby, XCircle, CreditCard, Calendar, ShoppingCart, Lock, Scale, FileCheck } from 'lucide-react';
+import { FileText, ArrowLeft, Shield, BookOpen, Plane, Hotel, Ship, Bus, Baby, XCircle, CreditCard, Calendar, ShoppingCart, Lock, Scale, FileCheck } from 'lucide-react';
 import { useLanguageStore, Language } from '@/store/languageStore';
 
 const content: Record<Language, {
@@ -796,7 +796,7 @@ const content: Record<Language, {
 const getIcon = (iconName: string) => {
   const icons: Record<string, React.ComponentType<{ className?: string }>> = {
     shield: Shield,
-    passport: Passport,
+    passport: BookOpen,
     visa: FileText,
     airport: Plane,
     insurance: Shield,
