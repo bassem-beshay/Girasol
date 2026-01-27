@@ -150,7 +150,7 @@ function ToursContent() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className={`relative h-[50vh] min-h-[400px] ${
+      <section className={`relative h-[70vh] min-h-[500px] ${
         isEarlyBookingFilter
           ? 'bg-gradient-to-r from-orange-500 to-amber-600'
           : isMultiDestFilter
@@ -159,7 +159,7 @@ function ToursContent() {
       }`}>
         {!isEarlyBookingFilter && !isMultiDestFilter && (
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-bottom"
             style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/media/tours/tours-hero.jpg)` }}
           />
         )}
