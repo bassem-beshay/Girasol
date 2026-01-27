@@ -218,7 +218,7 @@ export function EarlyBookingSlider() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative min-h-[380px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[600px] flex items-center"
+          className="relative min-h-[500px] sm:min-h-[500px] md:min-h-[550px] lg:min-h-[600px] flex items-center"
         >
           {/* Background Image */}
           {currentOffer.banner_image ? (
