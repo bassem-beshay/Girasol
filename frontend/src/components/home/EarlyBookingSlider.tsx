@@ -126,6 +126,8 @@ export function EarlyBookingSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const { data, isLoading, error } = useQuery<EarlyBookingResponse>({
     queryKey: ['early-booking-slider'],
@@ -150,6 +152,30 @@ export function EarlyBookingSlider() {
       setCurrentSlide((prev) => (prev - 1 + offers.length) % offers.length);
     }
   }, [offers.length]);
+
+  // Swipe handlers for mobile
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
 
   // Auto-slide every 6 seconds
   useEffect(() => {
@@ -181,6 +207,9 @@ export function EarlyBookingSlider() {
       className="relative overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -324,21 +353,6 @@ export function EarlyBookingSlider() {
             <ChevronRight className="w-6 h-6" />
           </button>
 
-          {/* Mobile arrows - bottom corners */}
-          <button
-            onClick={prevSlide}
-            className="md:hidden absolute left-3 bottom-16 z-20 w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all"
-            aria-label="Previous offer"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="md:hidden absolute right-3 bottom-16 z-20 w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all"
-            aria-label="Next offer"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
         </>
       )}
 
