@@ -118,7 +118,7 @@ export default function DestinationDetailPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[85vh] min-h-[700px]">
+      <section className="relative h-[40vh] sm:h-[50vh] md:h-[70vh] lg:h-[85vh] min-h-[250px] sm:min-h-[300px] md:min-h-[450px] lg:min-h-[700px]">
         <div className="absolute inset-0 bg-black/40 z-10" />
         {destination.featured_image ? (
           <Image
@@ -139,10 +139,10 @@ export default function DestinationDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-primary-400 text-lg font-medium mb-2 block">
+              <span className="text-primary-400 text-sm sm:text-base md:text-lg font-medium mb-1 sm:mb-2 block">
                 {destination.tagline}
               </span>
-              <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-4">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-2 sm:mb-4">
                 {destination.name}
               </h1>
               <div className="flex flex-wrap items-center gap-6 text-white/90">
