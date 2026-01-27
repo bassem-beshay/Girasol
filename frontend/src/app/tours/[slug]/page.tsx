@@ -314,7 +314,7 @@ export default function TourDetailPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[85vh] min-h-[700px]">
+      <section className="relative h-[40vh] sm:h-[50vh] md:h-[70vh] lg:h-[85vh] min-h-[250px] sm:min-h-[300px] md:min-h-[450px] lg:min-h-[700px]">
         <div className="absolute inset-0 bg-black/40 z-10" />
         {tour.featured_image ? (
           <Image
