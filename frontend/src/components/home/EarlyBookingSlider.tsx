@@ -305,9 +305,10 @@ export function EarlyBookingSlider() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Arrows - Hidden on mobile */}
+      {/* Navigation Arrows - Repositioned on mobile */}
       {offers.length > 1 && (
         <>
+          {/* Desktop arrows - sides */}
           <button
             onClick={prevSlide}
             className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 items-center justify-center text-white hover:bg-white/20 transition-all"
@@ -321,6 +322,22 @@ export function EarlyBookingSlider() {
             aria-label="Next offer"
           >
             <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {/* Mobile arrows - bottom corners */}
+          <button
+            onClick={prevSlide}
+            className="md:hidden absolute left-3 bottom-16 z-20 w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all"
+            aria-label="Previous offer"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="md:hidden absolute right-3 bottom-16 z-20 w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all"
+            aria-label="Next offer"
+          >
+            <ChevronRight className="w-4 h-4" />
           </button>
         </>
       )}
