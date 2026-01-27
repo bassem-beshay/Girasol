@@ -157,7 +157,13 @@ function ToursContent() {
             ? 'bg-gradient-to-r from-blue-600 to-indigo-700'
             : 'bg-gradient-to-r from-primary-600 to-primary-800'
       }`}>
-        <div className="absolute inset-0 bg-black/30"></div>
+        {!isEarlyBookingFilter && !isMultiDestFilter && (
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/media/tours/tours-hero.jpg)` }}
+          />
+        )}
+        <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative container-custom h-full flex items-center justify-center px-4">
           <div className="text-center text-white">
             {isEarlyBookingFilter && (
