@@ -82,41 +82,41 @@ function CountdownTimer({ endDate }: { endDate: string }) {
   }, [endDate]);
 
   return (
-    <div className="flex items-center gap-2 sm:gap-3">
+    <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
       <div className="text-center">
-        <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 min-w-[50px] sm:min-w-[60px]">
-          <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-mono">
+        <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 min-w-[40px] sm:min-w-[50px] md:min-w-[60px]">
+          <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white font-mono">
             {String(timeLeft.days).padStart(2, '0')}
           </span>
         </div>
-        <span className="text-[10px] sm:text-xs text-white/70 mt-1 block">Days</span>
+        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">Days</span>
       </div>
-      <span className="text-xl sm:text-2xl text-white/50 font-bold -mt-4">:</span>
+      <span className="text-lg sm:text-xl md:text-2xl text-white/50 font-bold -mt-4">:</span>
       <div className="text-center">
-        <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 min-w-[50px] sm:min-w-[60px]">
-          <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-mono">
+        <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 min-w-[40px] sm:min-w-[50px] md:min-w-[60px]">
+          <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white font-mono">
             {String(timeLeft.hours).padStart(2, '0')}
           </span>
         </div>
-        <span className="text-[10px] sm:text-xs text-white/70 mt-1 block">Hours</span>
+        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">Hours</span>
       </div>
-      <span className="text-xl sm:text-2xl text-white/50 font-bold -mt-4">:</span>
+      <span className="text-lg sm:text-xl md:text-2xl text-white/50 font-bold -mt-4">:</span>
       <div className="text-center">
-        <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 min-w-[50px] sm:min-w-[60px]">
-          <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-mono">
+        <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 min-w-[40px] sm:min-w-[50px] md:min-w-[60px]">
+          <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white font-mono">
             {String(timeLeft.minutes).padStart(2, '0')}
           </span>
         </div>
-        <span className="text-[10px] sm:text-xs text-white/70 mt-1 block">Mins</span>
+        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">Mins</span>
       </div>
-      <span className="text-xl sm:text-2xl text-white/50 font-bold -mt-4">:</span>
+      <span className="text-lg sm:text-xl md:text-2xl text-white/50 font-bold -mt-4">:</span>
       <div className="text-center">
-        <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 min-w-[50px] sm:min-w-[60px]">
-          <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-mono">
+        <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 min-w-[40px] sm:min-w-[50px] md:min-w-[60px]">
+          <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white font-mono">
             {String(timeLeft.seconds).padStart(2, '0')}
           </span>
         </div>
-        <span className="text-[10px] sm:text-xs text-white/70 mt-1 block">Secs</span>
+        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">Secs</span>
       </div>
     </div>
   );
@@ -189,7 +189,7 @@ export function EarlyBookingSlider() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative min-h-[500px] sm:min-h-[550px] md:min-h-[600px] flex items-center"
+          className="relative min-h-[380px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[600px] flex items-center"
         >
           {/* Background Image */}
           {currentOffer.banner_image ? (
@@ -219,16 +219,16 @@ export function EarlyBookingSlider() {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 container-custom py-16 sm:py-20">
-            <div className="max-w-4xl mx-auto text-center">
+          <div className="relative z-10 container-custom py-8 sm:py-12 md:py-16 lg:py-20">
+            <div className="max-w-4xl mx-auto text-center px-4">
               {/* Badge */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 backdrop-blur-sm text-white text-sm font-semibold mb-6 border border-white/20"
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full bg-white/15 backdrop-blur-sm text-white text-xs sm:text-sm font-semibold mb-3 sm:mb-6 border border-white/20"
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
                 {currentOffer.badge_text || 'Early Bird Offer'}
               </motion.div>
 
@@ -237,7 +237,7 @@ export function EarlyBookingSlider() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-bold text-white mb-2 sm:mb-4"
               >
                 {currentOffer.title}
               </motion.h2>
@@ -247,9 +247,9 @@ export function EarlyBookingSlider() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.4 }}
-                className="mb-6"
+                className="mb-3 sm:mb-6"
               >
-                <span className="text-5xl sm:text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400">
+                <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400">
                   {currentOffer.discount_percentage}% OFF
                 </span>
               </motion.div>
@@ -259,7 +259,7 @@ export function EarlyBookingSlider() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="text-lg sm:text-xl text-white/80 mb-8 max-w-2xl mx-auto"
+                className="text-sm sm:text-base md:text-lg lg:text-xl text-white/80 mb-4 sm:mb-8 max-w-2xl mx-auto"
               >
                 {currentOffer.subtitle || currentOffer.description}
               </motion.p>
@@ -269,10 +269,10 @@ export function EarlyBookingSlider() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="mb-10"
+                className="mb-6 sm:mb-10"
               >
-                <div className="flex items-center justify-center gap-2 text-white/70 text-sm mb-4">
-                  <Timer className="w-4 h-4" />
+                <div className="flex items-center justify-center gap-2 text-white/70 text-xs sm:text-sm mb-2 sm:mb-4">
+                  <Timer className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span>Offer Ends In</span>
                 </div>
                 <div className="flex justify-center">
@@ -285,16 +285,16 @@ export function EarlyBookingSlider() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4"
               >
                 {currentOffer.tours_with_early_price && currentOffer.tours_with_early_price.length > 0 && (
-                  <span className="text-white/70 text-sm">
+                  <span className="text-white/70 text-xs sm:text-sm">
                     {currentOffer.tours_with_early_price.length} tours available
                   </span>
                 )}
                 <Link
                   href="/tours?early_booking=true"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 font-semibold rounded-full hover:bg-gray-100 transition-all hover:scale-105 shadow-xl"
+                  className="inline-flex items-center gap-2 px-5 sm:px-8 py-2.5 sm:py-4 bg-white text-gray-900 text-sm sm:text-base font-semibold rounded-full hover:bg-gray-100 transition-all hover:scale-105 shadow-xl"
                 >
                   View Early Bird Tours
                   <ArrowRight className="w-5 h-5" />
