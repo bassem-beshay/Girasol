@@ -28,6 +28,13 @@ interface Activity {
   duration: string;
 }
 
+interface DestinationImage {
+  id: number;
+  image: string;
+  caption: string;
+  alt_text: string;
+}
+
 interface DestinationDetail {
   id: number;
   name: string;
@@ -37,7 +44,7 @@ interface DestinationDetail {
   description: string;
   description_ar: string;
   featured_image: string | null;
-  gallery_images: string[];
+  images: DestinationImage[];
   country: string;
   region: string;
   latitude: string;
@@ -181,7 +188,7 @@ export default function DestinationDetailPage() {
               </div>
 
               {/* Photo Gallery */}
-              {destination.gallery_images && destination.gallery_images.length > 0 && (
+              {destination.images && destination.images.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 shadow-md">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -189,13 +196,13 @@ export default function DestinationDetailPage() {
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold text-gray-900">Photo Gallery</h2>
-                      <p className="text-sm text-gray-500">{destination.gallery_images.length} photos</p>
+                      <p className="text-sm text-gray-500">{destination.images.length} photos</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {destination.gallery_images.map((image, index) => (
+                    {destination.images.map((img, index) => (
                       <div
-                        key={index}
+                        key={img.id}
                         className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group"
                         onClick={() => {
                           setCurrentImageIndex(index);
@@ -203,14 +210,19 @@ export default function DestinationDetailPage() {
                         }}
                       >
                         <Image
-                          src={image}
-                          alt={`${destination.name} photo ${index + 1}`}
+                          src={img.image}
+                          alt={img.alt_text || `${destination.name} photo ${index + 1}`}
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                           <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
+                        {img.caption && (
+                          <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/70 to-transparent">
+                            <p className="text-white text-sm truncate">{img.caption}</p>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -395,7 +407,7 @@ export default function DestinationDetailPage() {
       </section>
 
       {/* Image Lightbox Modal */}
-      {galleryOpen && destination.gallery_images && destination.gallery_images.length > 0 && (
+      {galleryOpen && destination.images && destination.images.length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -416,7 +428,7 @@ export default function DestinationDetailPage() {
             onClick={(e) => {
               e.stopPropagation();
               setCurrentImageIndex((prev) =>
-                prev === 0 ? destination.gallery_images.length - 1 : prev - 1
+                prev === 0 ? destination.images.length - 1 : prev - 1
               );
             }}
             className="absolute left-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
@@ -430,11 +442,18 @@ export default function DestinationDetailPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <Image
-              src={destination.gallery_images[currentImageIndex]}
-              alt={`${destination.name} photo ${currentImageIndex + 1}`}
+              src={destination.images[currentImageIndex].image}
+              alt={destination.images[currentImageIndex].alt_text || `${destination.name} photo ${currentImageIndex + 1}`}
               fill
               className="object-contain"
             />
+            {destination.images[currentImageIndex].caption && (
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                <p className="text-white text-center text-lg">
+                  {destination.images[currentImageIndex].caption}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Next Button */}
@@ -442,7 +461,7 @@ export default function DestinationDetailPage() {
             onClick={(e) => {
               e.stopPropagation();
               setCurrentImageIndex((prev) =>
-                prev === destination.gallery_images.length - 1 ? 0 : prev + 1
+                prev === destination.images.length - 1 ? 0 : prev + 1
               );
             }}
             className="absolute right-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
@@ -453,7 +472,7 @@ export default function DestinationDetailPage() {
           {/* Image Counter */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 rounded-full">
             <span className="text-white text-sm">
-              {currentImageIndex + 1} / {destination.gallery_images.length}
+              {currentImageIndex + 1} / {destination.images.length}
             </span>
           </div>
         </motion.div>
