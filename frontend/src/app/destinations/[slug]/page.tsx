@@ -17,6 +17,8 @@ import {
   Camera,
   X,
   ChevronLeft,
+  Plane,
+  Sun,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -50,6 +52,8 @@ interface DestinationDetail {
   latitude: string;
   longitude: string;
   best_time_to_visit: string;
+  getting_there: string;
+  climate_info: string;
   is_featured: boolean;
   tour_count: number;
   activities: Activity[];
@@ -186,6 +190,54 @@ export default function DestinationDetailPage() {
                   {destination.description}
                 </p>
               </div>
+
+              {/* Travel Info Section */}
+              {(destination.best_time_to_visit || destination.getting_there || destination.climate_info) && (
+                <div className="bg-white rounded-2xl p-6 shadow-md">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Travel Information</h2>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {destination.best_time_to_visit && (
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <Calendar className="w-5 h-5 text-white" />
+                          </div>
+                          <h3 className="font-semibold text-gray-900">Best Time to Visit</h3>
+                        </div>
+                        <p className="text-gray-600 text-sm leading-relaxed">
+                          {destination.best_time_to_visit}
+                        </p>
+                      </div>
+                    )}
+                    {destination.getting_there && (
+                      <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                            <Plane className="w-5 h-5 text-white" />
+                          </div>
+                          <h3 className="font-semibold text-gray-900">Getting There</h3>
+                        </div>
+                        <p className="text-gray-600 text-sm leading-relaxed">
+                          {destination.getting_there}
+                        </p>
+                      </div>
+                    )}
+                    {destination.climate_info && (
+                      <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-5">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                            <Sun className="w-5 h-5 text-white" />
+                          </div>
+                          <h3 className="font-semibold text-gray-900">Climate</h3>
+                        </div>
+                        <p className="text-gray-600 text-sm leading-relaxed">
+                          {destination.climate_info}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Photo Gallery */}
               {destination.images && destination.images.length > 0 && (
