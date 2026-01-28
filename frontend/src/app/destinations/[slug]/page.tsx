@@ -14,7 +14,11 @@ import {
   ChevronRight,
   Thermometer,
   Info,
+  Camera,
+  X,
+  ChevronLeft,
 } from 'lucide-react';
+import { useState } from 'react';
 
 interface Activity {
   id: number;
@@ -65,6 +69,8 @@ interface Tour {
 export default function DestinationDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const { data: destination, isLoading, error } = useQuery<DestinationDetail>({
     queryKey: ['destination', slug],
@@ -173,6 +179,43 @@ export default function DestinationDetailPage() {
                   {destination.description}
                 </p>
               </div>
+
+              {/* Photo Gallery */}
+              {destination.gallery_images && destination.gallery_images.length > 0 && (
+                <div className="bg-white rounded-2xl p-6 shadow-md">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Camera className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900">Photo Gallery</h2>
+                      <p className="text-sm text-gray-500">{destination.gallery_images.length} photos</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {destination.gallery_images.map((image, index) => (
+                      <div
+                        key={index}
+                        className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group"
+                        onClick={() => {
+                          setCurrentImageIndex(index);
+                          setGalleryOpen(true);
+                        }}
+                      >
+                        <Image
+                          src={image}
+                          alt={`${destination.name} photo ${index + 1}`}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                          <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Activities */}
               {destination.activities && destination.activities.length > 0 && (
@@ -350,6 +393,71 @@ export default function DestinationDetailPage() {
           </div>
         </div>
       </section>
+
+      {/* Image Lightbox Modal */}
+      {galleryOpen && destination.gallery_images && destination.gallery_images.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          onClick={() => setGalleryOpen(false)}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setGalleryOpen(false)}
+            className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Previous Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentImageIndex((prev) =>
+                prev === 0 ? destination.gallery_images.length - 1 : prev - 1
+              );
+            }}
+            className="absolute left-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Image */}
+          <div
+            className="relative w-full max-w-5xl h-[80vh] mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={destination.gallery_images[currentImageIndex]}
+              alt={`${destination.name} photo ${currentImageIndex + 1}`}
+              fill
+              className="object-contain"
+            />
+          </div>
+
+          {/* Next Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentImageIndex((prev) =>
+                prev === destination.gallery_images.length - 1 ? 0 : prev + 1
+              );
+            }}
+            className="absolute right-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Image Counter */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 rounded-full">
+            <span className="text-white text-sm">
+              {currentImageIndex + 1} / {destination.gallery_images.length}
+            </span>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }
