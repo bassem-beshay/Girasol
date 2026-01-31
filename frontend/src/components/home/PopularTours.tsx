@@ -45,9 +45,9 @@ export function PopularTours() {
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
 
   const { data, isLoading, error } = useQuery<ToursResponse>({
-    queryKey: ['popular-tours'],
+    queryKey: ['featured-tours'],
     queryFn: async () => {
-      const response = await toursApi.getPopular();
+      const response = await toursApi.getFeatured();
       return response.data;
     },
     enabled: isInView, // Only fetch when section is in view
