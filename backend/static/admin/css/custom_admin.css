@@ -1449,3 +1449,196 @@ a:hover {
 .action-checkbox {
     accent-color: var(--primary);
 }
+
+/* ============================================
+   CUSTOM DASHBOARD - Stats & App Grid
+   ============================================ */
+
+/* Stats Info Boxes */
+.dashboard-stat-box {
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-sm) !important;
+    border: none !important;
+    overflow: hidden;
+    transition: var(--transition-normal);
+    margin-bottom: 0 !important;
+    min-height: 85px;
+}
+
+.dashboard-stat-box:hover {
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-2px);
+}
+
+.dashboard-stat-box .info-box-icon {
+    width: 75px;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border-radius: 0 !important;
+}
+
+.dashboard-stat-box .info-box-content {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dashboard-stat-box .info-box-text {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+.dashboard-stat-box .info-box-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.2;
+}
+
+.dashboard-stat-box .info-box-subtext {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold-dark);
+    margin-top: 2px;
+}
+
+/* Stat box icon backgrounds */
+.bg-stat-tours {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important;
+    color: var(--white) !important;
+}
+
+.bg-stat-inquiries {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
+    color: var(--primary-dark) !important;
+}
+
+.bg-stat-subscribers {
+    background: linear-gradient(135deg, var(--info), #0e7490) !important;
+    color: var(--white) !important;
+}
+
+.bg-stat-posts {
+    background: linear-gradient(135deg, var(--accent), #a85a3a) !important;
+    color: var(--white) !important;
+}
+
+/* Dashboard App Cards */
+.dashboard-app-card {
+    border: none !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-sm) !important;
+    margin-bottom: 20px !important;
+    overflow: hidden;
+    transition: var(--transition-normal);
+}
+
+.dashboard-app-card:hover {
+    box-shadow: var(--shadow-md) !important;
+}
+
+.dashboard-app-card .card-header {
+    background: var(--white) !important;
+    border-bottom: 1px solid var(--medium-gray) !important;
+    padding: 16px 20px !important;
+    position: relative;
+}
+
+.dashboard-app-card .card-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--primary), var(--gold));
+}
+
+.dashboard-app-card .card-header h5 {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: var(--primary) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 !important;
+}
+
+/* Dashboard Table */
+.dashboard-table {
+    margin-bottom: 0 !important;
+}
+
+.dashboard-table tbody td {
+    padding: 12px 20px !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid var(--light-gray) !important;
+    font-size: 13px;
+}
+
+.dashboard-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.dashboard-table tbody tr:hover {
+    background: linear-gradient(90deg, rgba(212, 168, 83, 0.04), transparent) !important;
+}
+
+.dashboard-table tbody td a {
+    color: var(--text-primary);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.dashboard-table tbody td a:hover {
+    color: var(--primary);
+}
+
+.dashboard-table .btn-group .btn {
+    font-size: 11px !important;
+    padding: 4px 12px !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+    margin-left: 4px;
+}
+
+/* Responsive Dashboard Stats */
+@media (max-width: 991.98px) {
+    .dashboard-stat-box {
+        margin-bottom: 15px !important;
+    }
+
+    .dashboard-stat-box .info-box-number {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .dashboard-stat-box .info-box-icon {
+        width: 60px;
+        height: 70px;
+        font-size: 22px;
+    }
+
+    .dashboard-stat-box .info-box-number {
+        font-size: 20px;
+    }
+
+    .dashboard-table tbody td {
+        padding: 10px 14px !important;
+        font-size: 12px;
+    }
+
+    .dashboard-table .btn-group .btn {
+        font-size: 10px !important;
+        padding: 3px 8px !important;
+    }
+}

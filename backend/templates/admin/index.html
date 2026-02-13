@@ -1,0 +1,181 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static jazzmin %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block content_title %} {% trans 'Dashboard' %} {% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+        <li class="breadcrumb-item">{% trans 'Dashboard' %}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    {% get_side_menu using="app_list" as dashboard_list %}
+
+    {# Stats Row #}
+    {% if dashboard_stats %}
+    <div class="col-12 mb-4">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="info-box dashboard-stat-box">
+                    <span class="info-box-icon bg-stat-tours"><i class="fas fa-compass"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Tours</span>
+                        <span class="info-box-number">{{ dashboard_stats.total_tours }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="info-box dashboard-stat-box">
+                    <span class="info-box-icon bg-stat-destinations"><i class="fas fa-map-marked-alt"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Destinations</span>
+                        <span class="info-box-number">{{ dashboard_stats.total_destinations }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="info-box dashboard-stat-box">
+                    <span class="info-box-icon bg-stat-subscribers"><i class="fas fa-mail-bulk"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Subscribers</span>
+                        <span class="info-box-number">{{ dashboard_stats.total_subscribers }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="info-box dashboard-stat-box">
+                    <span class="info-box-icon bg-stat-posts"><i class="fas fa-newspaper"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Blog Posts</span>
+                        <span class="info-box-number">{{ dashboard_stats.total_posts }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {# App Sections - Only 4 apps in 2-column grid #}
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                {% for app in dashboard_list %}
+                    {% if app.name == "Tours & Packages" or app.name == "Destinations" %}
+                    <div class="card dashboard-app-card">
+                        <div class="card-header">
+                            <h5 class="m-0">{{ app.name }}</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-sm dashboard-table mb-0">
+                                <tbody>
+                                {% for model in app.models %}
+                                    <tr>
+                                        <td>
+                                            {% if model.url %}<a href="{{ model.url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                        </td>
+                                        <td class="text-right" style="width: 160px;">
+                                            <div class="btn-group">
+                                                {% if model.add_url %}
+                                                    <a href="{{ model.add_url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.success }} addlink">{% trans 'Add' %}</a>
+                                                {% endif %}
+                                                {% if model.url %}
+                                                    {% if model.view_only %}
+                                                        <a href="{{ model.url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.info }} viewlink">{% trans 'View' %}</a>
+                                                    {% else %}
+                                                        <a href="{{ model.url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.info }} changelink">{% if model.custom %}{% trans 'Go' %}{% else %}{% trans 'Change' %}{% endif %}</a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-md-6 col-sm-12">
+                {% for app in dashboard_list %}
+                    {% if app.name == "Blog & Content" %}
+                    <div class="card dashboard-app-card">
+                        <div class="card-header">
+                            <h5 class="m-0">{{ app.name }}</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-sm dashboard-table mb-0">
+                                <tbody>
+                                {% for model in app.models %}
+                                    <tr>
+                                        <td>
+                                            {% if model.url %}<a href="{{ model.url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                        </td>
+                                        <td class="text-right" style="width: 160px;">
+                                            <div class="btn-group">
+                                                {% if model.add_url %}
+                                                    <a href="{{ model.add_url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.success }} addlink">{% trans 'Add' %}</a>
+                                                {% endif %}
+                                                {% if model.url %}
+                                                    {% if model.view_only %}
+                                                        <a href="{{ model.url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.info }} viewlink">{% trans 'View' %}</a>
+                                                    {% else %}
+                                                        <a href="{{ model.url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.info }} changelink">{% if model.custom %}{% trans 'Go' %}{% else %}{% trans 'Change' %}{% endif %}</a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if app.name == "Contact & Marketing" %}
+                    <div class="card dashboard-app-card">
+                        <div class="card-header">
+                            <h5 class="m-0">{{ app.name }}</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-sm dashboard-table mb-0">
+                                <tbody>
+                                {% for model in app.models %}
+                                    {% if model.name == "FAQs" or model.name == "Newsletter Campaigns" %}
+                                    <tr>
+                                        <td>
+                                            {% if model.url %}<a href="{{ model.url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                        </td>
+                                        <td class="text-right" style="width: 160px;">
+                                            <div class="btn-group">
+                                                {% if model.add_url %}
+                                                    <a href="{{ model.add_url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.success }} addlink">{% trans 'Add' %}</a>
+                                                {% endif %}
+                                                {% if model.url %}
+                                                    {% if model.view_only %}
+                                                        <a href="{{ model.url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.info }} viewlink">{% trans 'View' %}</a>
+                                                    {% else %}
+                                                        <a href="{{ model.url }}" class="btn btn-xs {{ jazzmin_ui.button_classes.info }} changelink">{% if model.custom %}{% trans 'Go' %}{% else %}{% trans 'Change' %}{% endif %}</a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

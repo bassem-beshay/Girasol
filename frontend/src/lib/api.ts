@@ -155,7 +155,7 @@ export const contactApi = {
     message: string;
     tour_interest?: string;
   }) => api.post('/contact/inquiry/', data),
-  subscribeNewsletter: (data: { email: string }) => api.post('/contact/newsletter/subscribe/', data),
+  subscribeNewsletter: (data: { email: string; recaptcha_token?: string }) => api.post('/contact/newsletter/subscribe/', data),
   unsubscribeNewsletter: (email: string) => api.post('/contact/newsletter/unsubscribe/', { email }),
   getFaqs: (category?: string) => api.get('/contact/faq/', { params: { category } }),
   getOffices: () => api.get('/contact/offices/'),

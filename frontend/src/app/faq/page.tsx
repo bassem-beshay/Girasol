@@ -60,7 +60,7 @@ export default function FAQPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
-  const { data: faqs, isLoading, error } = useQuery<FAQ[]>({
+  const { data: faqsData, isLoading, error } = useQuery<{ count: number; results: FAQ[] }>({
     queryKey: ['faqs', activeCategory],
     queryFn: async () => {
       const response = await contactApi.getFaqs(activeCategory === 'all' ? undefined : activeCategory);
@@ -68,8 +68,10 @@ export default function FAQPage() {
     },
   });
 
+  const faqs = faqsData?.results || [];
+
   // Filter FAQs based on search query
-  const filteredFAQs = faqs?.filter(
+  const filteredFAQs = faqs.filter(
     (faq) =>
       faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchQuery.toLowerCase())

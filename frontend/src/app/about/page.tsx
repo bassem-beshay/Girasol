@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -15,14 +16,76 @@ import {
   CheckCircle,
   Phone,
   ArrowRight,
+  Clock,
+  LucideIcon,
 } from 'lucide-react';
+import { contactApi } from '@/lib/api';
 
-const stats = [
-  { icon: Calendar, value: '25+', label: 'Years of Experience' },
-  { icon: Users, value: '50,000+', label: 'Happy Travelers' },
-  { icon: Globe, value: '15+', label: 'Countries Covered' },
-  { icon: Award, value: '100+', label: 'Tour Packages' },
+const iconMap: Record<string, LucideIcon> = {
+  clock: Clock,
+  users: Users,
+  'map-pin': MapPin,
+  globe: Globe,
+  award: Award,
+  star: Star,
+  heart: Heart,
+  shield: Shield,
+};
+
+const defaultStats = [
+  { icon: 'clock', value: '0+', label: 'Years Experience' },
+  { icon: 'users', value: '0+', label: 'Happy Travelers' },
+  { icon: 'globe', value: '0+', label: 'Countries Covered' },
+  { icon: 'award', value: '0+', label: 'Tour Packages' },
 ];
+
+function parseNumericValue(value: string): { num: number; prefix: string; suffix: string } {
+  const match = value.match(/^([^\d]*?)([\d,.]+)(.*)$/);
+  if (!match) return { num: 0, prefix: '', suffix: value };
+  return {
+    prefix: match[1],
+    num: parseFloat(match[2].replace(/,/g, '')),
+    suffix: match[3],
+  };
+}
+
+function formatNumber(n: number, original: string): string {
+  const { prefix, suffix } = parseNumericValue(original);
+  if (original.includes(',')) {
+    return prefix + n.toLocaleString('en-US') + suffix;
+  }
+  if (Number.isInteger(parseNumericValue(original).num)) {
+    return prefix + Math.round(n).toString() + suffix;
+  }
+  return prefix + n.toFixed(1) + suffix;
+}
+
+function CountUp({ value, duration = 2000 }: { value: string; duration?: number }) {
+  const [display, setDisplay] = useState('0');
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true });
+  const lastValue = useRef('');
+
+  useEffect(() => {
+    const { num } = parseNumericValue(value);
+    if (num === 0) { setDisplay(value); return; }
+    if (!inView) return;
+    if (value === lastValue.current) return;
+    lastValue.current = value;
+    const startTime = performance.now();
+    const step = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * num;
+      setDisplay(formatNumber(current, value));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, value, duration]);
+
+  return <div ref={ref} className="text-4xl font-bold text-gray-900 mb-2">{display}</div>;
+}
 
 const values = [
   {
@@ -56,43 +119,83 @@ const milestones = [
   { year: '2023', title: '50K+ Travelers', description: 'Celebrated serving over 50,000 happy customers' },
 ];
 
-const team = [
+const leadership = [
   {
-    name: 'Ahmed Hassan',
-    role: 'Founder & CEO',
-    image: '/images/team/ceo.jpg',
-    description: 'With over 30 years in tourism, Ahmed founded Girasol with a vision to showcase Egypt\'s beauty.',
+    name: 'Emad Khalifa',
+    role: 'Chairman & CEO',
+    image: '/images/team/emad-khalifa.jpeg',
+    description: 'With over 30 years of expertise in the tourism industry, Emad leads Girasol with a visionary approach to showcasing Egypt\'s timeless beauty to the world.',
   },
   {
-    name: 'Sarah Mohamed',
-    role: 'Operations Director',
-    image: '/images/team/operations.jpg',
-    description: 'Sarah ensures every tour runs smoothly, from logistics to customer experience.',
-  },
-  {
-    name: 'Omar Khalil',
-    role: 'Head of Sales',
-    image: '/images/team/sales.jpg',
-    description: 'Omar leads our sales team with passion and dedication to customer satisfaction.',
-  },
-  {
-    name: 'Nadia Farouk',
-    role: 'Customer Relations',
-    image: '/images/team/customer.jpg',
-    description: 'Nadia is the friendly voice that helps travelers plan their perfect Egyptian adventure.',
+    name: 'Delzilene Macedo Costa',
+    role: 'Chief Executive',
+    image: '/images/team/delzilene-costa.jpeg',
+    description: 'Delzilene brings international expertise and strategic leadership, driving Girasol\'s growth and expanding our reach across global markets.',
   },
 ];
 
-const offices = [
-  { city: 'Cairo (HQ)', country: 'Egypt' },
-  { city: 'Luxor', country: 'Egypt' },
-  { city: 'Aswan', country: 'Egypt' },
-  { city: 'Hurghada', country: 'Egypt' },
-  { city: 'Sharm El Sheikh', country: 'Egypt' },
-  { city: 'Dahab', country: 'Egypt' },
+const team = [
+  {
+    name: 'Tarek Khalifa',
+    role: 'Director of Italian Operations',
+    image: '/images/team/tarek-khalifa.jpeg',
+  },
+  {
+    name: 'Mostafa Teleb',
+    role: 'Administration & Executive Manager',
+    image: '/images/team/mostafa-teleb.jpeg',
+  },
+  {
+    name: 'Rania Gamal',
+    role: 'Manager of Ticketing Operations',
+    image: '/images/team/rania-gamal.jpeg',
+  },
+  {
+    name: 'Salem Gomaa',
+    role: 'Purchasing Supervisor',
+    image: '/images/team/salem-gomaa.jpeg',
+  },
+  {
+    name: 'Zeinab Gamal',
+    role: 'Senior Reservations & Operations Italian Market',
+    image: '/images/team/zeinab-gamal.jpeg',
+  },
+  {
+    name: 'Nessma Ragab',
+    role: 'Senior Reservations & Operations Brazilian Market',
+    image: '/images/team/nessma-ragab.jpeg',
+  },
+  {
+    name: 'Ibrahim Okel',
+    role: 'Chief Accountant',
+    image: '/images/team/ibrahim-okel.jpeg',
+  },
 ];
 
 export default function AboutPage() {
+  const [stats, setStats] = useState(defaultStats);
+  const [offices, setOffices] = useState<{ city: string; is_headquarters: boolean }[]>([]);
+
+  useEffect(() => {
+    contactApi.getStatistics().then((res) => {
+      const data = res.data?.results || res.data;
+      if (Array.isArray(data) && data.length > 0) {
+        setStats(data.map((s: { icon: string; value: string; label: string }) => ({
+          icon: s.icon,
+          value: s.value,
+          label: s.label,
+        })));
+      }
+    }).catch(() => {});
+
+    contactApi.getOffices().then((res) => {
+      const data = res.data?.results || res.data;
+      if (Array.isArray(data) && data.length > 0) {
+        setOffices(data);
+      }
+    }).catch(() => {});
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -126,22 +229,25 @@ export default function AboutPage() {
       <section className="py-16 bg-white">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary-100 flex items-center justify-center">
-                  <stat.icon className="w-8 h-8 text-primary-600" />
-                </div>
-                <div className="text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                <div className="text-gray-600">{stat.label}</div>
-              </motion.div>
-            ))}
+            {stats.map((stat, index) => {
+              const IconComponent = iconMap[stat.icon] || Star;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary-100 flex items-center justify-center">
+                    <IconComponent className="w-8 h-8 text-primary-600" />
+                  </div>
+                  <CountUp value={stat.value} />
+                  <div className="text-gray-600">{stat.label}</div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -363,34 +469,66 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
-              Meet Our Team
+              Leadership & Team
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Dedicated professionals passionate about creating unforgettable experiences
+              The People Behind Girasol
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Leadership Row */}
+          <div className="grid md:grid-cols-2 gap-6 mb-16">
+            {leadership.map((member, index) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+                className="group bg-gray-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col sm:flex-row"
+              >
+                <div className="relative w-full sm:w-72 h-72 sm:h-auto flex-shrink-0">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6 flex flex-col justify-center">
+                  <span className="inline-block px-4 py-1 bg-primary-50 text-primary-600 font-semibold text-sm rounded-full mb-3 w-fit uppercase tracking-wide">
+                    {member.role}
+                  </span>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{member.name}</h3>
+                  <p className="text-gray-600 leading-relaxed">{member.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Team Members */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-4">
             {team.map((member, index) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group"
+                transition={{ duration: 0.5, delay: index * 0.07 }}
+                className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100"
               >
-                <div className="relative h-80 rounded-2xl overflow-hidden mb-6">
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent z-10" />
-                  <div className="absolute inset-0 bg-primary-600 flex items-center justify-center">
-                    <Users className="w-20 h-20 text-white/30" />
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                    <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
-                    <p className="text-primary-300">{member.role}</p>
-                  </div>
+                <div className="relative w-full aspect-square">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-                <p className="text-gray-600 text-center">{member.description}</p>
+                <div className="p-2.5 text-center">
+                  <h3 className="text-sm font-bold text-gray-900 mb-0.5">{member.name}</h3>
+                  <p className="text-primary-600 font-medium text-xs leading-tight">{member.role}</p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -398,6 +536,7 @@ export default function AboutPage() {
       </section>
 
       {/* Offices Section */}
+      {offices.length > 0 && (
       <section className="py-20 bg-gray-50">
         <div className="container-custom">
           <motion.div
@@ -425,13 +564,16 @@ export default function AboutPage() {
                 className="bg-white rounded-xl p-6 text-center shadow-md hover:shadow-lg transition-shadow"
               >
                 <MapPin className="w-8 h-8 text-primary-500 mx-auto mb-3" />
-                <h3 className="font-bold text-gray-900">{office.city}</h3>
-                <p className="text-gray-500 text-sm">{office.country}</p>
+                <h3 className="font-bold text-gray-900">
+                  {office.city}{office.is_headquarters ? ' (HQ)' : ''}
+                </h3>
+                <p className="text-gray-500 text-sm">Egypt</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-primary-600 to-secondary-500">

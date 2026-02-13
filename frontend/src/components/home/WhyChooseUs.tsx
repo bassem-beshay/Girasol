@@ -94,14 +94,14 @@ export function WhyChooseUs() {
     <section className="section-padding bg-gray-50">
       <div className="container-custom">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-center max-w-4xl mx-auto mb-12">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-primary-600 mb-4"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-primary-600 mb-4 whitespace-nowrap"
           >
-            Why Girasol Tours
+            Why Girasol Egypt Travel and Tours
           </motion.h2>
           <motion.h3
             initial={{ opacity: 0, y: 20 }}

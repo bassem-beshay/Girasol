@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { contactApi } from '@/lib/api';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -21,7 +21,6 @@ import {
   Instagram,
   Twitter,
   ArrowRight,
-  HelpCircle,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -36,34 +35,6 @@ const contactSchema = z.object({
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
-
-interface FAQ {
-  id: number;
-  question: string;
-  answer: string;
-  category: string;
-  sort_order: number;
-}
-
-interface Office {
-  id: number;
-  city: string;
-  country: string;
-  address: string;
-  phone: string;
-  email: string;
-  is_headquarters: boolean;
-}
-
-interface FAQsResponse {
-  count: number;
-  results: FAQ[];
-}
-
-interface OfficesResponse {
-  count: number;
-  results: Office[];
-}
 
 const contactInfo = [
   {
@@ -115,28 +86,6 @@ const tourTypes = [
 
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-  // Fetch FAQs from API
-  const { data: faqsData } = useQuery<FAQsResponse>({
-    queryKey: ['faqs'],
-    queryFn: async () => {
-      const response = await contactApi.getFaqs();
-      return response.data;
-    },
-  });
-
-  // Fetch Offices from API
-  const { data: officesData } = useQuery<OfficesResponse>({
-    queryKey: ['offices'],
-    queryFn: async () => {
-      const response = await contactApi.getOffices();
-      return response.data;
-    },
-  });
-
-  const faqs = faqsData?.results || [];
-  const offices = officesData?.results || [];
 
   // Contact form submission mutation
   const contactMutation = useMutation({
@@ -196,10 +145,20 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-2xl text-white/90"
+            className="text-xl md:text-2xl text-white/90 mb-8"
           >
             We're here to help you plan your perfect Egyptian adventure
           </motion.p>
+          <motion.a
+            href="#quote-form"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="inline-flex items-center gap-2 bg-white text-primary-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg"
+          >
+            Get Free Quote
+            <ArrowRight className="w-5 h-5" />
+          </motion.a>
         </div>
       </section>
 
@@ -237,7 +196,7 @@ export default function ContactPage() {
       </section>
 
       {/* Main Contact Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="quote-form" className="py-20 bg-gray-50 scroll-mt-20">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-16">
             {/* Contact Form */}
@@ -507,138 +466,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Our Offices Section */}
-      <section className="py-20 bg-white">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
-              Our Offices
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Visit us at any of our locations across Egypt
-            </p>
-          </motion.div>
-
-          {offices.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {offices.map((office, index) => (
-                <motion.div
-                  key={office.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-6 h-6 text-primary-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-2">
-                        {office.city}
-                        {office.is_headquarters && (
-                          <span className="ml-2 text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded-full">
-                            HQ
-                          </span>
-                        )}
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-2">{office.address}</p>
-                      <a
-                        href={`tel:${office.phone.replace(/\s/g, '')}`}
-                        className="text-primary-600 text-sm font-medium hover:text-primary-700"
-                      >
-                        {office.phone}
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <Loader2 className="w-8 h-8 animate-spin text-primary-500 mx-auto mb-4" />
-              <p className="text-gray-500">Loading offices...</p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Find quick answers to common questions
-            </p>
-          </motion.div>
-
-          {faqs.length > 0 ? (
-            <div className="max-w-3xl mx-auto space-y-4">
-              {faqs.map((faq, index) => (
-                <motion.div
-                  key={faq.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl overflow-hidden shadow-md"
-                >
-                  <button
-                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                    className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
-                  >
-                    <span className="font-semibold text-gray-900">{faq.question}</span>
-                    <span
-                      className={`transform transition-transform ${
-                        openFaq === index ? 'rotate-180' : ''
-                      }`}
-                    >
-                      <svg
-                        className="w-5 h-5 text-gray-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                  {openFaq === index && (
-                    <div className="px-6 pb-4">
-                      <p className="text-gray-600">{faq.answer}</p>
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <HelpCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">Loading FAQs...</p>
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-primary-600 to-secondary-500">
         <div className="container-custom text-center">
@@ -659,11 +486,13 @@ export default function ContactPage() {
                 Explore Tours
               </Link>
               <a
-                href="tel:+20237715511"
+                href="https://wa.me/201060873700"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn btn-outline border-white text-white hover:bg-white/10 btn-lg"
               >
-                <Phone className="w-5 h-5 mr-2" />
-                Call Us Now
+                <MessageSquare className="w-5 h-5 mr-2" />
+                WhatsApp Us
               </a>
             </div>
           </motion.div>

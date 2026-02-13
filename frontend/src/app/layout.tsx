@@ -112,6 +112,12 @@ export default function RootLayout({
           src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
           async
         />
+        {/* Google reCAPTCHA v3 */}
+        <script
+          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          async
+          defer
+        />
       </head>
       <body className="font-sans antialiased">
         <Providers>

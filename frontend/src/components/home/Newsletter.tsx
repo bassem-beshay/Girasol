@@ -1,11 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { contactApi } from '@/lib/api';
 import { motion } from 'framer-motion';
 import { Mail, Send, Check, Loader2, MailCheck, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 
 type SubscriptionStatus =
   | 'idle'
@@ -18,10 +27,33 @@ export function Newsletter() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<SubscriptionStatus>('idle');
 
+  // Get reCAPTCHA token
+  const getRecaptchaToken = useCallback(async (): Promise<string | null> => {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey || typeof window === 'undefined' || !window.grecaptcha) {
+      return null;
+    }
+
+    try {
+      return await new Promise((resolve) => {
+        window.grecaptcha.ready(async () => {
+          try {
+            const token = await window.grecaptcha.execute(siteKey, { action: 'newsletter_subscribe' });
+            resolve(token);
+          } catch {
+            resolve(null);
+          }
+        });
+      });
+    } catch {
+      return null;
+    }
+  }, []);
+
   // Newsletter subscription mutation
   const subscribeMutation = useMutation({
-    mutationFn: async (email: string) => {
-      const response = await contactApi.subscribeNewsletter({ email });
+    mutationFn: async ({ email, recaptcha_token }: { email: string; recaptcha_token?: string }) => {
+      const response = await contactApi.subscribeNewsletter({ email, recaptcha_token });
       return response.data;
     },
     onSuccess: (data) => {
@@ -70,7 +102,10 @@ export function Newsletter() {
       return;
     }
 
-    subscribeMutation.mutate(email);
+    // Get reCAPTCHA token
+    const recaptcha_token = await getRecaptchaToken();
+
+    subscribeMutation.mutate({ email, recaptcha_token: recaptcha_token || undefined });
   };
 
   const renderSuccessMessage = () => {

@@ -228,6 +228,10 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='Girasol Tours <info@girasoltours.com>')
 
+# Google reCAPTCHA v3 Configuration
+RECAPTCHA_SITE_KEY = config('RECAPTCHA_SITE_KEY', default='')
+RECAPTCHA_SECRET_KEY = config('RECAPTCHA_SECRET_KEY', default='')
+
 # Celery Configuration
 CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
@@ -288,6 +292,7 @@ JAZZMIN_SETTINGS = {
         'reviews',
         'blog',
         'contact',
+        'admin',
     ],
 
     # Icons - Professional style
@@ -312,6 +317,7 @@ JAZZMIN_SETTINGS = {
         'contact.Newsletter': 'fas fa-mail-bulk',
         'contact.FAQ': 'fas fa-question-circle',
         'contact.Office': 'fas fa-building',
+        'admin.LogEntry': 'fas fa-history',
     },
 
     'default_icon_parents': 'fas fa-chevron-circle-right',

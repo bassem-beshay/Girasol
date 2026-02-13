@@ -8,11 +8,13 @@ from rest_framework.views import APIView
 from rest_framework.throttling import AnonRateThrottle
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 from .models import Inquiry, Newsletter, FAQ, Office, Statistic
 from .serializers import (
     InquirySerializer, NewsletterSerializer, FAQSerializer, OfficeSerializer, StatisticSerializer
 )
 from .emails import send_confirmation_email, send_welcome_email, send_unsubscribe_confirmation_email
+from .recaptcha import verify_recaptcha
 
 logger = logging.getLogger(__name__)
 
@@ -59,12 +61,28 @@ class NewsletterSubscribeView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         email = request.data.get('email', '').lower().strip()
+        recaptcha_token = request.data.get('recaptcha_token', '')
 
         if not email:
             return Response(
                 {'error': 'Email is required'},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+        # Verify reCAPTCHA (if configured)
+        if getattr(settings, 'RECAPTCHA_SECRET_KEY', None):
+            recaptcha_result = verify_recaptcha(
+                token=recaptcha_token,
+                action='newsletter_subscribe',
+                min_score=0.5
+            )
+            if not recaptcha_result['success']:
+                logger.warning(f"reCAPTCHA failed for {email}: {recaptcha_result['error']}")
+                return Response(
+                    {'error': 'Security verification failed. Please try again.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            logger.info(f"reCAPTCHA passed for {email} with score {recaptcha_result['score']}")
 
         # Check if already subscribed and confirmed
         existing = Newsletter.objects.filter(email=email).first()

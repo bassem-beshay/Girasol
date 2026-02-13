@@ -32,6 +32,7 @@ import {
   Camera,
   ChevronLeft,
   ChevronRight,
+  MessageSquare,
 } from 'lucide-react';
 import { InquiryForm } from '@/components/tours/InquiryForm';
 
@@ -54,6 +55,8 @@ interface TourDetail {
   nights: number;
   duration_display: string;
   price: string;
+  price_single_supplement: string | null;
+  child_price: string | null;
   discounted_price: string;
   currency: string;
   has_discount: boolean;
@@ -227,6 +230,16 @@ export default function TourDetailPage() {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('overview');
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set(['overview']));
+
+  const toggleSection = (id: string) => {
+    setOpenSections(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   // Section refs for scrolling
   const sectionRefs = {
@@ -241,13 +254,22 @@ export default function TourDetailPage() {
   };
 
   const scrollToSection = (sectionId: string) => {
-    const ref = sectionRefs[sectionId as keyof typeof sectionRefs];
-    if (ref?.current) {
-      const yOffset = -120; // Offset for fixed header
-      const y = ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-      setActiveSection(sectionId);
-    }
+    // Open the section if it's closed
+    setOpenSections(prev => {
+      const next = new Set(prev);
+      next.add(sectionId);
+      return next;
+    });
+    // Delay scroll slightly to allow section to open
+    setTimeout(() => {
+      const ref = sectionRefs[sectionId as keyof typeof sectionRefs];
+      if (ref?.current) {
+        const yOffset = -120;
+        const y = ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        setActiveSection(sectionId);
+      }
+    }, 50);
   };
 
   // Track active section on scroll
@@ -427,186 +449,274 @@ export default function TourDetailPage() {
             {/* Left Column - Tour Details */}
             <div className="lg:col-span-2 space-y-8">
               {/* Overview */}
-              <div ref={sectionRefs.overview} className="bg-white rounded-2xl p-6 shadow-md">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
-                <p className="text-gray-600 leading-relaxed">{tour.description}</p>
+              <div ref={sectionRefs.overview} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                <button
+                  onClick={() => toggleSection('overview')}
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <h2 className="text-2xl font-bold text-gray-900">Overview</h2>
+                  <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('overview') ? 'rotate-180' : ''}`} />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: openSections.has('overview') ? 'auto' : 0, opacity: openSections.has('overview') ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-6">
+                    <p className="text-gray-600 leading-relaxed">{tour.description}</p>
 
-                {/* Quick Info */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t">
-                  <div className="text-center">
-                    <Clock className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                    <div className="text-sm text-gray-500">Duration</div>
-                    <div className="font-semibold">{tour.duration_display}</div>
+                    {/* Quick Info */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t">
+                      <div className="text-center">
+                        <Clock className="w-8 h-8 text-primary-500 mx-auto mb-2" />
+                        <div className="text-sm text-gray-500">Duration</div>
+                        <div className="font-semibold">{tour.duration_display}</div>
+                      </div>
+                      <div className="text-center">
+                        <Users className="w-8 h-8 text-primary-500 mx-auto mb-2" />
+                        <div className="text-sm text-gray-500">Group Size</div>
+                        <div className="font-semibold">{tour.min_group_size}-{tour.max_group_size}</div>
+                      </div>
+                      <div className="text-center">
+                        <MapPin className="w-8 h-8 text-primary-500 mx-auto mb-2" />
+                        <div className="text-sm text-gray-500">Start</div>
+                        <div className="font-semibold">{tour.departure_city}</div>
+                      </div>
+                      <div className="text-center">
+                        <Calendar className="w-8 h-8 text-primary-500 mx-auto mb-2" />
+                        <div className="text-sm text-gray-500">Difficulty</div>
+                        <div className="font-semibold capitalize">{tour.difficulty_level}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <Users className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                    <div className="text-sm text-gray-500">Group Size</div>
-                    <div className="font-semibold">{tour.min_group_size}-{tour.max_group_size}</div>
-                  </div>
-                  <div className="text-center">
-                    <MapPin className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                    <div className="text-sm text-gray-500">Start</div>
-                    <div className="font-semibold">{tour.departure_city}</div>
-                  </div>
-                  <div className="text-center">
-                    <Calendar className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                    <div className="text-sm text-gray-500">Difficulty</div>
-                    <div className="font-semibold capitalize">{tour.difficulty_level}</div>
-                  </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Photo Gallery */}
               {tour.images && tour.images.length > 0 && (
-                <div ref={sectionRefs.gallery} className="bg-white rounded-2xl p-6 shadow-md">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Camera className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-gray-900">Photo Gallery</h2>
-                      <p className="text-sm text-gray-500">{tour.images.length} photos</p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {tour.images.map((image, index) => (
-                      <div
-                        key={image.id}
-                        className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group"
-                        onClick={() => {
-                          setCurrentImageIndex(index);
-                          setGalleryOpen(true);
-                        }}
-                      >
-                        <Image
-                          src={image.image}
-                          alt={image.alt_text || image.caption || `Tour photo ${index + 1}`}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                          <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                        {image.caption && (
-                          <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
-                            <p className="text-white text-sm truncate">{image.caption}</p>
-                          </div>
-                        )}
+                <div ref={sectionRefs.gallery} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                  <button
+                    onClick={() => toggleSection('gallery')}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <Camera className="w-6 h-6 text-purple-600" />
                       </div>
-                    ))}
-                  </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900">Photo Gallery</h2>
+                        <p className="text-sm text-gray-500">{tour.images.length} photos</p>
+                      </div>
+                    </div>
+                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('gallery') ? 'rotate-180' : ''}`} />
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: openSections.has('gallery') ? 'auto' : 0, opacity: openSections.has('gallery') ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {tour.images.map((image, index) => (
+                          <div
+                            key={image.id}
+                            className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group"
+                            onClick={() => {
+                              setCurrentImageIndex(index);
+                              setGalleryOpen(true);
+                            }}
+                          >
+                            <Image
+                              src={image.image}
+                              alt={image.alt_text || image.caption || `Tour photo ${index + 1}`}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                              <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                            {image.caption && (
+                              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
+                                <p className="text-white text-sm truncate">{image.caption}</p>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
               )}
 
               {/* Highlights */}
               {tour.highlights && tour.highlights.length > 0 && (
-                <div ref={sectionRefs.highlights} className="bg-white rounded-2xl p-6 shadow-md">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Tour Highlights</h2>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {tour.highlights.map((highlight) => (
-                      <div key={highlight.id} className="flex items-start gap-3 p-4 bg-primary-50 rounded-xl">
-                        <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Star className="w-5 h-5 text-primary-600" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{highlight.title}</h3>
-                          <p className="text-sm text-gray-600">{highlight.description}</p>
-                        </div>
+                <div ref={sectionRefs.highlights} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                  <button
+                    onClick={() => toggleSection('highlights')}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <h2 className="text-2xl font-bold text-gray-900">Tour Highlights</h2>
+                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('highlights') ? 'rotate-180' : ''}`} />
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: openSections.has('highlights') ? 'auto' : 0, opacity: openSections.has('highlights') ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {tour.highlights.map((highlight) => (
+                          <div key={highlight.id} className="flex items-start gap-3 p-4 bg-primary-50 rounded-xl">
+                            <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <Star className="w-5 h-5 text-primary-600" />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-gray-900">{highlight.title}</h3>
+                              <p className="text-sm text-gray-600">{highlight.description}</p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  </motion.div>
                 </div>
               )}
 
               {/* Itinerary */}
               {tour.itinerary && tour.itinerary.length > 0 && (
-                <div ref={sectionRefs.itinerary} className="bg-white rounded-2xl p-6 shadow-md">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Day by Day Itinerary</h2>
-                  <div className="space-y-4">
-                    {tour.itinerary.map((day) => (
-                      <div key={day.id} className="border rounded-xl p-5">
-                        <div className="flex items-center gap-4 mb-3">
-                          <span className="w-12 h-12 bg-primary-500 text-white rounded-full flex items-center justify-center font-bold">
-                            {day.day_number}
-                          </span>
-                          <h3 className="text-lg font-semibold text-gray-900">{day.title}</h3>
-                        </div>
-                        <p className="text-gray-600 mb-4">{day.description}</p>
-                        <div className="flex flex-wrap gap-3 text-sm">
-                          {day.locations && (
-                            <div className="flex items-center gap-2 text-gray-500">
-                              <MapPin className="w-4 h-4 flex-shrink-0" />
-                              <span className="break-words">{day.locations}</span>
+                <div ref={sectionRefs.itinerary} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                  <button
+                    onClick={() => toggleSection('itinerary')}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <h2 className="text-2xl font-bold text-gray-900">Day by Day Itinerary</h2>
+                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('itinerary') ? 'rotate-180' : ''}`} />
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: openSections.has('itinerary') ? 'auto' : 0, opacity: openSections.has('itinerary') ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
+                      <div className="space-y-4">
+                        {tour.itinerary.map((day) => (
+                          <div key={day.id} className="border rounded-xl p-5">
+                            <div className="flex items-center gap-4 mb-3">
+                              <span className="w-12 h-12 bg-primary-500 text-white rounded-full flex items-center justify-center font-bold">
+                                {day.day_number}
+                              </span>
+                              <h3 className="text-lg font-semibold text-gray-900">{day.title}</h3>
                             </div>
-                          )}
-                          {day.meals_included && (
-                            <div className="flex items-center gap-2 text-gray-500">
-                              <span className="break-words">Meals: {day.meals_included}</span>
+                            <p className="text-gray-600 mb-4">{day.description}</p>
+                            <div className="flex flex-wrap gap-3 text-sm">
+                              {day.locations && (
+                                <div className="flex items-center gap-2 text-gray-500">
+                                  <MapPin className="w-4 h-4 flex-shrink-0" />
+                                  <span className="break-words">{day.locations}</span>
+                                </div>
+                              )}
+                              {day.meals_included && (
+                                <div className="flex items-center gap-2 text-gray-500">
+                                  <span className="break-words">Meals: {day.meals_included}</span>
+                                </div>
+                              )}
+                              {day.accommodation && (
+                                <div className="flex items-center gap-2 text-gray-500">
+                                  <span className="break-words">Stay: {day.accommodation}</span>
+                                </div>
+                              )}
                             </div>
-                          )}
-                          {day.accommodation && (
-                            <div className="flex items-center gap-2 text-gray-500">
-                              <span className="break-words">Stay: {day.accommodation}</span>
-                            </div>
-                          )}
-                        </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  </motion.div>
                 </div>
               )}
 
               {/* Inclusions */}
-              <div ref={sectionRefs.inclusions} className="bg-white rounded-2xl p-6 shadow-md">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">What&apos;s Included</h2>
-                <div className="grid md:grid-cols-2 gap-8">
-                  {included.length > 0 && (
-                    <div>
-                      <h3 className="font-semibold text-green-600 mb-4 flex items-center gap-2">
-                        <Check className="w-5 h-5" />
-                        Included
-                      </h3>
-                      <ul className="space-y-2">
-                        {included.map((item) => (
-                          <li key={item.id} className="flex items-center gap-2 text-gray-600">
-                            <Check className="w-4 h-4 text-green-500" />
-                            {item.item}
-                          </li>
-                        ))}
-                      </ul>
+              <div ref={sectionRefs.inclusions} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                <button
+                  onClick={() => toggleSection('inclusions')}
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <h2 className="text-2xl font-bold text-gray-900">What&apos;s Included</h2>
+                  <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('inclusions') ? 'rotate-180' : ''}`} />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: openSections.has('inclusions') ? 'auto' : 0, opacity: openSections.has('inclusions') ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-6">
+                    <div className="grid md:grid-cols-2 gap-8">
+                      {included.length > 0 && (
+                        <div>
+                          <h3 className="font-semibold text-green-600 mb-4 flex items-center gap-2">
+                            <Check className="w-5 h-5" />
+                            Included
+                          </h3>
+                          <ul className="space-y-2">
+                            {included.map((item) => (
+                              <li key={item.id} className="flex items-center gap-2 text-gray-600">
+                                <Check className="w-4 h-4 text-green-500" />
+                                {item.item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {notIncluded.length > 0 && (
+                        <div>
+                          <h3 className="font-semibold text-red-600 mb-4 flex items-center gap-2">
+                            <X className="w-5 h-5" />
+                            Not Included
+                          </h3>
+                          <ul className="space-y-2">
+                            {notIncluded.map((item) => (
+                              <li key={item.id} className="flex items-center gap-2 text-gray-600">
+                                <X className="w-4 h-4 text-red-500" />
+                                {item.item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {notIncluded.length > 0 && (
-                    <div>
-                      <h3 className="font-semibold text-red-600 mb-4 flex items-center gap-2">
-                        <X className="w-5 h-5" />
-                        Not Included
-                      </h3>
-                      <ul className="space-y-2">
-                        {notIncluded.map((item) => (
-                          <li key={item.id} className="flex items-center gap-2 text-gray-600">
-                            <X className="w-4 h-4 text-red-500" />
-                            {item.item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                  </div>
+                </motion.div>
               </div>
 
               {/* Seasonal Pricing */}
               {tour.seasonal_pricing && tour.seasonal_pricing.length > 0 && (
-                <div ref={sectionRefs.pricing} className="bg-white rounded-2xl p-6 shadow-md">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <DollarSign className="w-6 h-6 text-green-600" />
+                <div ref={sectionRefs.pricing} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                  <button
+                    onClick={() => toggleSection('pricing')}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <DollarSign className="w-6 h-6 text-green-600" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900">Seasonal Pricing</h2>
+                        <p className="text-sm text-gray-500">Prices vary by season</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-gray-900">Seasonal Pricing</h2>
-                      <p className="text-sm text-gray-500">Prices vary by season</p>
-                    </div>
-                  </div>
+                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('pricing') ? 'rotate-180' : ''}`} />
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: openSections.has('pricing') ? 'auto' : 0, opacity: openSections.has('pricing') ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
                   {/* Mobile View - Cards */}
                   <div className="md:hidden space-y-3">
                     {tour.seasonal_pricing.map((pricing) => (
@@ -692,21 +802,36 @@ export default function TourDetailPage() {
                       <strong>Note:</strong> Prices are per person based on double occupancy. Single supplement applies for solo travelers requiring a private room.
                     </p>
                   </div>
+                    </div>
+                  </motion.div>
                 </div>
               )}
 
               {/* Upcoming Departures */}
               {tour.departures && tour.departures.length > 0 && (
-                <div ref={sectionRefs.departures} className="bg-white rounded-2xl p-6 shadow-md">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <CalendarDays className="w-6 h-6 text-blue-600" />
+                <div ref={sectionRefs.departures} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                  <button
+                    onClick={() => toggleSection('departures')}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <CalendarDays className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900">Upcoming Departures</h2>
+                        <p className="text-sm text-gray-500">Choose your preferred travel date</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-gray-900">Upcoming Departures</h2>
-                      <p className="text-sm text-gray-500">Choose your preferred travel date</p>
-                    </div>
-                  </div>
+                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('departures') ? 'rotate-180' : ''}`} />
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: openSections.has('departures') ? 'auto' : 0, opacity: openSections.has('departures') ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
                   <div className="space-y-3">
                     {tour.departures.slice(0, 8).map((departure) => (
                       <div
@@ -812,29 +937,46 @@ export default function TourDetailPage() {
                       </p>
                     </div>
                   )}
+                    </div>
+                  </motion.div>
                 </div>
               )}
 
               {/* FAQs */}
               {tour.faqs && tour.faqs.length > 0 && (
-                <div ref={sectionRefs.faqs} className="bg-white rounded-2xl p-6 shadow-md">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                      <HelpCircle className="w-6 h-6 text-primary-600" />
+                <div ref={sectionRefs.faqs} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                  <button
+                    onClick={() => toggleSection('faqs')}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                        <HelpCircle className="w-6 h-6 text-primary-600" />
+                      </div>
+                      <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
-                  </div>
-                  <div className="space-y-3">
-                    {tour.faqs.map((faq, index) => (
-                      <FAQItem
-                        key={faq.id}
-                        question={faq.question}
-                        answer={faq.answer}
-                        isOpen={openFAQ === index}
-                        onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                      />
-                    ))}
-                  </div>
+                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('faqs') ? 'rotate-180' : ''}`} />
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: openSections.has('faqs') ? 'auto' : 0, opacity: openSections.has('faqs') ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
+                      <div className="space-y-3">
+                        {tour.faqs.map((faq, index) => (
+                          <FAQItem
+                            key={faq.id}
+                            question={faq.question}
+                            answer={faq.answer}
+                            isOpen={openFAQ === index}
+                            onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
               )}
             </div>
@@ -887,6 +1029,26 @@ export default function TourDetailPage() {
                         Save {tour.discount_percentage}%
                       </span>
                     )}
+                    {(tour.price_single_supplement || tour.child_price) && (
+                      <div className="mt-4 space-y-2 pt-4 border-t border-gray-100">
+                        {tour.price_single_supplement && (
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-500">Single Supplement</span>
+                            <span className="font-semibold text-gray-900">
+                              +${parseFloat(tour.price_single_supplement).toFixed(0)}
+                            </span>
+                          </div>
+                        )}
+                        {tour.child_price && (
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-500">Child Price</span>
+                            <span className="font-semibold text-gray-900">
+                              ${parseFloat(tour.child_price).toFixed(0)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Quick Info */}
@@ -915,26 +1077,16 @@ export default function TourDetailPage() {
                   tourDuration={tour.duration_display}
                 />
 
-                {/* Contact Card */}
-                <div className="bg-gray-50 rounded-2xl p-6 mt-6">
-                  <h3 className="font-semibold text-gray-900 mb-4">Need Help?</h3>
-                  <div className="space-y-3">
-                    <a
-                      href="tel:+20237715511"
-                      className="flex items-center gap-3 text-gray-600 hover:text-primary-600"
-                    >
-                      <Phone className="w-5 h-5" />
-                      +20 2 3771 5511
-                    </a>
-                    <a
-                      href="mailto:info@girasoltours.com"
-                      className="flex items-center gap-3 text-gray-600 hover:text-primary-600"
-                    >
-                      <Mail className="w-5 h-5" />
-                      info@girasoltours.com
-                    </a>
-                  </div>
-                </div>
+                {/* WhatsApp CTA */}
+                <a
+                  href={`https://wa.me/201060873700?text=${encodeURIComponent(`Hi, I'm interested in: ${tour.name}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 mt-4 px-4 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl transition-colors"
+                >
+                  <MessageSquare className="w-5 h-5 flex-shrink-0" />
+                  <span className="font-semibold text-sm">Ask about this tour on WhatsApp</span>
+                </a>
               </div>
             </div>
           </div>
