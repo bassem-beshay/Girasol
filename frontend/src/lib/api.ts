@@ -154,6 +154,7 @@ export const contactApi = {
     subject: string;
     message: string;
     tour_interest?: string;
+    recaptcha_token?: string;
   }) => api.post('/contact/inquiry/', data),
   subscribeNewsletter: (data: { email: string; recaptcha_token?: string }) => api.post('/contact/newsletter/subscribe/', data),
   unsubscribeNewsletter: (email: string) => api.post('/contact/newsletter/unsubscribe/', { email }),

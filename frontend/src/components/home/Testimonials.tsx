@@ -146,7 +146,7 @@ export function Testimonials() {
                         alt={testimonial.name}
                         fill
                         className="object-cover"
-                      />
+                      loading="lazy" />
                     ) : (
                       <User className="w-6 h-6 text-primary-500" />
                     )}

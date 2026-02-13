@@ -46,7 +46,7 @@ class DestinationDetailSerializer(MultiLanguageSerializerMixin, serializers.Mode
             'id', 'name', 'name_es', 'name_pt', 'slug',
             'tagline', 'tagline_es', 'tagline_pt',
             'description', 'description_es', 'description_pt',
-            'featured_image', 'banner_image', 'video_url',
+            'featured_image',
             'country', 'region', 'latitude', 'longitude',
             'best_time_to_visit', 'getting_there', 'climate_info',
             'is_featured', 'tour_count', 'images', 'activities',

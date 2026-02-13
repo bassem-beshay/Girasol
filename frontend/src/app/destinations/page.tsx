@@ -125,7 +125,7 @@ export default function DestinationsPage() {
                         alt={destination.name}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
+                      loading="lazy" />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
                         <MapPin className="w-16 h-16 text-white/50" />
@@ -206,7 +206,7 @@ export default function DestinationsPage() {
                           alt={destination.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
+                        loading="lazy" />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
                           <MapPin className="w-10 h-10 sm:w-12 sm:h-12 text-primary-400" />
@@ -244,27 +244,32 @@ export default function DestinationsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-primary-600 to-secondary-500">
-        <div className="container-custom text-center px-4 sm:px-6">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container-custom px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl py-12 sm:py-16 md:py-20 px-6 sm:px-10 md:px-16 text-center relative overflow-hidden"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-4 sm:mb-6">
-              Need Help Choosing?
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto">
-              Our travel experts are here to help you plan the perfect Egyptian adventure.
-              Contact us for personalized recommendations.
-            </p>
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-              <Link href="/contact" className="btn bg-white text-primary-600 hover:bg-gray-100 py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base font-semibold">
-                Get Free Consultation
-              </Link>
-              <Link href="/tours" className="btn btn-outline border-white text-white hover:bg-white/10 py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base font-semibold">
-                Browse All Tours
-              </Link>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-500/10 rounded-full blur-2xl" />
+            <div className="relative z-10">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-4 sm:mb-6">
+                Need Help Choosing?
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto">
+                Our travel experts are here to help you plan the perfect Egyptian adventure.
+                Contact us for personalized recommendations.
+              </p>
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
+                <Link href="/contact#quote-form" className="btn bg-primary-500 text-white hover:bg-primary-600 py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base font-semibold rounded-xl">
+                  Get Free Consultation
+                </Link>
+                <Link href="/tours" className="btn btn-outline border-white/30 text-white hover:bg-white/10 py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base font-semibold rounded-xl">
+                  Browse All Tours
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>

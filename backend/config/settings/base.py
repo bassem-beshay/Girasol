@@ -251,72 +251,72 @@ CACHES = {
 # Jazzmin Admin Theme Configuration - Professional Navy & Gold Theme
 JAZZMIN_SETTINGS = {
     # Title & Branding
-    'site_title': 'Girasol Egypt Admin',
-    'site_header': 'Girasol Egypt',
-    'site_brand': 'Girasol Egypt',
+    'site_title': 'Girasol Tours',
+    'site_header': 'Girasol Tours',
+    'site_brand': 'Girasol Tours',
     'site_logo': 'admin/img/logo.png',
     'site_logo_classes': 'img-fluid',
     'site_icon': 'admin/img/favicon.png',
     'login_logo': 'admin/img/logo.png',
     'login_logo_dark': 'admin/img/logo.png',
-    'welcome_sign': 'Welcome to Girasol Egypt Admin',
+    'welcome_sign': 'Welcome to Girasol Tours Dashboard',
     'copyright': 'Girasol Egypt Travel and Tours',
 
-    # Search in sidebar
-    'search_model': ['users.User', 'tours.Tour', 'bookings.Booking'],
+    # Search
+    'search_model': [],
 
-    # Top menu links
-    'topmenu_links': [
-        {'name': 'Home', 'url': 'admin:index', 'permissions': ['auth.view_user']},
-        {'name': 'View Site', 'url': '/', 'new_window': True},
-    ],
+    # Top menu
+    'topmenu_links': [],
 
     # User Menu
     'usermenu_links': [
-        {'name': 'Profile', 'url': 'admin:users_user_changelist', 'icon': 'fas fa-user'},
-        {'model': 'auth.user'},
+        {'name': 'View Site', 'url': 'https://www.girasoltours.com', 'new_window': True, 'icon': 'fas fa-globe'},
     ],
 
-    # Sidebar Configuration
+    # Sidebar
     'show_sidebar': True,
     'navigation_expanded': True,
-    'hide_apps': ['auth', 'sites', 'authtoken', 'account', 'socialaccount'],
+    'hide_apps': ['auth', 'sites', 'authtoken', 'account', 'socialaccount', 'reviews'],
     'hide_models': [],
 
-    # App Ordering
+    # App Ordering - logical flow
     'order_with_respect_to': [
-        'bookings',
         'tours',
         'destinations',
-        'users',
-        'reviews',
         'blog',
         'contact',
+        'users',
         'admin',
     ],
 
-    # Icons - Professional style
+    # Icons
     'icons': {
-        'users.User': 'fas fa-users',
-        'tours.Tour': 'fas fa-compass',
+        # Tours
+        'tours.Tour': 'fas fa-route',
         'tours.TourCategory': 'fas fa-th-large',
-        'tours.TourDeparture': 'fas fa-calendar-alt',
-        'tours.Addon': 'fas fa-puzzle-piece',
-        'destinations.Destination': 'fas fa-map-marker-alt',
-        'destinations.Area': 'fas fa-globe-africa',
+        'tours.TourType': 'fas fa-tags',
+        'tours.EarlyBookingOffer': 'fas fa-percentage',
+        # Destinations
+        'destinations.Destination': 'fas fa-map-marked-alt',
         'destinations.Activity': 'fas fa-hiking',
-        'bookings.Booking': 'fas fa-ticket-alt',
-        'bookings.PromoCode': 'fas fa-percent',
-        'blog.Post': 'fas fa-newspaper',
+        # Blog
+        'blog.Post': 'fas fa-pen-fancy',
         'blog.Category': 'fas fa-folder-open',
-        'blog.Tag': 'fas fa-tags',
+        'blog.Tag': 'fas fa-hashtag',
         'blog.Comment': 'fas fa-comments',
-        'reviews.Review': 'fas fa-star',
-        'reviews.Testimonial': 'fas fa-quote-right',
+        # Contact
         'contact.Inquiry': 'fas fa-envelope-open-text',
         'contact.Newsletter': 'fas fa-mail-bulk',
+        'contact.NewsletterCampaign': 'fas fa-paper-plane',
         'contact.FAQ': 'fas fa-question-circle',
-        'contact.Office': 'fas fa-building',
+        'contact.Office': 'fas fa-map-pin',
+        'contact.Statistic': 'fas fa-chart-bar',
+        # Users
+        'users.User': 'fas fa-users-cog',
+        # Reviews (hidden but keep icons)
+        'reviews.Review': 'fas fa-star',
+        'reviews.Testimonial': 'fas fa-quote-right',
+        # Admin
         'admin.LogEntry': 'fas fa-history',
     },
 
@@ -326,9 +326,9 @@ JAZZMIN_SETTINGS = {
     # Related Modal
     'related_modal_active': True,
 
-    # Custom CSS
+    # Custom CSS/JS
     'custom_css': 'admin/css/custom_admin.css',
-    'custom_js': None,
+    'custom_js': 'admin/js/custom_admin.js',
 
     # Fonts
     'use_google_fonts_cdn': True,
@@ -339,18 +339,17 @@ JAZZMIN_SETTINGS = {
     # Change View
     'changeform_format': 'horizontal_tabs',
     'changeform_format_overrides': {
-        'tours.Tour': 'vertical_tabs',
-        'bookings.Booking': 'vertical_tabs',
-        'destinations.Destination': 'vertical_tabs',
+        'tours.Tour': 'horizontal_tabs',
+        'destinations.Destination': 'horizontal_tabs',
+        'blog.Post': 'horizontal_tabs',
     },
 
-    # Language
     'language_chooser': False,
 }
 
 # Jazzmin UI Tweaks - Professional Navy Theme
 JAZZMIN_UI_TWEAKS = {
-    # Text sizes
+    # Text
     'navbar_small_text': False,
     'footer_small_text': True,
     'body_small_text': False,
@@ -363,12 +362,12 @@ JAZZMIN_UI_TWEAKS = {
     'no_navbar_border': True,
 
     # Layout
-    'navbar_fixed': True,
+    'navbar_fixed': False,
     'layout_boxed': False,
     'footer_fixed': False,
     'sidebar_fixed': True,
 
-    # Sidebar - Dark Navy theme
+    # Sidebar
     'sidebar': 'sidebar-dark-warning',
     'sidebar_nav_small_text': False,
     'sidebar_disable_expand': False,
@@ -377,22 +376,19 @@ JAZZMIN_UI_TWEAKS = {
     'sidebar_nav_legacy_style': False,
     'sidebar_nav_flat_style': False,
 
-    # Theme - Using default (will be overridden by custom CSS)
+    # Theme
     'theme': 'default',
     'dark_mode_theme': None,
 
-    # Buttons - Professional colors
+    # Buttons
     'button_classes': {
         'primary': 'btn-primary',
         'secondary': 'btn-secondary',
         'info': 'btn-info',
         'warning': 'btn-warning',
         'danger': 'btn-danger',
-        'success': 'btn-primary',
+        'success': 'btn-success',
     },
-
-    # Actions
-    'actions_sticky_top': True,
 }
 
 # Logging Configuration

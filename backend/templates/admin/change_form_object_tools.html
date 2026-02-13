@@ -1,0 +1,10 @@
+{% load i18n admin_urls jazzmin %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+
+{% block object-tools-items %}
+    {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+    <a class="btn btn-secondary btn-sm" href="{% add_preserved_filters history_url %}" style="padding: 8px 24px; font-size: 13px;">{% trans 'History' %}</a>
+    {% if has_absolute_url %}
+        <a href="{{ absolute_url }}" class="btn btn-secondary btn-sm" style="padding: 8px 24px; font-size: 13px;">{% trans "View on site" %}</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{
+  "apps": [{
+    "name": "girasol-frontend",
+    "script": "node_modules/.bin/next",
+    "args": "start",
+    "cwd": "/home/bassem/Girasol/frontend",
+    "instances": 2,
+    "exec_mode": "cluster",
+    "env": {
+      "NODE_ENV": "production",
+      "PORT": 3000
+    },
+    "max_memory_restart": "512M",
+    "node_args": "--max-old-space-size=512"
+  }]
+}

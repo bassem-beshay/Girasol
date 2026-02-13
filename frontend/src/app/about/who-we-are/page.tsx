@@ -674,17 +674,22 @@ export default function WhoWeArePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-primary-600 text-white text-center">
-        <div className="container-custom">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container-custom px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl py-12 sm:py-16 md:py-20 px-6 sm:px-10 md:px-16 text-center relative overflow-hidden"
           >
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">{t.cta}</h2>
-            <Link href="/tours" className="btn bg-white text-primary-600 hover:bg-gray-100 btn-lg">
-              {language === 'en' ? 'Explore Our Tours' : language === 'es' ? 'Explorar Tours' : 'Explorar Passeios'}
-            </Link>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-500/10 rounded-full blur-2xl" />
+            <div className="relative z-10">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">{t.cta}</h2>
+              <Link href="/tours" className="btn bg-primary-500 text-white hover:bg-primary-600 btn-lg rounded-xl">
+                {language === 'en' ? 'Explore Our Tours' : language === 'es' ? 'Explorar Tours' : 'Explorar Passeios'}
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>

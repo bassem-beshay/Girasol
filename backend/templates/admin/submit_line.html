@@ -1,0 +1,27 @@
+{% load i18n admin_urls jazzmin %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+
+{% block submit-row %}
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 15px 0;">
+    {% if show_save %}
+        <input type="submit" value="{% trans 'Save' %}" class="btn btn-primary btn-sm" name="_save" style="padding: 8px 24px; font-size: 13px;">
+    {% endif %}
+    {% if show_delete_link and original %}
+        {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+        <a href="{% add_preserved_filters delete_url %}" class="btn btn-danger btn-sm" style="padding: 8px 24px; font-size: 13px;">{% trans "Delete" %}</a>
+    {% endif %}
+    {% if show_save_as_new %}
+        <input type="submit" class="btn btn-info btn-sm" value="{% trans 'Save as new' %}" name="_saveasnew" style="padding: 8px 24px; font-size: 13px;">
+    {% endif %}
+    {% if show_save_and_add_another %}
+        <input type="submit" class="btn btn-info btn-sm" value="{% trans 'Save and add another' %}" name="_addanother" style="padding: 8px 24px; font-size: 13px;">
+    {% endif %}
+    {% if show_save_and_continue %}
+        <input type="submit" class="btn btn-info btn-sm" value="{% if can_change %}{% trans 'Save and continue editing' %}{% else %}{% trans 'Save and view' %}{% endif %}" name="_continue" style="padding: 8px 24px; font-size: 13px;">
+    {% endif %}
+    {% if show_close %}
+        <a href="{% url opts|admin_urlname:'changelist' %}" class="btn btn-secondary btn-sm" style="padding: 8px 24px; font-size: 13px;">{% trans 'Close' %}</a>
+    {% endif %}
+    {% block extra-actions %}{% endblock %}
+</div>
+{% endblock %}

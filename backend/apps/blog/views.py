@@ -2,7 +2,14 @@
 Blog views for API.
 """
 from rest_framework import generics, filters, permissions
+from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
+
+
+class BlogPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 50
 from .models import Category, Tag, Post, Comment
 from .serializers import (
     CategorySerializer, TagSerializer,
@@ -26,6 +33,7 @@ class TagListView(generics.ListAPIView):
 class PostListView(generics.ListAPIView):
     """List published blog posts."""
     serializer_class = PostListSerializer
+    pagination_class = BlogPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category__slug', 'is_featured']
     search_fields = ['title', 'excerpt', 'content']

@@ -8,6 +8,9 @@ from .models import (
 @admin.register(TourCategory)
 class TourCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_active', 'sort_order']
+
+    def get_model_perms(self, request):
+        return {}
     list_editable = ['is_active', 'sort_order']
     prepopulated_fields = {'slug': ('name',)}
     fieldsets = (

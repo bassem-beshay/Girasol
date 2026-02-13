@@ -109,7 +109,7 @@ export function Destinations() {
                       alt={destination.name}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
+                    loading="lazy" />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
                       <MapPin className="w-16 h-16 text-white/50" />

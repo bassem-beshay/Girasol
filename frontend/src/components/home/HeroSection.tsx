@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ChevronRight, Shield, Award, Clock } from 'lucide-react';
@@ -19,6 +19,70 @@ interface StatisticsResponse {
   results: Statistic[];
 }
 
+// Parse stat value like "43,678+", "98%", "4.9"
+function parseStatValue(value: string) {
+  const prefix = value.match(/^[^0-9]*/)?.[0] || '';
+  const suffix = value.match(/[^0-9.,]*$/)?.[0] || '';
+  const numStr = value.replace(prefix, '').replace(suffix, '');
+  const hasCommas = numStr.includes(',');
+  const cleanNum = numStr.replace(/,/g, '');
+  const number = parseFloat(cleanNum);
+  const decimals = cleanNum.includes('.') ? cleanNum.split('.')[1].length : 0;
+  return { number, prefix, suffix, decimals, hasCommas };
+}
+
+function formatNumber(num: number, decimals: number, hasCommas: boolean) {
+  const fixed = num.toFixed(decimals);
+  if (!hasCommas) return fixed;
+  const parts = fixed.split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+}
+
+function AnimatedCounter({ value, className }: { value: string; className?: string }) {
+  const [displayValue, setDisplayValue] = useState('');
+  const ref = useRef<HTMLSpanElement>(null);
+  const hasAnimated = useRef(false);
+
+  const animate = useCallback(() => {
+    const parsed = parseStatValue(value);
+    if (isNaN(parsed.number)) { setDisplayValue(value); return; }
+    const target = parsed.number;
+    const start = Math.floor(target * 0.75);
+    const duration = 2000;
+    const startTime = performance.now();
+    const easeOutExpo = (t: number) => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
+    const step = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const current = start + (target - start) * easeOutExpo(progress);
+      setDisplayValue(parsed.prefix + formatNumber(current, parsed.decimals, parsed.hasCommas) + parsed.suffix);
+      if (progress < 1) requestAnimationFrame(step);
+    };
+
+    setDisplayValue(parsed.prefix + formatNumber(start, parsed.decimals, parsed.hasCommas) + parsed.suffix);
+    requestAnimationFrame(step);
+  }, [value]);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          animate();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [animate]);
+
+  return <span ref={ref} className={className}>{displayValue || value}</span>;
+}
+
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -31,14 +95,15 @@ export function HeroSection() {
     },
   });
 
-  // Get dynamic values from API using icon field (doesn't change with language)
+  // Get dynamic values from API only - no static fallbacks
   const stats = statisticsData?.results || [];
-  const travelersCount = stats.find(s => s.icon === 'users')?.value || '50,000+';
-  const yearsExperience = stats.find(s => s.icon === 'clock')?.value || '25+';
+  const travelersCount = stats.find(s => s.icon === 'users')?.value || '';
+  const yearsExperience = stats.find(s => s.icon === 'clock')?.value || '';
+  const isLoaded = stats.length > 0;
 
   const trustBadges = [
     { icon: Shield, label: 'IATA Certified' },
-    { icon: Award, label: `${yearsExperience} Years Experience` },
+    { icon: Award, label: isLoaded ? `${yearsExperience} Years Experience` : '' },
     { icon: Clock, label: '24/7 Support' },
   ];
 
@@ -61,7 +126,7 @@ export function HeroSection() {
           loop
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-[center_50%]"
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
@@ -81,7 +146,7 @@ export function HeroSection() {
           >
             <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-[10px] sm:text-xs md:text-sm mb-3 sm:mb-6">
               <span className="w-1 sm:w-1.5 md:w-2 h-1 sm:h-1.5 md:h-2 rounded-full bg-primary-500 animate-pulse" />
-              Trusted by {travelersCount} travelers worldwide
+              {isLoaded ? <>Trusted by <AnimatedCounter value={travelersCount} className="tabular-nums" /> travelers worldwide</> : 'Your Trusted Travel Partner'}
             </span>
           </motion.div>
 
@@ -92,8 +157,9 @@ export function HeroSection() {
             transition={{ delay: 0.4 }}
             className="text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-bold text-white mb-2 sm:mb-4 leading-tight"
           >
-            Discover Egypt with{' '}
-            <span className="text-primary-400">{yearsExperience} Years</span> of Excellence
+            {isLoaded ? <>Discover Egypt with{' '}
+            <span className="text-primary-400"><AnimatedCounter value={yearsExperience} className="inline tabular-nums" /> Years</span> of Excellence</> : <>Discover Egypt with{' '}
+            <span className="text-primary-400">Decades</span> of Excellence</>}
           </motion.h1>
 
           {/* Subtitle */}
@@ -119,7 +185,7 @@ export function HeroSection() {
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1 inline" />
             </Link>
             <Link
-              href="/contact"
+              href="/contact#quote-form"
               className="btn py-2 sm:py-3 md:py-4 px-4 sm:px-6 md:px-8 bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20 text-center font-semibold text-sm sm:text-base"
             >
               Get Free Quote

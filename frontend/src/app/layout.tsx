@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Inter, Playfair_Display, Cairo } from 'next/font/google';
 import '@/styles/globals.css';
 import { Providers } from './providers';
@@ -106,18 +107,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${cairo.variable}`}>
       <head>
-        {/* Trustpilot Widget Script */}
-        <script
-          type="text/javascript"
-          src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
-          async
-        />
-        {/* Google reCAPTCHA v3 */}
-        <script
-          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-          async
-          defer
-        />
+        {/* Preconnect to critical origins */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://girasoltours.com" />
+        <link rel="dns-prefetch" href="//widget.trustpilot.com" />
       </head>
       <body className="font-sans antialiased">
         <Providers>
@@ -127,6 +121,14 @@ export default function RootLayout({
             <Footer />
           </div>
         </Providers>
+        <Script
+          src="https://www.google.com/recaptcha/api.js?render=6LcaPF0sAAAAAHacjLDb7ZvzwaihoxPqrWGVrmIy"
+          strategy="afterInteractive"
+        />
+        <Script
+          src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

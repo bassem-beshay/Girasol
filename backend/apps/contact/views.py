@@ -31,12 +31,24 @@ class InquiryCreateView(generics.CreateAPIView):
     authentication_classes = []  # Disable auth/CSRF for public endpoint
 
     def create(self, request, *args, **kwargs):
+        # Verify reCAPTCHA (if configured)
+        recaptcha_token = request.data.get('recaptcha_token', '')
+        if getattr(settings, 'RECAPTCHA_SECRET_KEY', None):
+            recaptcha_result = verify_recaptcha(
+                token=recaptcha_token,
+                action='contact_form',
+                min_score=0.5
+            )
+            if not recaptcha_result['success']:
+                logger.warning(f"reCAPTCHA failed for inquiry: {recaptcha_result['error']}")
+                return Response(
+                    {'error': 'Security verification failed. Please try again.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         inquiry = serializer.save()
-
-        # TODO: Send email notification to admin
-        # TODO: Send confirmation email to user
 
         return Response({
             'message': 'Thank you for your inquiry. We will get back to you soon!',

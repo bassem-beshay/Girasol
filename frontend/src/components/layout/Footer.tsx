@@ -64,7 +64,7 @@ export function Footer() {
                 width={200}
                 height={90}
                 className="h-20 w-auto object-contain"
-              />
+              loading="lazy" />
             </Link>
           </div>
 
@@ -126,7 +126,7 @@ export function Footer() {
                     width={120}
                     height={60}
                     className="h-14 w-auto object-contain mb-2"
-                  />
+                  loading="lazy" />
                   <span className="text-white/80 text-[11px] text-center leading-tight font-medium">
                     {member.name}
                   </span>
@@ -161,7 +161,7 @@ export function Footer() {
                   width={400}
                   height={180}
                   className="h-36 lg:h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
-                />
+                loading="lazy" />
               </Link>
             </div>
 
@@ -261,7 +261,7 @@ export function Footer() {
                         width={180}
                         height={90}
                         className="max-h-24 w-auto object-contain group-hover:brightness-110 transition-all"
-                      />
+                      loading="lazy" />
                     </div>
                     <span className="text-white/90 text-sm text-center font-medium leading-tight">
                       {member.name}

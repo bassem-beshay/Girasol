@@ -83,6 +83,9 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['post', 'get_author', 'is_approved', 'created_at']
+
+    def get_model_perms(self, request):
+        return {}
     list_filter = ['is_approved', 'created_at']
     search_fields = ['content', 'name', 'user__email']
     list_editable = ['is_approved']

@@ -141,7 +141,7 @@ export function MultiDestinationTours() {
                         alt={tour.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
+                      loading="lazy" />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
                         <Globe2 className="w-12 h-12 text-blue-400" />

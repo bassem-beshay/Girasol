@@ -1,0 +1,164 @@
+[
+{
+  "model": "contact.statistic",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-12-23T10:22:44.689Z",
+    "updated_at": "2025-12-28T23:29:28.635Z",
+    "value": "31+",
+    "label": "Years Experience",
+    "label_es": "Years Experience",
+    "label_pt": "Years Experience",
+    "icon": "clock",
+    "description": "Years of trusted travel expertise",
+    "description_es": "Anos de experiencia confiable en viajes",
+    "description_pt": "Anos de experiencia confiavel em viagens",
+    "is_active": true,
+    "sort_order": 1
+  }
+},
+{
+  "model": "contact.statistic",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-12-23T10:22:44.699Z",
+    "updated_at": "2025-12-28T23:29:28.644Z",
+    "value": "43,678+",
+    "label": "Happy Travelers",
+    "label_es": "Viajeros Felices",
+    "label_pt": "Viajantes Felizes",
+    "icon": "users",
+    "description": "Satisfied customers from around the world",
+    "description_es": "Clientes satisfechos de todo el mundo",
+    "description_pt": "Clientes satisfeitos de todo o mundo",
+    "is_active": true,
+    "sort_order": 2
+  }
+},
+{
+  "model": "contact.statistic",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-12-23T10:22:44.700Z",
+    "updated_at": "2025-12-28T23:11:25.765Z",
+    "value": "6",
+    "label": "Local Offices",
+    "label_es": "Oficinas Locales",
+    "label_pt": "Escritorios Locais",
+    "icon": "map-pin",
+    "description": "Across Egypt for your convenience",
+    "description_es": "Across Egypt for your convenience",
+    "description_pt": "Across Egypt for your convenience",
+    "is_active": true,
+    "sort_order": 6
+  }
+},
+{
+  "model": "contact.statistic",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-12-23T10:22:44.700Z",
+    "updated_at": "2025-12-28T23:29:28.645Z",
+    "value": "10+",
+    "label": "Countries Partners",
+    "label_es": "Countries Partners",
+    "label_pt": "Countries Partners",
+    "icon": "globe",
+    "description": "Key metric for Countries Partners",
+    "description_es": "Metrica clave para Countries Partners",
+    "description_pt": "Metrica chave para Countries Partners",
+    "is_active": true,
+    "sort_order": 4
+  }
+},
+{
+  "model": "contact.statistic",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-12-28T21:29:57.938Z",
+    "updated_at": "2025-12-28T23:11:25.756Z",
+    "value": "25+",
+    "label": "Years of Experience",
+    "label_es": "Anos de Experiencia",
+    "label_pt": "Anos de Experiencia",
+    "icon": "clock",
+    "description": "Providing exceptional tours since 1999",
+    "description_es": "Providing exceptional tours since 1999",
+    "description_pt": "Providing exceptional tours since 1999",
+    "is_active": true,
+    "sort_order": 1
+  }
+},
+{
+  "model": "contact.statistic",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-12-28T21:29:57.938Z",
+    "updated_at": "2025-12-28T23:11:25.757Z",
+    "value": "50,000+",
+    "label": "Happy Travelers",
+    "label_es": "Viajeros Felices",
+    "label_pt": "Viajantes Felizes",
+    "icon": "users",
+    "description": "Satisfied customers from around the world",
+    "description_es": "Satisfied customers from around el world",
+    "description_pt": "Satisfied customers from around o world",
+    "is_active": true,
+    "sort_order": 2
+  }
+},
+{
+  "model": "contact.statistic",
+  "pk": 7,
+  "fields": {
+    "created_at": "2025-12-28T21:29:57.947Z",
+    "updated_at": "2025-12-28T23:11:25.760Z",
+    "value": "98%",
+    "label": "Satisfaction Rate",
+    "label_es": "Tasa de Satisfaccion",
+    "label_pt": "Taxa de Satisfacao",
+    "icon": "heart",
+    "description": "Based on customer reviews",
+    "description_es": "Based on customer reviews",
+    "description_pt": "Based on customer reviews",
+    "is_active": true,
+    "sort_order": 3
+  }
+},
+{
+  "model": "contact.statistic",
+  "pk": 8,
+  "fields": {
+    "created_at": "2025-12-28T21:29:57.947Z",
+    "updated_at": "2025-12-28T23:11:25.762Z",
+    "value": "150+",
+    "label": "Tour Packages",
+    "label_es": "Paquetes de Tours",
+    "label_pt": "Pacotes de Tours",
+    "icon": "globe",
+    "description": "Diverse experiences across Egypt",
+    "description_es": "Diverse experiences across Egypt",
+    "description_pt": "Diverse experiences across Egypt",
+    "is_active": true,
+    "sort_order": 4
+  }
+},
+{
+  "model": "contact.statistic",
+  "pk": 9,
+  "fields": {
+    "created_at": "2025-12-28T21:29:57.955Z",
+    "updated_at": "2025-12-28T23:11:25.763Z",
+    "value": "4.9",
+    "label": "Average Rating",
+    "label_es": "Calificacion Promedio",
+    "label_pt": "Avaliacao Media",
+    "icon": "star",
+    "description": "Out of 5 stars on TripAdvisor",
+    "description_es": "Out of 5 stars on TripAdvisor",
+    "description_pt": "Out of 5 stars on TripAdvisor",
+    "is_active": true,
+    "sort_order": 5
+  }
+}
+]

@@ -91,13 +91,13 @@ export function Header() {
 
   const isHomePage = pathname === '/';
   const showWhiteBg = isScrolled || !isHomePage;
-  const headerBg = showWhiteBg ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-gradient-to-b from-black/50 to-transparent';
+  const headerBg = showWhiteBg ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-gradient-to-b from-black/60 to-transparent';
   const textColor = showWhiteBg ? 'text-gray-900' : 'text-white';
 
   return (
     <header className={cn('fixed top-0 left-0 right-0 z-50 transition-all duration-300', headerBg)}>
       {/* Main header */}
-      <div className="container-custom py-3">
+      <div className={cn('container-custom transition-all duration-300', showWhiteBg ? 'py-1.5' : 'pt-1 pb-10')}>
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center group">
@@ -220,7 +220,7 @@ export function Header() {
                 </div>
               </div>
             ) : null}
-            <Link href="/contact" className="btn btn-primary btn-md">
+            <Link href="/contact#quote-form" className="btn btn-primary btn-md">
               Get Free Quote
             </Link>
           </div>

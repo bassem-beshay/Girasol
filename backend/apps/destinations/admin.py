@@ -30,7 +30,7 @@ class DestinationAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('name', 'name_es', 'name_pt', 'slug', 'tagline', 'tagline_es', 'tagline_pt')}),
         ('Content', {'fields': ('description', 'description_es', 'description_pt')}),
-        ('Media', {'fields': ('featured_image', 'banner_image', 'video_url')}),
+        ('Media', {'fields': ('featured_image',)}),
         ('Location', {'fields': ('country', 'region', 'latitude', 'longitude')}),
         ('Travel Info', {
             'fields': (

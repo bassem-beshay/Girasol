@@ -517,7 +517,7 @@ export default function ProfilePage() {
                                     alt={booking.tour.name}
                                     fill
                                     className="object-cover"
-                                  />
+                                  loading="lazy" />
                                 ) : (
                                   <div className="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white">
                                     <Plane className="w-8 h-8" />

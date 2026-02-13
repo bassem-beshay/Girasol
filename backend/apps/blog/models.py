@@ -82,7 +82,7 @@ class Post(TimeStampedModel, SluggedModel, SEOModel, PublishableModel):
     # Author
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
-        null=True, related_name='blog_posts'
+        null=True, blank=True, related_name='blog_posts'
     )
     author_name = models.CharField(max_length=100, blank=True)
 

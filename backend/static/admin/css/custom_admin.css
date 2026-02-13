@@ -1450,6 +1450,7 @@ a:hover {
     accent-color: var(--primary);
 }
 
+
 /* ============================================
    CUSTOM DASHBOARD - Stats & App Grid
    ============================================ */
@@ -1462,7 +1463,7 @@ a:hover {
     overflow: hidden;
     transition: var(--transition-normal);
     margin-bottom: 0 !important;
-    min-height: 85px;
+    min-height: 100px; height: 100px;
 }
 
 .dashboard-stat-box:hover {
@@ -1472,7 +1473,7 @@ a:hover {
 
 .dashboard-stat-box .info-box-icon {
     width: 75px;
-    height: 85px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1517,7 +1518,7 @@ a:hover {
     color: var(--white) !important;
 }
 
-.bg-stat-inquiries {
+.bg-stat-destinations {
     background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
     color: var(--primary-dark) !important;
 }
@@ -1641,4 +1642,186 @@ a:hover {
         font-size: 10px !important;
         padding: 3px 8px !important;
     }
+}
+
+
+/* ============================================
+   HIDE TOP NAVBAR - Search moved to sidebar
+   ============================================ */
+.main-header.navbar {
+    display: none !important;
+}
+
+/* Remove navbar margin from content */
+.content-wrapper,
+.main-footer {
+    margin-top: 0 !important;
+}
+
+/* Sidebar starts from top since no navbar */
+.main-sidebar {
+    top: 0 !important;
+    padding-top: 0 !important;
+}
+
+body.layout-navbar-fixed .wrapper .main-sidebar {
+    padding-top: 0 !important;
+}
+
+body.layout-navbar-fixed .wrapper .content-wrapper {
+    margin-top: 0 !important;
+}
+
+body.layout-navbar-fixed .wrapper .main-header {
+    display: none !important;
+}
+
+/* Content wrapper full height */
+.content-wrapper {
+    min-height: 100vh !important;
+    margin-left: var(--sidebar-width) !important;
+}
+
+/* Sidebar Search Box */
+.sidebar-search-form {
+    padding: 15px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.15);
+}
+
+.sidebar-search-form .input-group {
+    width: 100%;
+}
+
+.sidebar-search-form .form-control {
+    background: rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    color: var(--white) !important;
+    font-size: 13px !important;
+    padding: 10px 14px !important;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm) !important;
+    height: auto !important;
+}
+
+.sidebar-search-form .form-control::placeholder {
+    color: rgba(255,255,255,0.4) !important;
+}
+
+.sidebar-search-form .form-control:focus {
+    background: rgba(255,255,255,0.15) !important;
+    border-color: var(--gold) !important;
+    box-shadow: none !important;
+}
+
+.sidebar-search-form .btn {
+    background: var(--gold) !important;
+    border: 1px solid var(--gold) !important;
+    color: var(--primary-dark) !important;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+}
+
+.sidebar-search-form .btn:hover {
+    background: var(--gold-light) !important;
+}
+
+/* Mobile adjustments - no navbar */
+@media (max-width: 991.98px) {
+    .content-wrapper,
+    .main-footer {
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+    }
+}
+
+/* ============================================
+   FIX: Submit buttons horizontal at bottom + full width form
+   ============================================ */
+
+/* Make form content full width */
+body.change-form #content-main .row > .col-lg-9,
+body.change-form #content-main .row > .col-12.col-lg-9 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+}
+
+/* Make the submit card full width below the form */
+body.change-form #content-main .row > .col-lg-3,
+body.change-form #content-main .row > .col-12.col-lg-3 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+}
+
+/* The card inside col-lg-3 that contains buttons */
+body.change-form #content-main .row > .col-lg-3 > .card,
+body.change-form #content-main .row > .col-12.col-lg-3 > .card {
+    position: relative !important;
+    top: auto !important;
+}
+
+/* Make the div wrapping all form-groups a flex row */
+body.change-form #content-main .row > .col-lg-3 .card-body > div,
+body.change-form #content-main .row > .col-12.col-lg-3 .card-body > div {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    align-items: center !important;
+}
+
+/* Make each form-group inline */
+body.change-form #content-main .row > .col-lg-3 .card-body .form-group,
+body.change-form #content-main .row > .col-12.col-lg-3 .card-body .form-group {
+    flex: 0 0 auto !important;
+    margin-bottom: 0 !important;
+    width: auto !important;
+}
+
+/* Make buttons smaller and inline */
+body.change-form #content-main .row > .col-lg-3 .card-body .form-group .btn,
+body.change-form #content-main .row > .col-12.col-lg-3 .card-body .form-group .btn,
+body.change-form #content-main .row > .col-lg-3 .card-body .form-group input[type="submit"],
+body.change-form #content-main .row > .col-12.col-lg-3 .card-body .form-group input[type="submit"] {
+    width: auto !important;
+    min-width: auto !important;
+    padding: 8px 20px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+}
+
+/* Also style the History/View buttons from object-tools */
+body.change-form #content-main .row > .col-lg-3 .card-body .btn-block,
+body.change-form #content-main .row > .col-12.col-lg-3 .card-body .btn-block {
+    display: inline-block !important;
+    width: auto !important;
+    padding: 8px 20px !important;
+    font-size: 13px !important;
+}
+
+/* Remove sticky positioning */
+body.change-form .sticky-top {
+    position: relative !important;
+    top: auto !important;
+}
+
+
+/* ============================================
+   Hide user panel - show only on hover
+   ============================================ */
+.main-sidebar .user-panel {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.3s ease;
+}
+
+.main-sidebar:hover .user-panel {
+    opacity: 1;
+    max-height: 80px;
+    padding: 0.8rem 1rem !important;
+    margin: 0.5rem 0 !important;
 }

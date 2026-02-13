@@ -20,8 +20,6 @@ class Destination(TimeStampedModel, SluggedModel, SEOModel, SortableModel):
 
     # Media
     featured_image = models.ImageField(upload_to='destinations/')
-    banner_image = models.ImageField(upload_to='destinations/banners/', null=True, blank=True)
-    video_url = models.URLField(blank=True)
 
     # Location
     country = models.CharField(max_length=100, default='Egypt')

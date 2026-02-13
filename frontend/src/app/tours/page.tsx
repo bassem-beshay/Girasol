@@ -231,7 +231,7 @@ function ToursContent() {
                         alt={tour.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
+                      loading="lazy" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-200">
                         <span className="text-primary-400 text-lg font-medium">

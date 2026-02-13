@@ -327,33 +327,37 @@ export default function BookingPage() {
       </section>
 
       {/* Security Badge */}
-      <section className="py-16 bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-        <div className="container-custom">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container-custom px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
+            className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl py-12 sm:py-16 md:py-20 px-6 sm:px-10 md:px-16 text-center relative overflow-hidden max-w-3xl mx-auto"
           >
-            <Shield className="w-16 h-16 mx-auto mb-6 text-green-300" />
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              {language === 'en' ? 'Secure & Trusted Payments' : language === 'es' ? 'Pagos Seguros y Confiables' : 'Pagamentos Seguros e Confiáveis'}
-            </h2>
-            <p className="text-white/80 text-lg mb-8">
-              {language === 'en'
-                ? 'All our payment methods are secured with industry-standard encryption. Your financial information is always protected.'
-                : language === 'es'
-                  ? 'Todos nuestros métodos de pago están protegidos con cifrado estándar de la industria. Su información financiera siempre está protegida.'
-                  : 'Todos os nossos métodos de pagamento são protegidos com criptografia padrão da indústria. Suas informações financeiras estão sempre protegidas.'
-              }
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/tours" className="btn bg-white text-primary-600 hover:bg-gray-100 btn-lg">
-                {language === 'en' ? 'Browse Tours' : language === 'es' ? 'Ver Tours' : 'Ver Passeios'}
-              </Link>
-              <Link href="/contact" className="btn btn-outline border-white text-white hover:bg-white/10 btn-lg">
-                {language === 'en' ? 'Get a Quote' : language === 'es' ? 'Solicitar Cotización' : 'Solicitar Orçamento'}
-              </Link>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-500/10 rounded-full blur-2xl" />
+            <div className="relative z-10">
+              <Shield className="w-16 h-16 mx-auto mb-6 text-green-300" />
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                {language === 'en' ? 'Secure & Trusted Payments' : language === 'es' ? 'Pagos Seguros y Confiables' : 'Pagamentos Seguros e Confiáveis'}
+              </h2>
+              <p className="text-white/70 text-lg mb-8">
+                {language === 'en'
+                  ? 'All our payment methods are secured with industry-standard encryption. Your financial information is always protected.'
+                  : language === 'es'
+                    ? 'Todos nuestros métodos de pago están protegidos con cifrado estándar de la industria. Su información financiera siempre está protegida.'
+                    : 'Todos os nossos métodos de pagamento são protegidos com criptografia padrão da indústria. Suas informações financeiras estão sempre protegidas.'
+                }
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/tours" className="btn bg-primary-500 text-white hover:bg-primary-600 btn-lg rounded-xl">
+                  {language === 'en' ? 'Browse Tours' : language === 'es' ? 'Ver Tours' : 'Ver Passeios'}
+                </Link>
+                <Link href="/contact#quote-form" className="btn btn-outline border-white/30 text-white hover:bg-white/10 btn-lg rounded-xl">
+                  {language === 'en' ? 'Get a Quote' : language === 'es' ? 'Solicitar Cotización' : 'Solicitar Orçamento'}
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>

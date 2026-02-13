@@ -323,7 +323,7 @@ export default function BlogPostPage() {
                               width={80}
                               height={80}
                               className="w-full h-full object-cover"
-                            />
+                            loading="lazy" />
                           ) : (
                             <BookOpen className="w-8 h-8 text-primary-400" />
                           )}
@@ -393,7 +393,7 @@ export default function BlogPostPage() {
                           alt={relatedPost.title}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
+                        loading="lazy" />
                       ) : (
                         <div className="w-full h-full bg-primary-500 flex items-center justify-center">
                           <BookOpen className="w-12 h-12 text-white/30" />

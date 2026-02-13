@@ -131,7 +131,7 @@ export function PopularTours() {
                         alt={tour.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
+                      loading="lazy" />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
                         <MapPin className="w-12 h-12 text-primary-400" />

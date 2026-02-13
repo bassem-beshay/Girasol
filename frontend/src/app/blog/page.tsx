@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { blogApi } from '@/lib/api';
 import { motion } from 'framer-motion';
@@ -15,6 +15,10 @@ import {
   Tag,
   TrendingUp,
   BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from 'lucide-react';
 
 interface BlogCategory {
@@ -52,15 +56,23 @@ interface CategoriesResponse {
   results: BlogCategory[];
 }
 
+const POSTS_PER_PAGE = 10;
+
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogSectionRef = useRef<HTMLDivElement>(null);
 
-  // Fetch blog posts
+  // Fetch blog posts with pagination
   const { data: postsData, isLoading: postsLoading } = useQuery<BlogPostsResponse>({
-    queryKey: ['blog-posts', selectedCategory],
+    queryKey: ['blog-posts', selectedCategory, currentPage],
+    placeholderData: (prev) => prev,
     queryFn: async () => {
-      const params: Record<string, unknown> = {};
+      const params: Record<string, unknown> = {
+        page: currentPage,
+        page_size: POSTS_PER_PAGE,
+      };
       if (selectedCategory !== 'all') {
         params.category__slug = selectedCategory;
       }
@@ -91,8 +103,9 @@ export default function BlogPage() {
   const categories = categoriesData?.results || [];
   const featuredPosts = featuredData?.results || [];
   const totalPosts = postsData?.count || 0;
+  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
 
-  // Filter posts by search query (client-side for simplicity)
+  // Filter posts by search query (client-side)
   const filteredPosts = posts.filter((post) => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
@@ -110,7 +123,36 @@ export default function BlogPage() {
     });
   };
 
-  if (postsLoading) {
+  const handleCategoryChange = (slug: string) => {
+    setSelectedCategory(slug);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    setTimeout(() => {
+      blogSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push('...');
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (currentPage < totalPages - 2) pages.push('...');
+      pages.push(totalPages);
+    }
+    return pages;
+  };
+
+  if (postsLoading && currentPage === 1) {
     return (
       <div className="min-h-screen pt-32 pb-16">
         <div className="container-custom">
@@ -178,7 +220,7 @@ export default function BlogPage() {
                         alt={post.title}
                         fill
                         className="object-cover"
-                      />
+                      loading="lazy" />
                     ) : (
                       <div className="absolute inset-0 bg-primary-600 flex items-center justify-center">
                         <BookOpen className="w-16 h-16 text-white/30" />
@@ -226,7 +268,7 @@ export default function BlogPage() {
       )}
 
       {/* Main Blog Section */}
-      <section className="py-16 bg-gray-50">
+      <section ref={blogSectionRef} className="py-16 bg-gray-50">
         <div className="container-custom">
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Sidebar */}
@@ -247,44 +289,51 @@ export default function BlogPage() {
               </div>
 
               {/* Categories */}
-              <div className="bg-white rounded-2xl p-6 shadow-md">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Categories</h3>
-                <div className="space-y-2">
+              <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+                <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Tag className="w-4 h-4" />
+                    Categories
+                  </h3>
+                </div>
+                <div className="p-4">
                   <button
-                    onClick={() => setSelectedCategory('all')}
-                    className={`w-full flex items-center justify-between px-4 py-2 rounded-xl transition-colors ${
+                    onClick={() => handleCategoryChange('all')}
+                    className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 mb-1 ${
                       selectedCategory === 'all'
-                        ? 'bg-primary-500 text-white'
-                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                        ? 'bg-primary-50 text-primary-700 border border-primary-200'
+                        : 'text-gray-600 hover:bg-gray-50'
                     }`}
                   >
-                    <span>All</span>
-                    <span
-                      className={`text-sm ${
-                        selectedCategory === 'all' ? 'text-white/80' : 'text-gray-400'
-                      }`}
-                    >
-                      ({totalPosts})
+                    <span className="flex items-center gap-2">
+                      {selectedCategory === 'all' && <span className="w-1.5 h-1.5 rounded-full bg-primary-500"></span>}
+                      All Articles
                     </span>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                      selectedCategory === 'all'
+                        ? 'bg-primary-500 text-white'
+                        : 'bg-gray-100 text-gray-500'
+                    }`}>{totalPosts}</span>
                   </button>
-                  {categories.map((category) => (
+                  {categories.filter(c => c.post_count > 0).map((category) => (
                     <button
                       key={category.id}
-                      onClick={() => setSelectedCategory(category.slug)}
-                      className={`w-full flex items-center justify-between px-4 py-2 rounded-xl transition-colors ${
+                      onClick={() => handleCategoryChange(category.slug)}
+                      className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 mb-1 ${
                         selectedCategory === category.slug
-                          ? 'bg-primary-500 text-white'
-                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                          ? 'bg-primary-50 text-primary-700 border border-primary-200'
+                          : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
-                      <span>{category.name}</span>
-                      <span
-                        className={`text-sm ${
-                          selectedCategory === category.slug ? 'text-white/80' : 'text-gray-400'
-                        }`}
-                      >
-                        ({category.post_count})
+                      <span className="flex items-center gap-2">
+                        {selectedCategory === category.slug && <span className="w-1.5 h-1.5 rounded-full bg-primary-500"></span>}
+                        {category.name}
                       </span>
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                        selectedCategory === category.slug
+                          ? 'bg-primary-500 text-white'
+                          : 'bg-gray-100 text-gray-500'
+                      }`}>{category.post_count}</span>
                     </button>
                   ))}
                 </div>
@@ -293,9 +342,12 @@ export default function BlogPage() {
               {/* Popular Posts */}
               {featuredPosts.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 shadow-md">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Popular Posts</h3>
+                  <div className="flex items-center gap-2 mb-5">
+                    <div className="w-1 h-6 bg-primary-500 rounded-full"></div>
+                    <h3 className="text-lg font-bold text-gray-900">Popular Posts</h3>
+                  </div>
                   <div className="space-y-4">
-                    {featuredPosts.slice(0, 4).map((post) => (
+                    {featuredPosts.slice(0, 4).map((post, idx) => (
                       <Link
                         key={post.id}
                         href={`/blog/${post.slug}`}
@@ -309,7 +361,7 @@ export default function BlogPage() {
                               width={80}
                               height={80}
                               className="w-full h-full object-cover"
-                            />
+                            loading="lazy" />
                           ) : (
                             <BookOpen className="w-8 h-8 text-primary-400" />
                           )}
@@ -344,7 +396,16 @@ export default function BlogPage() {
             </aside>
 
             {/* Blog Posts Grid */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 min-h-[600px]">
+              {/* Results count */}
+              {totalPosts > 0 && (
+                <div className="flex items-center justify-between mb-6">
+                  <p className="text-sm text-gray-500">
+                    Showing {((currentPage - 1) * POSTS_PER_PAGE) + 1}–{Math.min(currentPage * POSTS_PER_PAGE, totalPosts)} of {totalPosts} articles
+                  </p>
+                </div>
+              )}
+
               {filteredPosts.length > 0 ? (
                 <>
                   <div className="grid md:grid-cols-2 gap-8">
@@ -353,7 +414,7 @@ export default function BlogPage() {
                         key={post.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        transition={{ duration: 0.5, delay: index * 0.05 }}
                         className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow group"
                       >
                         <div className="relative h-48">
@@ -363,7 +424,7 @@ export default function BlogPage() {
                               alt={post.title}
                               fill
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
+                            loading="lazy" />
                           ) : (
                             <div className="absolute inset-0 bg-primary-500 flex items-center justify-center">
                               <BookOpen className="w-12 h-12 text-white/30" />
@@ -410,6 +471,77 @@ export default function BlogPage() {
                     ))}
                   </div>
 
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="mt-12 flex flex-col items-center gap-4">
+                      <div className="flex items-center gap-1.5">
+                        {/* First Page */}
+                        <button
+                          onClick={() => handlePageChange(1)}
+                          disabled={currentPage === 1}
+                          className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-500 hover:bg-primary-50 hover:text-primary-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                          title="First page"
+                        >
+                          <ChevronsLeft className="w-4 h-4" />
+                        </button>
+
+                        {/* Previous */}
+                        <button
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-500 hover:bg-primary-50 hover:text-primary-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                          title="Previous page"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+
+                        {/* Page Numbers */}
+                        {getPageNumbers().map((page, idx) => (
+                          typeof page === 'string' ? (
+                            <span key={`dots-${idx}`} className="w-10 h-10 flex items-center justify-center text-gray-400">
+                              ...
+                            </span>
+                          ) : (
+                            <button
+                              key={page}
+                              onClick={() => handlePageChange(page)}
+                              className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold transition-all duration-200 ${
+                                currentPage === page
+                                  ? 'bg-primary-500 text-white shadow-md shadow-primary-500/25'
+                                  : 'text-gray-600 hover:bg-primary-50 hover:text-primary-600'
+                              }`}
+                            >
+                              {page}
+                            </button>
+                          )
+                        ))}
+
+                        {/* Next */}
+                        <button
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-500 hover:bg-primary-50 hover:text-primary-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                          title="Next page"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+
+                        {/* Last Page */}
+                        <button
+                          onClick={() => handlePageChange(totalPages)}
+                          disabled={currentPage === totalPages}
+                          className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-500 hover:bg-primary-50 hover:text-primary-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                          title="Last page"
+                        >
+                          <ChevronsRight className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <p className="text-sm text-gray-400">
+                        Page {currentPage} of {totalPages}
+                      </p>
+                    </div>
+                  )}
                 </>
               ) : (
                 <div className="text-center py-16 bg-white rounded-2xl">
@@ -422,6 +554,7 @@ export default function BlogPage() {
                     onClick={() => {
                       setSearchQuery('');
                       setSelectedCategory('all');
+                      setCurrentPage(1);
                     }}
                     className="btn btn-primary btn-md"
                   >
@@ -435,27 +568,32 @@ export default function BlogPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-secondary-500">
-        <div className="container-custom text-center">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container-custom px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl py-12 sm:py-16 md:py-20 px-6 sm:px-10 md:px-16 text-center relative overflow-hidden"
           >
-            <h2 className="text-4xl font-display font-bold text-white mb-6">
-              Ready to Experience Egypt?
-            </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Turn your travel dreams into reality. Browse our tours and start planning your
-              unforgettable Egyptian adventure today.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/tours" className="btn bg-white text-primary-600 hover:bg-gray-100 btn-lg">
-                Explore Tours
-              </Link>
-              <Link href="/contact" className="btn btn-outline border-white text-white hover:bg-white/10 btn-lg">
-                Contact Us
-              </Link>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-500/10 rounded-full blur-2xl" />
+            <div className="relative z-10">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-4 sm:mb-6">
+                Ready to Experience Egypt?
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto">
+                Turn your travel dreams into reality. Browse our tours and start planning your
+                unforgettable Egyptian adventure today.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/tours" className="btn bg-primary-500 text-white hover:bg-primary-600 btn-lg rounded-xl">
+                  Explore Tours
+                </Link>
+                <Link href="/contact" className="btn btn-outline border-white/30 text-white hover:bg-white/10 btn-lg rounded-xl">
+                  Contact Us
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>

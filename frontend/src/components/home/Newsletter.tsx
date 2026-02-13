@@ -1,20 +1,23 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { contactApi } from '@/lib/api';
 import { motion } from 'framer-motion';
 import { Mail, Send, Check, Loader2, MailCheck, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+// Declare grecaptcha global
 declare global {
   interface Window {
     grecaptcha: {
-      ready: (callback: () => void) => void;
+      ready: (cb: () => void) => void;
       execute: (siteKey: string, options: { action: string }) => Promise<string>;
     };
   }
 }
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
 
 type SubscriptionStatus =
   | 'idle'
@@ -27,32 +30,18 @@ export function Newsletter() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<SubscriptionStatus>('idle');
 
-  // Get reCAPTCHA token
-  const getRecaptchaToken = useCallback(async (): Promise<string | null> => {
-    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-    if (!siteKey || typeof window === 'undefined' || !window.grecaptcha) {
-      return null;
-    }
-
-    try {
-      return await new Promise((resolve) => {
-        window.grecaptcha.ready(async () => {
-          try {
-            const token = await window.grecaptcha.execute(siteKey, { action: 'newsletter_subscribe' });
-            resolve(token);
-          } catch {
-            resolve(null);
-          }
-        });
-      });
-    } catch {
-      return null;
-    }
-  }, []);
-
   // Newsletter subscription mutation
   const subscribeMutation = useMutation({
-    mutationFn: async ({ email, recaptcha_token }: { email: string; recaptcha_token?: string }) => {
+    mutationFn: async (email: string) => {
+      let recaptcha_token = '';
+      try {
+        if (window.grecaptcha && RECAPTCHA_SITE_KEY) {
+          await new Promise<void>((resolve) => window.grecaptcha.ready(resolve));
+          recaptcha_token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'newsletter_subscribe' });
+        }
+      } catch {
+        // Continue without recaptcha if it fails
+      }
       const response = await contactApi.subscribeNewsletter({ email, recaptcha_token });
       return response.data;
     },
@@ -102,10 +91,7 @@ export function Newsletter() {
       return;
     }
 
-    // Get reCAPTCHA token
-    const recaptcha_token = await getRecaptchaToken();
-
-    subscribeMutation.mutate({ email, recaptcha_token: recaptcha_token || undefined });
+    subscribeMutation.mutate(email);
   };
 
   const renderSuccessMessage = () => {
@@ -202,14 +188,14 @@ export function Newsletter() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-3xl p-8 md:p-12 lg:p-16 text-center relative overflow-hidden"
+          className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl p-8 md:p-12 lg:p-16 text-center relative overflow-hidden"
         >
           {/* Pattern overlay */}
           <div className="absolute inset-0 bg-hero-pattern opacity-10" />
 
           {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-400/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary-400/20 rounded-full blur-2xl" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-500/10 rounded-full blur-2xl" />
 
           <div className="relative z-10 max-w-2xl mx-auto">
             {showForm ? (
@@ -243,7 +229,7 @@ export function Newsletter() {
                   <button
                     type="submit"
                     disabled={subscribeMutation.isPending}
-                    className="btn btn-lg bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="btn btn-lg bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {subscribeMutation.isPending ? (
                       <span className="flex items-center">

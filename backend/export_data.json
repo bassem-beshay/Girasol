@@ -1,0 +1,100 @@
+{
+  "multi_tours": [
+    {
+      "name": "Egypt & Dubai Luxury Experience",
+      "slug": "egypt-dubai-luxury",
+      "short_description": "From ancient Pyramids to futuristic skyscrapers - the ultimate luxury journey",
+      "description": "Experience the perfect blend of ancient wonders and modern marvels on this 8-day luxury journey.\n\nBegin in Cairo, where 5,000 years of history await. Stand before the Great Pyramids of Giza,\ngaze upon the golden mask of Tutankhamun, and sail the Nile at sunset. Experience Egyptian hospitality\nat its finest in world-class hotels.\n\nThen jet to Dubai, where the future has already arrived. Ascend the world's tallest building, Burj Khalifa,\nshop in spectacular malls, and experience a desert safari under the stars. From traditional souks to\npalm-shaped islands, Dubai offers luxury beyond imagination.\n\nThis tour combines the best of both worlds - ancient history and cutting-edge modernity -\nall wrapped in 5-star comfort and personalized service.",
+      "days": 8,
+      "nights": 7,
+      "price": "2899.00",
+      "discounted_price": "2899.00",
+      "is_featured": false,
+      "is_best_seller": true,
+      "is_new": false,
+      "is_multi_destination": true,
+      "destination_ids": [
+        1,
+        8
+      ],
+      "category_id": 11
+    },
+    {
+      "name": "Egypt & Jordan Discovery",
+      "slug": "egypt-jordan-discovery",
+      "short_description": "Experience the best of two ancient civilizations - Pyramids of Giza and the legendary Petra",
+      "description": "Embark on an extraordinary 10-day journey through two of the world's most fascinating destinations.\n\nThis carefully crafted tour combines the ancient wonders of Egypt with the rose-red city of Petra in Jordan.\nBegin in Cairo, where you'll marvel at the Great Pyramids and the Sphinx, explore the treasures of the Egyptian Museum,\nand wander through the vibrant Khan El Khalili bazaar.\n\nContinue to Luxor, the world's greatest open-air museum, where you'll discover the Valley of the Kings,\nKarnak Temple, and the majestic Luxor Temple.\n\nThen fly to Amman, Jordan's capital, before heading to the UNESCO World Heritage site of Petra.\nWalk through the Siq canyon to witness the iconic Treasury, explore ancient tombs and temples,\nand experience the magic of Petra by night.\n\nEnd your journey floating in the Dead Sea, the lowest point on Earth, before returning home with memories to last a lifetime.",
+      "days": 10,
+      "nights": 9,
+      "price": "2499.00",
+      "discounted_price": "2499.00",
+      "is_featured": false,
+      "is_best_seller": false,
+      "is_new": false,
+      "is_multi_destination": true,
+      "destination_ids": [
+        1,
+        2,
+        7
+      ],
+      "category_id": 11
+    }
+  ],
+  "early_offers": [
+    {
+      "title": "Summer 2025 Early Bird",
+      "subtitle": "Save Up to 20% on Early Bookings",
+      "description": "Book your dream Egyptian adventure now and enjoy exclusive discounts on our most popular packages. Don't miss this opportunity to explore the land of pharaohs!",
+      "discount_percentage": 20,
+      "offer_start_date": "2025-12-23 12:35:09+00:00",
+      "offer_end_date": "2026-01-22 12:35:09+00:00",
+      "travel_start_date": "2026-03-23",
+      "travel_end_date": "2026-06-21",
+      "is_active": true,
+      "is_featured": true,
+      "tour_ids": [
+        15,
+        5,
+        3,
+        16
+      ]
+    },
+    {
+      "title": "Winter Escape Special",
+      "subtitle": "Book Now for Winter Adventures - 15% OFF",
+      "description": "Escape the cold and discover Egypt's warm winter sun. Perfect weather for exploring ancient wonders!",
+      "discount_percentage": 15,
+      "offer_start_date": "2025-12-23 12:35:09+00:00",
+      "offer_end_date": "2026-02-06 12:35:09+00:00",
+      "travel_start_date": "2026-02-21",
+      "travel_end_date": "2026-05-22",
+      "is_active": true,
+      "is_featured": true,
+      "tour_ids": [
+        11,
+        9,
+        2,
+        1
+      ]
+    },
+    {
+      "title": "Family Adventure Discount",
+      "subtitle": "Plan Ahead for Family Fun - Save 25%",
+      "description": "The perfect opportunity to plan your family vacation to Egypt. Kids will love the pyramids and mummies!",
+      "discount_percentage": 25,
+      "offer_start_date": "2025-12-23 12:35:09+00:00",
+      "offer_end_date": "2026-02-21 12:35:09+00:00",
+      "travel_start_date": "2026-04-22",
+      "travel_end_date": "2026-08-20",
+      "is_active": true,
+      "is_featured": false,
+      "tour_ids": [
+        14,
+        13,
+        7,
+        12,
+        6
+      ]
+    }
+  ]
+}

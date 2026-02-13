@@ -266,7 +266,7 @@ export default function DestinationDetailPage() {
                           alt={img.alt_text || `${destination.name} photo ${index + 1}`}
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
+                        loading="lazy" />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                           <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
@@ -336,7 +336,7 @@ export default function DestinationDetailPage() {
                               alt={tour.name}
                               fill
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
+                            loading="lazy" />
                           ) : (
                             <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
                               <MapPin className="w-8 h-8 text-primary-400" />
@@ -418,7 +418,7 @@ export default function DestinationDetailPage() {
                     Let our experts help you plan the perfect trip to {destination.name}.
                   </p>
                   <Link
-                    href="/contact"
+                    href="/contact#quote-form"
                     className="btn bg-white text-primary-600 hover:bg-gray-100 w-full"
                   >
                     Get Free Quote
@@ -498,7 +498,7 @@ export default function DestinationDetailPage() {
               alt={destination.images[currentImageIndex].alt_text || `${destination.name} photo ${currentImageIndex + 1}`}
               fill
               className="object-contain"
-            />
+            loading="lazy" />
             {destination.images[currentImageIndex].caption && (
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
                 <p className="text-white text-center text-lg">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { contactApi } from '@/lib/api';
 import { motion } from 'framer-motion';
@@ -23,6 +23,18 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+// Declare grecaptcha global
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (cb: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
 
 const contactSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -89,7 +101,7 @@ export default function ContactPage() {
 
   // Contact form submission mutation
   const contactMutation = useMutation({
-    mutationFn: async (data: ContactFormData) => {
+    mutationFn: async (data: ContactFormData & { recaptchaToken?: string }) => {
       const response = await contactApi.sendMessage({
         name: `${data.firstName} ${data.lastName}`,
         email: data.email,
@@ -97,6 +109,7 @@ export default function ContactPage() {
         subject: data.subject,
         message: data.message,
         tour_interest: data.tourInterest || '',
+        recaptcha_token: data.recaptchaToken || '',
       });
       return response.data;
     },
@@ -119,9 +132,21 @@ export default function ContactPage() {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = (data: ContactFormData) => {
-    contactMutation.mutate(data);
-  };
+  const onSubmit = useCallback(async (data: ContactFormData) => {
+    try {
+      // Get reCAPTCHA token
+      if (window.grecaptcha && RECAPTCHA_SITE_KEY) {
+        await new Promise<void>((resolve) => window.grecaptcha.ready(resolve));
+        const recaptchaToken = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact_form' });
+        contactMutation.mutate({ ...data, recaptchaToken });
+      } else {
+        contactMutation.mutate(data);
+      }
+    } catch {
+      // If reCAPTCHA fails, still submit
+      contactMutation.mutate(data);
+    }
+  }, [contactMutation]);
 
   return (
     <div className="min-h-screen">
@@ -467,33 +492,38 @@ export default function ContactPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-secondary-500">
-        <div className="container-custom text-center">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container-custom px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl py-12 sm:py-16 md:py-20 px-6 sm:px-10 md:px-16 text-center relative overflow-hidden"
           >
-            <h2 className="text-4xl font-display font-bold text-white mb-6">
-              Ready to Start Your Adventure?
-            </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Let us help you create the Egyptian journey of your dreams.
-              Our team is ready to assist you every step of the way.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/tours" className="btn bg-white text-primary-600 hover:bg-gray-100 btn-lg">
-                Explore Tours
-              </Link>
-              <a
-                href="https://wa.me/201060873700"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-outline border-white text-white hover:bg-white/10 btn-lg"
-              >
-                <MessageSquare className="w-5 h-5 mr-2" />
-                WhatsApp Us
-              </a>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-500/10 rounded-full blur-2xl" />
+            <div className="relative z-10">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-4 sm:mb-6">
+                Ready to Start Your Adventure?
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto">
+                Let us help you create the Egyptian journey of your dreams.
+                Our team is ready to assist you every step of the way.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/tours" className="btn bg-primary-500 text-white hover:bg-primary-600 btn-lg rounded-xl">
+                  Explore Tours
+                </Link>
+                <a
+                  href="https://wa.me/201060873700"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline border-white/30 text-white hover:bg-white/10 btn-lg rounded-xl"
+                >
+                  <MessageSquare className="w-5 h-5 mr-2" />
+                  WhatsApp Us
+                </a>
+              </div>
             </div>
           </motion.div>
         </div>
