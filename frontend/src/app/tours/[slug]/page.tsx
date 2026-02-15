@@ -346,6 +346,7 @@ export default function TourDetailPage() {
             src={tour.featured_image}
             alt={tour.name}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -535,6 +536,7 @@ export default function TourDetailPage() {
                               src={image.image}
                               alt={image.alt_text || image.caption || `Tour photo ${index + 1}`}
                               fill
+                              sizes="(max-width: 768px) 50vw, 33vw"
                               className="object-cover transition-transform duration-300 group-hover:scale-110"
                             />
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
@@ -1145,6 +1147,7 @@ export default function TourDetailPage() {
               src={tour.images[currentImageIndex].image}
               alt={tour.images[currentImageIndex].alt_text || tour.images[currentImageIndex].caption || ''}
               fill
+              sizes="100vw"
               className="object-contain"
             />
             {tour.images[currentImageIndex].caption && (

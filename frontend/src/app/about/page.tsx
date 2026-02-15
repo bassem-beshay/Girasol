@@ -314,6 +314,7 @@ export default function AboutPage() {
                   src="/images/about-story.jpg"
                   alt="Girasol Tours Team"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -488,6 +489,7 @@ export default function AboutPage() {
                     src={member.image}
                     alt={member.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />
                 </div>
@@ -518,6 +520,7 @@ export default function AboutPage() {
                     src={member.image}
                     alt={member.name}
                     fill
+                    sizes="(max-width: 768px) 33vw, (max-width: 1024px) 25vw, 14vw"
                     className="object-cover"
                   />
                 </div>

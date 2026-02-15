@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: 'https',
@@ -30,6 +32,12 @@ const nextConfig = {
     ],
   },
 
+  // Enable gzip compression
+  compress: true,
+
+  // Optimize production builds
+  poweredByHeader: false,
+
   // Performance: Cache static assets
   async headers() {
     return [
@@ -56,6 +64,16 @@ const nextConfig = {
       {
         // Cache favicon
         source: '/favicon.png',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache Next.js static assets
+        source: '/_next/static/:path*',
         headers: [
           {
             key: 'Cache-Control',
