@@ -142,8 +142,14 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-white/20 py-3 px-4 text-center text-xs text-white/60">
-          © {new Date().getFullYear()} Girasol Egypt Travel and Tours
+        <div className="border-t border-white/20 py-4 px-4 text-center text-xs text-white/60 space-y-2">
+          <div className="flex items-center justify-center gap-3">
+            <Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <span className="text-white/30">|</span>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+          </div>
+          <p>© {new Date().getFullYear()} Girasol Egypt Travel and Tours. All rights reserved.</p>
+          <p>Designed by <a href="https://wa.me/201228986508" target="_blank" rel="noopener noreferrer" className="underline text-white/80 hover:text-white transition-colors">ENG-Bassem Beshay</a></p>
         </div>
       </div>
 
@@ -281,11 +287,11 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/20 bg-black/40">
           <div className="container-custom py-5 px-6 lg:px-8">
-            <div className="flex flex-row items-center justify-between text-sm text-white/70">
-              <p>
-                © {new Date().getFullYear()} Girasol Egypt Travel and Tours. All rights reserved.
+            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-xs md:text-sm text-white/70">
+              <p className="text-center md:text-left">
+                © {new Date().getFullYear()} Girasol Egypt Travel and Tours. All rights reserved. | Designed by <a href="https://wa.me/201228986508" target="_blank" rel="noopener noreferrer" className="underline text-white/90 hover:text-white transition-colors">ENG-Bassem Beshay</a>
               </p>
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-4 md:gap-6 md:ml-auto md:mr-[10%]">
                 <Link href="/terms" className="hover:text-white transition-colors">
                   Terms & Conditions
                 </Link>
