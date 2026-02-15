@@ -436,7 +436,7 @@ export default function BlogPostPage() {
       )}
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-secondary-500">
+      <section className="py-20 mb-12 bg-gray-900">
         <div className="container-custom text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
