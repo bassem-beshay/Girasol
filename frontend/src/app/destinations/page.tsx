@@ -209,7 +209,6 @@ export default function DestinationsPage() {
                           src={fixImageUrl(destination.featured_image) || ''}
                           alt={destination.name}
                           fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
@@ -249,7 +248,7 @@ export default function DestinationsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 mb-12 bg-gray-900">
+      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-primary-600 to-secondary-500">
         <div className="container-custom text-center px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

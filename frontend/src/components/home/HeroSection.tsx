@@ -125,7 +125,7 @@ export function HeroSection() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover object-[center_50%]"
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />

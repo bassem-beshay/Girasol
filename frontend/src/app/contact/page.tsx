@@ -133,7 +133,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[40vh] sm:h-[50vh] md:h-[80vh] lg:h-[120vh] min-h-[250px] sm:min-h-[300px] md:min-h-[450px] lg:min-h-[600px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[50vh] sm:h-[50vh] md:h-[80vh] lg:h-[120vh] min-h-[300px] sm:min-h-[300px] md:min-h-[450px] lg:min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary-900/90 to-primary-800/80 z-10" />
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -156,16 +156,6 @@ export default function ContactPage() {
           >
             {t(contactT, language, 'heroSubtitle')}
           </motion.p>
-          <motion.a
-            href="#quote-form"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="inline-flex items-center gap-2 bg-white text-primary-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg"
-          >
-            {t(contactT, language, 'getFreeQuote')}
-            <ArrowRight className="w-5 h-5" />
-          </motion.a>
         </div>
       </section>
 

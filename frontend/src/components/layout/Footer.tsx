@@ -29,22 +29,22 @@ const socialLinks = [
 const memberships = [
   {
     name: 'Ministry of Tourism & Antiquities',
-    logo: '/images/memberships/ministry-tourism.png',
+    logo: '/images/memberships/ministry-tourism.webp',
     licence: '2208 A'
   },
   {
     name: 'IATA',
-    logo: '/images/memberships/girassol-group.png',
+    logo: '/images/memberships/girassol-group.webp',
     licence: null
   },
   {
     name: 'Egyptian Travel Agents Association',
-    logo: '/images/memberships/new-logo.png',
+    logo: '/images/memberships/new-logo.webp',
     licence: null
   },
   {
     name: 'Girassol Group',
-    logo: '/images/memberships/etaa.png',
+    logo: '/images/memberships/etaa.webp',
     licence: null
   },
 ];

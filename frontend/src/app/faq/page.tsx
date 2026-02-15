@@ -95,8 +95,8 @@ export default function FAQPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center">
-              <HelpCircle className="w-8 h-8" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-6 mt-6 sm:mt-0 rounded-2xl bg-white/10 flex items-center justify-center">
+              <HelpCircle className="w-6 h-6 sm:w-8 sm:h-8" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4 sm:mb-6">
               {t(faqT, language, 'title')}

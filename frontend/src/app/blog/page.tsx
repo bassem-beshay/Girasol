@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { blogApi } from '@/lib/api';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
@@ -60,7 +60,7 @@ export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch blog posts
-  const { data: postsData, isLoading: postsLoading } = useQuery<BlogPostsResponse>({
+  const { data: postsData, isLoading: postsLoading, isFetching } = useQuery<BlogPostsResponse>({
     queryKey: ['blog-posts', selectedCategory],
     queryFn: async () => {
       const params: Record<string, unknown> = {};
@@ -70,6 +70,7 @@ export default function BlogPage() {
       const response = await blogApi.getPosts(params);
       return response.data;
     },
+    placeholderData: keepPreviousData,
   });
 
   // Fetch categories
@@ -113,7 +114,7 @@ export default function BlogPage() {
     });
   };
 
-  if (postsLoading) {
+  if (postsLoading && !postsData) {
     return (
       <div className="min-h-screen pt-32 pb-16">
         <div className="container-custom">
@@ -348,7 +349,7 @@ export default function BlogPage() {
             </aside>
 
             {/* Blog Posts Grid */}
-            <div className="lg:col-span-3">
+            <div className={`lg:col-span-3 transition-opacity duration-300 ${isFetching ? 'opacity-50' : 'opacity-100'}`}>
               {filteredPosts.length > 0 ? (
                 <>
                   <div className="grid md:grid-cols-2 gap-8">

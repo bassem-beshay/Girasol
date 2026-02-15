@@ -108,6 +108,7 @@ export function Destinations() {
                       src={fixImageUrl(destination.featured_image) || ''}
                       alt={destination.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy" />
                   ) : (

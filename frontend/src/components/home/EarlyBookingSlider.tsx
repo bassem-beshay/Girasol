@@ -226,8 +226,8 @@ export function EarlyBookingSlider() {
               src={fixImageUrl(currentOffer.banner_image) || ''}
               alt={currentOffer.title}
               fill
+              sizes="100vw"
               className="object-cover"
-              priority
             />
           ) : (
             <div

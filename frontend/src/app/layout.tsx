@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Cairo } from 'next/font/google';
+import Script from 'next/script';
 import '@/styles/globals.css';
 import { Providers } from './providers';
 import { Header } from '@/components/layout/Header';
@@ -105,15 +106,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${cairo.variable}`}>
-      <head>
-        {/* Google reCAPTCHA v3 */}
-        <script
-          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-          async
-          defer
-        />
-      </head>
       <body className="font-sans antialiased">
+        {/* Google reCAPTCHA v3 - loaded after page interaction */}
+        <Script
+          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          strategy="lazyOnload"
+        />
         <Providers>
           <div className="flex min-h-screen flex-col">
             <Header />

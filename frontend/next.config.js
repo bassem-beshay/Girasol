@@ -6,6 +6,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'girasoltours.com',
+        pathname: '/media/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'api.girasoltours.com',
         pathname: '/media/**',
       },

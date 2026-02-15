@@ -120,6 +120,7 @@ export function BlogPreview() {
                         src={post.featured_image}
                         alt={post.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       loading="lazy" />
                     ) : (
