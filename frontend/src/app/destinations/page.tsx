@@ -248,7 +248,7 @@ export default function DestinationsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-primary-600 to-secondary-500">
+      <section className="py-12 sm:py-16 md:py-20 mb-12 bg-gray-900">
         <div className="container-custom text-center px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
