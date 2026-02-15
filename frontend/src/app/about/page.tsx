@@ -575,7 +575,7 @@ export default function AboutPage() {
       )}
 
       {/* CTA Section */}
-      <section className="py-20 mb-12 bg-gray-900">
+      <section className="py-12 sm:py-16 md:py-20 mx-4 lg:mx-16 mb-16 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl">
         <div className="container-custom text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -464,7 +464,7 @@ export default function ContactPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mx-4 lg:mx-16 mb-16 rounded-2xl">
+      <section className="py-12 sm:py-16 md:py-20 mx-4 lg:mx-16 mb-16 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl">
         <div className="container-custom text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
