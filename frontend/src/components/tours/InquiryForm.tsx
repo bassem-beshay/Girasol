@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Share2, X } from 'lucide-react';
 import { useUserStore } from '@/store/userStore';
+import { useLanguageStore } from '@/store/languageStore';
+import { inquiryFormT, t } from '@/lib/translations';
 
 interface InquiryFormProps {
   tourName: string;
@@ -86,6 +88,7 @@ const nationalities = [
 export function InquiryForm({ tourName, tourSlug, tourPrice, tourDuration }: InquiryFormProps) {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const { user, setUser } = useUserStore();
+  const { language } = useLanguageStore();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -159,7 +162,7 @@ ${formData.specialRequests || 'None'}`;
 
   const handleWhatsApp = () => {
     if (!formData.fullName || !formData.email || !formData.nationality || !formData.phone || !formData.agreeTerms) {
-      alert('Please fill in all required fields and agree to the terms.');
+      alert(t(inquiryFormT, language, 'fillRequired'));
       return;
     }
     setIsSubmitting('whatsapp');
@@ -172,7 +175,7 @@ ${formData.specialRequests || 'None'}`;
 
   const handleEmail = () => {
     if (!formData.fullName || !formData.email || !formData.nationality || !formData.phone || !formData.agreeTerms) {
-      alert('Please fill in all required fields and agree to the terms.');
+      alert(t(inquiryFormT, language, 'fillRequired'));
       return;
     }
     setIsSubmitting('email');
@@ -208,14 +211,14 @@ ${formData.specialRequests || 'None'}`;
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border p-6">
-      <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Enquire Now</h3>
+      <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">{t(inquiryFormT, language, 'enquireNow')}</h3>
 
       <div className="space-y-4">
         {/* === REQUIRED FIELDS === */}
         {/* Full Name */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Full Name<span className="text-red-500">*</span>
+            {t(inquiryFormT, language, 'fullName')}<span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -229,7 +232,7 @@ ${formData.specialRequests || 'None'}`;
         {/* Email */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email<span className="text-red-500">*</span>
+            {t(inquiryFormT, language, 'email')}<span className="text-red-500">*</span>
           </label>
           <input
             type="email"
@@ -243,7 +246,7 @@ ${formData.specialRequests || 'None'}`;
         {/* Nationality */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Nationality<span className="text-red-500">*</span>
+            {t(inquiryFormT, language, 'nationality')}<span className="text-red-500">*</span>
           </label>
           <select
             name="nationality"
@@ -253,7 +256,7 @@ ${formData.specialRequests || 'None'}`;
           >
             {nationalities.map(nat => (
               <option key={nat} value={nat === 'Select Nationality' ? '' : nat}>
-                {nat}
+                {nat === 'Select Nationality' ? t(inquiryFormT, language, 'selectNationality') : nat}
               </option>
             ))}
           </select>
@@ -262,7 +265,7 @@ ${formData.specialRequests || 'None'}`;
         {/* Phone */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Phone<span className="text-red-500">*</span>
+            {t(inquiryFormT, language, 'phone')}<span className="text-red-500">*</span>
           </label>
           <input
             type="tel"
@@ -275,12 +278,12 @@ ${formData.specialRequests || 'None'}`;
 
         {/* === OPTIONAL FIELDS === */}
         <div className="pt-4 mt-4 border-t border-gray-200">
-          <p className="text-xs text-gray-500 mb-4 uppercase tracking-wider">Optional Information</p>
+          <p className="text-xs text-gray-500 mb-4 uppercase tracking-wider">{t(inquiryFormT, language, 'optionalInfo')}</p>
 
           {/* Date Range */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">From</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t(inquiryFormT, language, 'from')}</label>
               <input
                 type="date"
                 name="fromDate"
@@ -290,7 +293,7 @@ ${formData.specialRequests || 'None'}`;
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">To</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t(inquiryFormT, language, 'to')}</label>
               <input
                 type="date"
                 name="toDate"
@@ -304,7 +307,7 @@ ${formData.specialRequests || 'None'}`;
           {/* Travelers - Compact Row */}
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Adults (+12)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{t(inquiryFormT, language, 'adults')}</label>
               <input
                 type="number"
                 name="adults"
@@ -316,7 +319,7 @@ ${formData.specialRequests || 'None'}`;
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Children (2-11)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{t(inquiryFormT, language, 'children')}</label>
               <input
                 type="number"
                 name="children"
@@ -328,7 +331,7 @@ ${formData.specialRequests || 'None'}`;
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Infants (0-2)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{t(inquiryFormT, language, 'infants')}</label>
               <input
                 type="number"
                 name="infants"
@@ -344,14 +347,14 @@ ${formData.specialRequests || 'None'}`;
           {/* Special Requests */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Special Requests
+              {t(inquiryFormT, language, 'specialRequests')}
             </label>
             <textarea
               name="specialRequests"
               value={formData.specialRequests}
               onChange={handleChange}
               rows={2}
-              placeholder="Any special requirements..."
+              placeholder={t(inquiryFormT, language, 'specialRequestsPlaceholder')}
               className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-amber-400 focus:ring-0 outline-none transition-colors resize-none text-sm"
             />
           </div>
@@ -368,9 +371,9 @@ ${formData.specialRequests || 'None'}`;
             className="mt-1 w-4 h-4 text-amber-500 border-gray-300 rounded focus:ring-amber-400"
           />
           <label htmlFor="agreeTermsInline" className="text-sm text-gray-600">
-            I agree to the{' '}
+            {t(inquiryFormT, language, 'agreeTerms')}{' '}
             <Link href="/terms" target="_blank" className="text-amber-600 hover:underline">
-              Terms and Conditions
+              {t(inquiryFormT, language, 'termsAndConditions')}
             </Link>
             <span className="text-red-500">*</span>
           </label>
@@ -386,7 +389,7 @@ ${formData.specialRequests || 'None'}`;
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
             </svg>
-            {isSubmitting === 'whatsapp' ? 'Opening WhatsApp...' : 'Get a Free Quote Now'}
+            {isSubmitting === 'whatsapp' ? t(inquiryFormT, language, 'openingWhatsApp') : t(inquiryFormT, language, 'getQuoteNow')}
           </button>
 
           <button
@@ -397,7 +400,7 @@ ${formData.specialRequests || 'None'}`;
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-            {isSubmitting === 'email' ? 'Opening Email...' : 'Inquire via Email'}
+            {isSubmitting === 'email' ? t(inquiryFormT, language, 'openingEmail') : t(inquiryFormT, language, 'inquireViaEmail')}
           </button>
 
           {/* Share Button */}
@@ -407,14 +410,14 @@ ${formData.specialRequests || 'None'}`;
               className="w-full py-3 border-2 border-gray-200 text-gray-600 font-semibold rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
             >
               <Share2 className="w-5 h-5" />
-              Share This Tour
+              {t(inquiryFormT, language, 'shareTour')}
             </button>
 
             {/* Share Menu */}
             {showShareMenu && (
               <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-xl shadow-xl border p-4 z-10">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="font-semibold text-gray-900">Share via</span>
+                  <span className="font-semibold text-gray-900">{t(inquiryFormT, language, 'shareVia')}</span>
                   <button onClick={() => setShowShareMenu(false)} className="text-gray-400 hover:text-gray-600">
                     <X className="w-4 h-4" />
                   </button>
@@ -463,7 +466,7 @@ ${formData.specialRequests || 'None'}`;
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(`https://girasoltours.com/tours/${tourSlug}`);
-                      alert('Link copied to clipboard!');
+                      alert(t(inquiryFormT, language, 'linkCopied'));
                       setShowShareMenu(false);
                     }}
                     className="flex items-center gap-2 p-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 transition-colors"
@@ -471,7 +474,7 @@ ${formData.specialRequests || 'None'}`;
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
-                    Copy Link
+                    {t(inquiryFormT, language, 'copyLink')}
                   </button>
                 </div>
               </div>

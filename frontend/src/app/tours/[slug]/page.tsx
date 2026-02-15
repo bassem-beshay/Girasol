@@ -35,6 +35,8 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { InquiryForm } from '@/components/tours/InquiryForm';
+import { useLanguageStore } from '@/store/languageStore';
+import { tourDetailT, t } from '@/lib/translations';
 
 interface TourDetail {
   id: number;
@@ -226,6 +228,7 @@ function CountdownTimer({ endDate }: { endDate: string }) {
 export default function TourDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const { language } = useLanguageStore();
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -307,7 +310,7 @@ export default function TourDetailPage() {
         <div className="container-custom">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading tour details...</p>
+            <p className="mt-4 text-gray-600">{t(tourDetailT, language, 'loadingTour')}</p>
           </div>
         </div>
       </div>
@@ -319,10 +322,10 @@ export default function TourDetailPage() {
       <div className="min-h-screen pt-32 pb-16">
         <div className="container-custom">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Tour Not Found</h1>
-            <p className="text-gray-600 mb-8">The tour you&apos;re looking for doesn&apos;t exist.</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">{t(tourDetailT, language, 'tourNotFound')}</h1>
+            <p className="text-gray-600 mb-8">{t(tourDetailT, language, 'tourNotFoundDesc')}</p>
             <Link href="/tours" className="btn btn-primary btn-md">
-              Browse All Tours
+              {t(tourDetailT, language, 'browseAllTours')}
             </Link>
           </div>
         </div>
@@ -367,17 +370,17 @@ export default function TourDetailPage() {
                 )}
                 {tour.is_best_seller && (
                   <span className="px-3 py-1 bg-primary-500 text-white text-sm font-medium rounded-full">
-                    Best Seller
+                    {t(tourDetailT, language, 'bestSeller')}
                   </span>
                 )}
                 {tour.is_new && (
                   <span className="px-3 py-1 bg-green-500 text-white text-sm font-medium rounded-full">
-                    New
+                    {t(tourDetailT, language, 'new')}
                   </span>
                 )}
                 {tour.has_discount && tour.discount_percentage && (
                   <span className="px-3 py-1 bg-red-500 text-white text-sm font-medium rounded-full">
-                    {tour.discount_percentage}% OFF
+                    {tour.discount_percentage}% {t(tourDetailT, language, 'off')}
                   </span>
                 )}
                 {tour.category && (
@@ -402,7 +405,7 @@ export default function TourDetailPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                  <span>{tour.average_rating || 0} ({tour.review_count || 0} reviews)</span>
+                  <span>{tour.average_rating || 0} ({tour.review_count || 0} {t(tourDetailT, language, 'reviews')})</span>
                 </div>
               </div>
             </motion.div>
@@ -415,14 +418,14 @@ export default function TourDetailPage() {
         <div className="container-custom">
           <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
             {[
-              { id: 'overview', label: 'Overview' },
-              { id: 'gallery', label: 'Photos', show: tour.images && tour.images.length > 0 },
-              { id: 'highlights', label: 'Highlights', show: tour.highlights && tour.highlights.length > 0 },
-              { id: 'itinerary', label: 'Itinerary', show: tour.itinerary && tour.itinerary.length > 0 },
-              { id: 'inclusions', label: 'Inclusions', show: tour.inclusions && tour.inclusions.length > 0 },
-              { id: 'pricing', label: 'Pricing', show: tour.seasonal_pricing && tour.seasonal_pricing.length > 0 },
-              { id: 'departures', label: 'Departures', show: tour.departures && tour.departures.length > 0 },
-              { id: 'faqs', label: 'FAQs', show: tour.faqs && tour.faqs.length > 0 },
+              { id: 'overview', label: t(tourDetailT, language, 'overview') },
+              { id: 'gallery', label: t(tourDetailT, language, 'photos'), show: tour.images && tour.images.length > 0 },
+              { id: 'highlights', label: t(tourDetailT, language, 'highlights'), show: tour.highlights && tour.highlights.length > 0 },
+              { id: 'itinerary', label: t(tourDetailT, language, 'itinerary'), show: tour.itinerary && tour.itinerary.length > 0 },
+              { id: 'inclusions', label: t(tourDetailT, language, 'inclusions'), show: tour.inclusions && tour.inclusions.length > 0 },
+              { id: 'pricing', label: t(tourDetailT, language, 'pricing'), show: tour.seasonal_pricing && tour.seasonal_pricing.length > 0 },
+              { id: 'departures', label: t(tourDetailT, language, 'departures'), show: tour.departures && tour.departures.length > 0 },
+              { id: 'faqs', label: t(tourDetailT, language, 'faqs'), show: tour.faqs && tour.faqs.length > 0 },
             ]
               .filter(item => item.show !== false)
               .map((item) => (
@@ -454,7 +457,7 @@ export default function TourDetailPage() {
                   onClick={() => toggleSection('overview')}
                   className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                 >
-                  <h2 className="text-2xl font-bold text-gray-900">Overview</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'overview')}</h2>
                   <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('overview') ? 'rotate-180' : ''}`} />
                 </button>
                 <motion.div
@@ -470,22 +473,22 @@ export default function TourDetailPage() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t">
                       <div className="text-center">
                         <Clock className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                        <div className="text-sm text-gray-500">Duration</div>
+                        <div className="text-sm text-gray-500">{t(tourDetailT, language, 'duration')}</div>
                         <div className="font-semibold">{tour.duration_display}</div>
                       </div>
                       <div className="text-center">
                         <Users className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                        <div className="text-sm text-gray-500">Group Size</div>
+                        <div className="text-sm text-gray-500">{t(tourDetailT, language, 'groupSize')}</div>
                         <div className="font-semibold">{tour.min_group_size}-{tour.max_group_size}</div>
                       </div>
                       <div className="text-center">
                         <MapPin className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                        <div className="text-sm text-gray-500">Start</div>
+                        <div className="text-sm text-gray-500">{t(tourDetailT, language, 'start')}</div>
                         <div className="font-semibold">{tour.departure_city}</div>
                       </div>
                       <div className="text-center">
                         <Calendar className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                        <div className="text-sm text-gray-500">Difficulty</div>
+                        <div className="text-sm text-gray-500">{t(tourDetailT, language, 'difficulty')}</div>
                         <div className="font-semibold capitalize">{tour.difficulty_level}</div>
                       </div>
                     </div>
@@ -505,8 +508,8 @@ export default function TourDetailPage() {
                         <Camera className="w-6 h-6 text-purple-600" />
                       </div>
                       <div>
-                        <h2 className="text-2xl font-bold text-gray-900">Photo Gallery</h2>
-                        <p className="text-sm text-gray-500">{tour.images.length} photos</p>
+                        <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'photoGallery')}</h2>
+                        <p className="text-sm text-gray-500">{tour.images.length} {t(tourDetailT, language, 'photosCount')}</p>
                       </div>
                     </div>
                     <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('gallery') ? 'rotate-180' : ''}`} />
@@ -557,7 +560,7 @@ export default function TourDetailPage() {
                     onClick={() => toggleSection('highlights')}
                     className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                   >
-                    <h2 className="text-2xl font-bold text-gray-900">Tour Highlights</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'tourHighlights')}</h2>
                     <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('highlights') ? 'rotate-180' : ''}`} />
                   </button>
                   <motion.div
@@ -592,7 +595,7 @@ export default function TourDetailPage() {
                     onClick={() => toggleSection('itinerary')}
                     className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                   >
-                    <h2 className="text-2xl font-bold text-gray-900">Day by Day Itinerary</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'dayByDayItinerary')}</h2>
                     <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('itinerary') ? 'rotate-180' : ''}`} />
                   </button>
                   <motion.div
@@ -611,7 +614,7 @@ export default function TourDetailPage() {
                               </span>
                               <h3 className="text-lg font-semibold text-gray-900">{day.title}</h3>
                             </div>
-                            <p className="text-gray-600 mb-4">{day.description}</p>
+                            <p className="text-gray-600 mb-4 text-justify">{day.description}</p>
                             <div className="flex flex-wrap gap-3 text-sm">
                               {day.locations && (
                                 <div className="flex items-center gap-2 text-gray-500">
@@ -621,12 +624,12 @@ export default function TourDetailPage() {
                               )}
                               {day.meals_included && (
                                 <div className="flex items-center gap-2 text-gray-500">
-                                  <span className="break-words">Meals: {day.meals_included}</span>
+                                  <span className="break-words">{t(tourDetailT, language, 'meals')}: {day.meals_included}</span>
                                 </div>
                               )}
                               {day.accommodation && (
                                 <div className="flex items-center gap-2 text-gray-500">
-                                  <span className="break-words">Stay: {day.accommodation}</span>
+                                  <span className="break-words">{t(tourDetailT, language, 'stay')}: {day.accommodation}</span>
                                 </div>
                               )}
                             </div>
@@ -644,7 +647,7 @@ export default function TourDetailPage() {
                   onClick={() => toggleSection('inclusions')}
                   className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                 >
-                  <h2 className="text-2xl font-bold text-gray-900">What&apos;s Included</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'whatsIncluded')}</h2>
                   <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('inclusions') ? 'rotate-180' : ''}`} />
                 </button>
                 <motion.div
@@ -659,12 +662,12 @@ export default function TourDetailPage() {
                         <div>
                           <h3 className="font-semibold text-green-600 mb-4 flex items-center gap-2">
                             <Check className="w-5 h-5" />
-                            Included
+                            {t(tourDetailT, language, 'included')}
                           </h3>
                           <ul className="space-y-2">
                             {included.map((item) => (
-                              <li key={item.id} className="flex items-center gap-2 text-gray-600">
-                                <Check className="w-4 h-4 text-green-500" />
+                              <li key={item.id} className="flex items-start gap-2 text-gray-600">
+                                <Check className="w-4 h-4 text-green-500 flex-shrink-0 mt-1" />
                                 {item.item}
                               </li>
                             ))}
@@ -675,12 +678,12 @@ export default function TourDetailPage() {
                         <div>
                           <h3 className="font-semibold text-red-600 mb-4 flex items-center gap-2">
                             <X className="w-5 h-5" />
-                            Not Included
+                            {t(tourDetailT, language, 'notIncluded')}
                           </h3>
                           <ul className="space-y-2">
                             {notIncluded.map((item) => (
-                              <li key={item.id} className="flex items-center gap-2 text-gray-600">
-                                <X className="w-4 h-4 text-red-500" />
+                              <li key={item.id} className="flex items-start gap-2 text-gray-600">
+                                <X className="w-4 h-4 text-red-500 flex-shrink-0 mt-1" />
                                 {item.item}
                               </li>
                             ))}
@@ -704,8 +707,8 @@ export default function TourDetailPage() {
                         <DollarSign className="w-6 h-6 text-green-600" />
                       </div>
                       <div>
-                        <h2 className="text-2xl font-bold text-gray-900">Seasonal Pricing</h2>
-                        <p className="text-sm text-gray-500">Prices vary by season</p>
+                        <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'seasonalPricing')}</h2>
+                        <p className="text-sm text-gray-500">{t(tourDetailT, language, 'pricesVaryBySeason')}</p>
                       </div>
                     </div>
                     <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('pricing') ? 'rotate-180' : ''}`} />
@@ -726,15 +729,20 @@ export default function TourDetailPage() {
                       >
                         <div className="flex items-center justify-between mb-3">
                           <span className={`inline-flex items-center gap-2 font-medium ${
-                            pricing.season_name === 'High Season'
+                            pricing.season_name === 'Peak Season'
                               ? 'text-red-600'
+                              : pricing.season_name === 'High Season'
+                              ? 'text-orange-600'
+                              : pricing.season_name === 'Normal Season'
+                              ? 'text-amber-600'
                               : pricing.season_name === 'Low Season'
                               ? 'text-green-600'
-                              : 'text-amber-600'
+                              : 'text-gray-600'
                           }`}>
-                            {pricing.season_name === 'High Season' && '🔥'}
-                            {pricing.season_name === 'Low Season' && '💰'}
-                            {pricing.season_name === 'Shoulder Season' && '⭐'}
+                            {pricing.season_name === 'Peak Season' && '❤️'}
+                            {pricing.season_name === 'High Season' && '🧡'}
+                            {pricing.season_name === 'Normal Season' && '💛'}
+                            {pricing.season_name === 'Low Season' && '💚'}
                             {pricing.season_name}
                           </span>
                           <span className="font-bold text-lg text-gray-900">${parseFloat(pricing.price_per_person).toFixed(0)}</span>
@@ -744,7 +752,7 @@ export default function TourDetailPage() {
                         </div>
                         <div className="text-sm text-gray-500 flex items-center gap-1">
                           <User className="w-4 h-4" />
-                          Single Supplement: +${parseFloat(pricing.single_supplement).toFixed(0)}
+                          {t(tourDetailT, language, 'singleSupplement')}: +${parseFloat(pricing.single_supplement).toFixed(0)}
                         </div>
                       </div>
                     ))}
@@ -754,10 +762,10 @@ export default function TourDetailPage() {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-gray-200">
-                          <th className="text-left py-3 px-4 font-semibold text-gray-700">Season</th>
-                          <th className="text-left py-3 px-4 font-semibold text-gray-700">Period</th>
-                          <th className="text-right py-3 px-4 font-semibold text-gray-700">Price/Person</th>
-                          <th className="text-right py-3 px-4 font-semibold text-gray-700">Single Supplement</th>
+                          <th className="text-left py-3 px-4 font-semibold text-gray-700">{t(tourDetailT, language, 'season')}</th>
+                          <th className="text-left py-3 px-4 font-semibold text-gray-700">{t(tourDetailT, language, 'period')}</th>
+                          <th className="text-right py-3 px-4 font-semibold text-gray-700">{t(tourDetailT, language, 'pricePerPerson')}</th>
+                          <th className="text-right py-3 px-4 font-semibold text-gray-700">{t(tourDetailT, language, 'singleSupplement')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -768,15 +776,20 @@ export default function TourDetailPage() {
                           >
                             <td className="py-4 px-4">
                               <span className={`inline-flex items-center gap-2 font-medium ${
-                                pricing.season_name === 'High Season'
+                                pricing.season_name === 'Peak Season'
                                   ? 'text-red-600'
+                                  : pricing.season_name === 'High Season'
+                                  ? 'text-orange-600'
+                                  : pricing.season_name === 'Normal Season'
+                                  ? 'text-amber-600'
                                   : pricing.season_name === 'Low Season'
                                   ? 'text-green-600'
-                                  : 'text-amber-600'
+                                  : 'text-gray-600'
                               }`}>
-                                {pricing.season_name === 'High Season' && '🔥'}
-                                {pricing.season_name === 'Low Season' && '💰'}
-                                {pricing.season_name === 'Shoulder Season' && '⭐'}
+                                {pricing.season_name === 'Peak Season' && '❤️'}
+                                {pricing.season_name === 'High Season' && '🧡'}
+                                {pricing.season_name === 'Normal Season' && '💛'}
+                                {pricing.season_name === 'Low Season' && '💚'}
                                 {pricing.season_name}
                               </span>
                             </td>
@@ -799,7 +812,7 @@ export default function TourDetailPage() {
                   </div>
                   <div className="mt-4 p-4 bg-blue-50 rounded-xl">
                     <p className="text-sm text-blue-800">
-                      <strong>Note:</strong> Prices are per person based on double occupancy. Single supplement applies for solo travelers requiring a private room.
+                      {t(tourDetailT, language, 'pricingNote')}
                     </p>
                   </div>
                     </div>
@@ -819,8 +832,8 @@ export default function TourDetailPage() {
                         <CalendarDays className="w-6 h-6 text-blue-600" />
                       </div>
                       <div>
-                        <h2 className="text-2xl font-bold text-gray-900">Upcoming Departures</h2>
-                        <p className="text-sm text-gray-500">Choose your preferred travel date</p>
+                        <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'upcomingDepartures')}</h2>
+                        <p className="text-sm text-gray-500">{t(tourDetailT, language, 'chooseDate')}</p>
                       </div>
                     </div>
                     <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('departures') ? 'rotate-180' : ''}`} />
@@ -859,7 +872,7 @@ export default function TourDetailPage() {
                                   {new Date(departure.departure_date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                                 </div>
                                 <div className="text-xs text-gray-500 mt-1">
-                                  Returns: {new Date(departure.return_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                  {t(tourDetailT, language, 'returns')}: {new Date(departure.return_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                 </div>
                               </div>
                             </div>
@@ -874,12 +887,12 @@ export default function TourDetailPage() {
                               departure.available_spots <= 5 ? 'text-orange-600' : 'text-gray-500'
                             }`}>
                               {departure.available_spots <= 5 && <AlertCircle className="w-3 h-3" />}
-                              {departure.available_spots} spots left
+                              {departure.available_spots} {t(tourDetailT, language, 'spotsLeft')}
                             </div>
                             {departure.is_guaranteed && (
                               <span className="flex items-center gap-1 text-green-600 text-xs">
                                 <CheckCircle className="w-3 h-3" />
-                                Guaranteed
+                                {t(tourDetailT, language, 'guaranteed')}
                               </span>
                             )}
                           </div>
@@ -903,11 +916,11 @@ export default function TourDetailPage() {
                                 </span>
                               </div>
                               <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
-                                <span>Returns: {new Date(departure.return_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                <span>{t(tourDetailT, language, 'returns')}: {new Date(departure.return_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                                 {departure.is_guaranteed && (
                                   <span className="flex items-center gap-1 text-green-600">
                                     <CheckCircle className="w-4 h-4" />
-                                    Guaranteed
+                                    {t(tourDetailT, language, 'guaranteed')}
                                   </span>
                                 )}
                               </div>
@@ -922,7 +935,7 @@ export default function TourDetailPage() {
                                 departure.available_spots <= 5 ? 'text-orange-600' : 'text-gray-500'
                               }`}>
                                 {departure.available_spots <= 5 && <AlertCircle className="w-4 h-4" />}
-                                {departure.available_spots} spots left
+                                {departure.available_spots} {t(tourDetailT, language, 'spotsLeft')}
                               </div>
                             </div>
                           </div>
@@ -933,7 +946,7 @@ export default function TourDetailPage() {
                   {tour.departures.length > 8 && (
                     <div className="mt-4 text-center">
                       <p className="text-sm text-gray-500">
-                        + {tour.departures.length - 8} more departure dates available
+                        {t(tourDetailT, language, 'moreDepartures').replace('{count}', String(tour.departures.length - 8))}
                       </p>
                     </div>
                   )}
@@ -953,7 +966,7 @@ export default function TourDetailPage() {
                       <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
                         <HelpCircle className="w-6 h-6 text-primary-600" />
                       </div>
-                      <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
+                      <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'faqTitle')}</h2>
                     </div>
                     <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('faqs') ? 'rotate-180' : ''}`} />
                   </button>
@@ -990,14 +1003,14 @@ export default function TourDetailPage() {
                     <div className="mb-6 -mx-6 -mt-6 p-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-t-2xl">
                       <div className="flex items-center gap-2 text-white mb-2">
                         <Sparkles className="w-5 h-5" />
-                        <span className="font-bold">{tour.early_booking_badge || 'Early Bird Offer'}</span>
+                        <span className="font-bold">{tour.early_booking_badge || t(tourDetailT, language, 'earlyBirdOffer')}</span>
                         <span className="ml-auto bg-white/20 px-2 py-0.5 rounded text-sm">
-                          Save {tour.early_booking_discount}%
+                          {t(tourDetailT, language, 'save').replace('{percent}', String(tour.early_booking_discount))}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-white/90 text-sm mb-3">
                         <Timer className="w-4 h-4" />
-                        <span>Offer ends in:</span>
+                        <span>{t(tourDetailT, language, 'offerEndsIn')}</span>
                       </div>
                       <CountdownTimer endDate={tour.early_booking_end_date} />
                     </div>
@@ -1006,7 +1019,7 @@ export default function TourDetailPage() {
                   {/* Price */}
                   <div className="mb-6">
                     <span className="text-gray-500 text-sm">
-                      {tour.is_early_booking ? 'Early Bird Price' : 'From'}
+                      {tour.is_early_booking ? t(tourDetailT, language, 'earlyBirdPrice') : t(tourDetailT, language, 'from')}
                     </span>
                     <div className="flex items-baseline gap-2">
                       <span className={`text-3xl font-bold ${tour.is_early_booking ? 'text-orange-500' : 'text-primary-600'}`}>
@@ -1017,23 +1030,23 @@ export default function TourDetailPage() {
                           ${parseFloat(tour.price).toFixed(0)}
                         </span>
                       )}
-                      <span className="text-gray-500">/ person</span>
+                      <span className="text-gray-500">{t(tourDetailT, language, 'perPerson')}</span>
                     </div>
                     {tour.is_early_booking && tour.early_booking_discount && (
                       <span className="inline-block mt-2 px-2 py-1 bg-orange-100 text-orange-600 text-sm font-medium rounded">
-                        Early Bird: Save {tour.early_booking_discount}%
+                        {t(tourDetailT, language, 'earlyBirdSave').replace('{percent}', String(tour.early_booking_discount))}
                       </span>
                     )}
                     {!tour.is_early_booking && tour.has_discount && tour.discount_percentage && (
                       <span className="inline-block mt-2 px-2 py-1 bg-red-100 text-red-600 text-sm font-medium rounded">
-                        Save {tour.discount_percentage}%
+                        {t(tourDetailT, language, 'save').replace('{percent}', String(tour.discount_percentage))}
                       </span>
                     )}
                     {(tour.price_single_supplement || tour.child_price) && (
                       <div className="mt-4 space-y-2 pt-4 border-t border-gray-100">
                         {tour.price_single_supplement && (
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-gray-500">Single Supplement</span>
+                            <span className="text-gray-500">{t(tourDetailT, language, 'singleSupplement')}</span>
                             <span className="font-semibold text-gray-900">
                               +${parseFloat(tour.price_single_supplement).toFixed(0)}
                             </span>
@@ -1041,7 +1054,7 @@ export default function TourDetailPage() {
                         )}
                         {tour.child_price && (
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-gray-500">Child Price</span>
+                            <span className="text-gray-500">{t(tourDetailT, language, 'childPrice')}</span>
                             <span className="font-semibold text-gray-900">
                               ${parseFloat(tour.child_price).toFixed(0)}
                             </span>
@@ -1054,15 +1067,15 @@ export default function TourDetailPage() {
                   {/* Quick Info */}
                   <div className="space-y-3 mb-6 pb-6 border-b">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Duration</span>
+                      <span className="text-gray-500">{t(tourDetailT, language, 'duration')}</span>
                       <span className="font-medium">{tour.duration_display}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Group Size</span>
-                      <span className="font-medium">Max {tour.max_group_size} people</span>
+                      <span className="text-gray-500">{t(tourDetailT, language, 'groupSize')}</span>
+                      <span className="font-medium">{t(tourDetailT, language, 'maxPeople').replace('{count}', String(tour.max_group_size))}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Languages</span>
+                      <span className="text-gray-500">{t(tourDetailT, language, 'languages')}</span>
                       <span className="font-medium">{tour.languages}</span>
                     </div>
                   </div>
@@ -1085,7 +1098,7 @@ export default function TourDetailPage() {
                   className="flex items-center gap-3 mt-4 px-4 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl transition-colors"
                 >
                   <MessageSquare className="w-5 h-5 flex-shrink-0" />
-                  <span className="font-semibold text-sm">Ask about this tour on WhatsApp</span>
+                  <span className="font-semibold text-sm">{t(tourDetailT, language, 'askWhatsApp')}</span>
                 </a>
               </div>
             </div>

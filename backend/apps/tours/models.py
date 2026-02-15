@@ -267,7 +267,13 @@ class TourPricing(TimeStampedModel):
     """Seasonal pricing for tours."""
 
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='seasonal_pricing')
-    season_name = models.CharField(max_length=50)  # e.g., Low Season, High Season
+    SEASON_CHOICES = [
+        ('Low Season', 'Low Season'),
+        ('Normal Season', 'Normal Season'),
+        ('High Season', 'High Season'),
+        ('Peak Season', 'Peak Season'),
+    ]
+    season_name = models.CharField(max_length=50, choices=SEASON_CHOICES, default='Low Season')
     season_name_es = models.CharField('Season Name (Spanish)', max_length=50, blank=True)
     season_name_pt = models.CharField('Season Name (Portuguese)', max_length=50, blank=True)
     start_date = models.DateField()

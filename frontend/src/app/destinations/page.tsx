@@ -6,6 +6,8 @@ import { MapPin, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useLanguageStore } from '@/store/languageStore';
+import { destinationsPageT, t } from '@/lib/translations';
 
 interface Destination {
   id: number;
@@ -29,6 +31,7 @@ interface DestinationsResponse {
 }
 
 export default function DestinationsPage() {
+  const { language } = useLanguageStore();
   const { data, isLoading, error } = useQuery<DestinationsResponse>({
     queryKey: ['destinations'],
     queryFn: async () => {
@@ -43,7 +46,7 @@ export default function DestinationsPage() {
         <div className="container-custom">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading destinations...</p>
+            <p className="mt-4 text-gray-600">{t(destinationsPageT, language, 'loadingDestinations')}</p>
           </div>
         </div>
       </div>
@@ -55,7 +58,7 @@ export default function DestinationsPage() {
       <div className="min-h-screen pt-32 pb-16">
         <div className="container-custom">
           <div className="text-center text-red-500">
-            <p>Error loading destinations. Please try again later.</p>
+            <p>{t(destinationsPageT, language, 'errorLoading')}</p>
           </div>
         </div>
       </div>
@@ -82,7 +85,7 @@ export default function DestinationsPage() {
             transition={{ duration: 0.6 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-3 sm:mb-4 md:mb-6"
           >
-            Explore Egypt
+            {t(destinationsPageT, language, 'exploreEgypt')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -90,7 +93,7 @@ export default function DestinationsPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 px-2"
           >
-            From ancient temples to pristine beaches, discover the diverse wonders of Egypt
+            {t(destinationsPageT, language, 'heroSubtitle')}
           </motion.p>
         </div>
       </section>
@@ -100,10 +103,10 @@ export default function DestinationsPage() {
         <section className="py-10 sm:py-12 md:py-16 bg-white">
           <div className="container-custom px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12">
-              <span className="text-primary-600 font-medium mb-2 block text-sm sm:text-base">Top Picks</span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 mb-3 sm:mb-4">Featured Destinations</h2>
+              <span className="text-primary-600 font-medium mb-2 block text-sm sm:text-base">{t(destinationsPageT, language, 'topPicks')}</span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 mb-3 sm:mb-4">{t(destinationsPageT, language, 'featuredDestinations')}</h2>
               <p className="text-gray-600 text-sm sm:text-base">
-                Our most popular destinations, handpicked for unforgettable experiences
+                {t(destinationsPageT, language, 'featuredSubtitle')}
               </p>
             </div>
 
@@ -125,7 +128,7 @@ export default function DestinationsPage() {
                         alt={destination.name}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      loading="lazy" />
+                      />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
                         <MapPin className="w-16 h-16 text-white/50" />
@@ -136,7 +139,7 @@ export default function DestinationsPage() {
                     {/* Featured Badge */}
                     <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
                       <span className="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary-500 text-white text-xs sm:text-sm font-medium rounded-full">
-                        Featured
+                        {t(destinationsPageT, language, 'featured')}
                       </span>
                     </div>
 
@@ -150,10 +153,10 @@ export default function DestinationsPage() {
                       </h3>
                       <div className="flex items-center justify-between">
                         <span className="text-white/80 text-xs sm:text-sm">
-                          {destination.tour_count} Tours Available
+                          {t(destinationsPageT, language, 'toursAvailable').replace('{count}', String(destination.tour_count))}
                         </span>
                         <span className="inline-flex items-center text-white font-medium text-sm group-hover:text-primary-400 transition-colors">
-                          Explore
+                          {t(destinationsPageT, language, 'explore')}
                           <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                         </span>
                       </div>
@@ -173,17 +176,17 @@ export default function DestinationsPage() {
       <section className="py-10 sm:py-12 md:py-16 bg-gray-50">
         <div className="container-custom px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12">
-            <span className="text-primary-600 font-medium mb-2 block text-sm sm:text-base">Discover More</span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 mb-3 sm:mb-4">All Destinations</h2>
+            <span className="text-primary-600 font-medium mb-2 block text-sm sm:text-base">{t(destinationsPageT, language, 'discoverMore')}</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 mb-3 sm:mb-4">{t(destinationsPageT, language, 'allDestinations')}</h2>
             <p className="text-gray-600 text-sm sm:text-base">
-              Explore all the amazing places Egypt has to offer
+              {t(destinationsPageT, language, 'allDestSubtitle')}
             </p>
           </div>
 
           {destinations.length === 0 ? (
             <div className="text-center py-12 sm:py-16">
               <MapPin className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 text-base sm:text-lg">No destinations available at the moment.</p>
+              <p className="text-gray-500 text-base sm:text-lg">{t(destinationsPageT, language, 'noDestinations')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
@@ -206,7 +209,7 @@ export default function DestinationsPage() {
                           alt={destination.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy" />
+                        />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
                           <MapPin className="w-10 h-10 sm:w-12 sm:h-12 text-primary-400" />
@@ -227,10 +230,10 @@ export default function DestinationsPage() {
                       </p>
                       <div className="flex items-center justify-between pt-3 sm:pt-4 border-t">
                         <span className="text-primary-600 font-medium text-sm sm:text-base">
-                          {destination.tour_count} Tours
+                          {t(destinationsPageT, language, 'tours').replace('{count}', String(destination.tour_count))}
                         </span>
                         <span className="text-primary-600 font-medium text-sm inline-flex items-center">
-                          View Details
+                          {t(destinationsPageT, language, 'viewDetails')}
                           <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                         </span>
                       </div>
@@ -244,32 +247,26 @@ export default function DestinationsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-white">
-        <div className="container-custom px-4 sm:px-6">
+      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-primary-600 to-secondary-500">
+        <div className="container-custom text-center px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl py-12 sm:py-16 md:py-20 px-6 sm:px-10 md:px-16 text-center relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-500/10 rounded-full blur-2xl" />
-            <div className="relative z-10">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-4 sm:mb-6">
-                Need Help Choosing?
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto">
-                Our travel experts are here to help you plan the perfect Egyptian adventure.
-                Contact us for personalized recommendations.
-              </p>
-              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-                <Link href="/contact#quote-form" className="btn bg-primary-500 text-white hover:bg-primary-600 py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base font-semibold rounded-xl">
-                  Get Free Consultation
-                </Link>
-                <Link href="/tours" className="btn btn-outline border-white/30 text-white hover:bg-white/10 py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base font-semibold rounded-xl">
-                  Browse All Tours
-                </Link>
-              </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-4 sm:mb-6">
+              {t(destinationsPageT, language, 'needHelp')}
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto">
+              {t(destinationsPageT, language, 'needHelpDesc')}
+            </p>
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
+              <Link href="/contact" className="btn bg-white text-primary-600 hover:bg-gray-100 py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base font-semibold">
+                {t(destinationsPageT, language, 'getFreeConsultation')}
+              </Link>
+              <Link href="/tours" className="btn btn-outline border-white text-white hover:bg-white/10 py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base font-semibold">
+                {t(destinationsPageT, language, 'browseAllTours')}
+              </Link>
             </div>
           </motion.div>
         </div>

@@ -237,12 +237,14 @@ const content: Record<Language, {
       },
       {
         icon: 'payment',
-        title: 'Acquisition Facilities',
+        title: 'Payment Facilities',
         content: [
-          'We have several acquisition facilities:',
-          '1. Down payment + fixed installments in Brazilian Reais on VISA or MASTERCARD credit cards without interest.',
-          '2. Full amount with DISCOUNT via PIX or bank TED transfer.',
-          '3. Full amount via Link in US Dollars on VISA or MASTERCARD credit card.'
+          'We offer flexible payment options to make your booking easier:',
+          '1. Full Payment via Online Link — Pay the total amount in US Dollars securely through our online payment link. Accepts VISA and MASTERCARD credit cards.',
+          '2. Installment Plan — Down payment + fixed monthly installments in Brazilian Reais on VISA or MASTERCARD credit cards. Interest-free installments available.',
+          '3. Early Bird Discount – Full Payment — Pay the full amount upfront and enjoy special Early Bird savings! Available via bank transfer (TED) or credit card payment link in USD.',
+          '4. Bank Transfer (Direct Wire) — Prefer to pay directly from your bank account? You can make a one-time bank transfer (TED or international wire) to settle the full amount. Ideal for those taking advantage of the Early Bird discount. No additional fees – just a simple and secure transfer.',
+          'Need a custom payment plan? If you\'d like to pay in installments under a different arrangement, please contact us directly and we\'ll work out a solution tailored to your needs.'
         ]
       },
       {
@@ -495,12 +497,14 @@ const content: Record<Language, {
       },
       {
         icon: 'payment',
-        title: 'Facilidades de adquisición',
+        title: 'Facilidades de Pago',
         content: [
-          'Tenemos varias facilidades de adquisición:',
-          '1. Entrada + cuotas fijas en reales brasileños en tarjetas de crédito VISA o MASTERCARD sin intereses.',
-          '2. Integral con DESCUENTO vía PIX o transferencia bancaria TED.',
-          '3. Integral vía Link en dólares americanos en tarjeta de crédito VISA o MASTERCARD.'
+          'Ofrecemos opciones de pago flexibles para facilitar su reserva:',
+          '1. Pago Total vía Link Online — Pague el monto total en dólares americanos de forma segura a través de nuestro enlace de pago online. Acepta tarjetas de crédito VISA y MASTERCARD.',
+          '2. Plan de Cuotas — Entrada + cuotas mensuales fijas en reales brasileños en tarjetas de crédito VISA o MASTERCARD. Cuotas sin intereses disponibles.',
+          '3. Descuento Early Bird – Pago Total — ¡Pague el monto total por adelantado y disfrute de ahorros especiales Early Bird! Disponible vía transferencia bancaria (TED) o enlace de pago con tarjeta de crédito en USD.',
+          '4. Transferencia Bancaria (Wire Directo) — ¿Prefiere pagar directamente desde su cuenta bancaria? Puede realizar una transferencia bancaria única (TED o wire internacional) para liquidar el monto total. Ideal para quienes aprovechan el descuento Early Bird. Sin tarifas adicionales – solo una transferencia simple y segura.',
+          '¿Necesita un plan de pago personalizado? Si desea pagar en cuotas bajo un arreglo diferente, contáctenos directamente y elaboraremos una solución adaptada a sus necesidades.'
         ]
       },
       {
@@ -754,12 +758,14 @@ const content: Record<Language, {
       },
       {
         icon: 'payment',
-        title: 'Facilidades de aquisição',
+        title: 'Facilidades de Pagamento',
         content: [
-          'Temos várias facilidades de aquisição:',
-          '1. Entrada + parcelas fixas em reais brasileiros nos cartões de crédito VISA ou MASTERCARD sem juros.',
-          '2. Integral com DESCONTO via PIX ou TED bancário.',
-          '3. Integral via Link em dólares americanos no cartão de crédito VISA ou MASTERCARD.'
+          'Oferecemos opções de pagamento flexíveis para facilitar sua reserva:',
+          '1. Pagamento Total via Link Online — Pague o valor total em dólares americanos de forma segura através do nosso link de pagamento online. Aceita cartões de crédito VISA e MASTERCARD.',
+          '2. Plano de Parcelamento — Entrada + parcelas mensais fixas em reais brasileiros nos cartões de crédito VISA ou MASTERCARD. Parcelas sem juros disponíveis.',
+          '3. Desconto Early Bird – Pagamento Total — Pague o valor total antecipadamente e aproveite economias especiais Early Bird! Disponível via transferência bancária (TED) ou link de pagamento com cartão de crédito em USD.',
+          '4. Transferência Bancária (Wire Direto) — Prefere pagar diretamente da sua conta bancária? Você pode fazer uma transferência bancária única (TED ou wire internacional) para quitar o valor total. Ideal para quem aproveita o desconto Early Bird. Sem taxas adicionais – apenas uma transferência simples e segura.',
+          'Precisa de um plano de pagamento personalizado? Se deseja pagar em parcelas sob um arranjo diferente, entre em contato conosco diretamente e elaboraremos uma solução sob medida para suas necessidades.'
         ]
       },
       {

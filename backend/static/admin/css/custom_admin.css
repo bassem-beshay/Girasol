@@ -49,7 +49,7 @@
     --shadow-xl: 0 20px 40px rgba(30, 58, 95, 0.15);
 
     /* Dimensions */
-    --sidebar-width: 260px;
+    --sidebar-width: 50px;
     --navbar-height: 60px;
     --radius-sm: 6px;
     --radius-md: 10px;
@@ -142,7 +142,7 @@ body {
 .main-sidebar {
     background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-darker) 100%) !important;
     width: var(--sidebar-width) !important;
-    min-width: var(--sidebar-width) !important;
+    min-width: 0 !important;
     box-shadow: 4px 0 15px rgba(0,0,0,0.1);
     border-right: none !important;
     overflow-x: hidden;
@@ -461,7 +461,7 @@ body.layout-navbar-fixed .main-sidebar {
 }
 
 .sidebar-mini.sidebar-collapse .main-sidebar:hover {
-    width: var(--sidebar-width) !important;
+    width: 260px !important;
 }
 
 .sidebar-mini.sidebar-collapse .main-sidebar:hover .brand-text,
@@ -1237,7 +1237,7 @@ fieldset legend,
    ============================================ */
 @media (max-width: 991.98px) {
     :root {
-        --sidebar-width: 260px;
+        --sidebar-width: 50px;
     }
 
     .main-sidebar {
@@ -1806,22 +1806,355 @@ body.change-form .sticky-top {
     top: auto !important;
 }
 
-
 /* ============================================
-   Hide user panel - show only on hover
+   SIDEBAR: Auto-collapse with hover expand
    ============================================ */
-.main-sidebar .user-panel {
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    padding: 0 !important;
+
+/* Hide text/labels when collapsed */
+.main-sidebar .nav-link p,
+.main-sidebar .brand-text,
+.main-sidebar .nav-header,
+.main-sidebar .user-panel,
+.main-sidebar .form-inline,
+.main-sidebar .sidebar-search,
+.main-sidebar form[role="search"],
+.main-sidebar .nav-link .right,
+.main-sidebar .nav-link .badge {
+    display: none !important;
+}
+
+/* Center icons */
+.main-sidebar .nav-sidebar .nav-link {
+    padding: 10px 0 !important;
+    text-align: center !important;
+    justify-content: center !important;
+}
+
+.main-sidebar .nav-sidebar .nav-icon,
+.main-sidebar .nav-sidebar > .nav-item > .nav-link > i {
     margin: 0 !important;
-    transition: all 0.3s ease;
+    font-size: 16px !important;
+    width: 50px !important;
+    text-align: center !important;
+}
+
+/* Brand - icon only */
+.main-sidebar .brand-link {
+    padding: 12px 0 !important;
+    text-align: center !important;
+}
+
+.main-sidebar .brand-image {
+    margin: 0 auto !important;
+    float: none !important;
+    max-height: 28px !important;
+}
+
+/* === HOVER: Expand to full === */
+.main-sidebar:hover {
+    width: 260px !important;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.4) !important;
+}
+
+.main-sidebar:hover .nav-link p,
+.main-sidebar:hover .brand-text,
+.main-sidebar:hover .nav-header,
+.main-sidebar:hover .user-panel,
+.main-sidebar:hover .nav-link .right,
+.main-sidebar:hover .nav-link .badge {
+    display: inline-block !important;
+}
+
+.main-sidebar:hover .nav-header {
+    display: block !important;
 }
 
 .main-sidebar:hover .user-panel {
-    opacity: 1;
-    max-height: 80px;
-    padding: 0.8rem 1rem !important;
-    margin: 0.5rem 0 !important;
+    display: flex !important;
+}
+
+.main-sidebar:hover .nav-sidebar .nav-link {
+    padding: 8px 16px !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+}
+
+.main-sidebar:hover .nav-sidebar .nav-icon,
+.main-sidebar:hover .nav-sidebar > .nav-item > .nav-link > i {
+    width: auto !important;
+    margin-right: 10px !important;
+}
+
+.main-sidebar:hover .brand-link {
+    padding: 12px 15px !important;
+    text-align: left !important;
+}
+
+.main-sidebar:hover .brand-image {
+    margin-right: 8px !important;
+    float: left !important;
+}
+
+/* Hide pushmenu button */
+.nav-link[data-widget="pushmenu"] {
+    display: none !important;
+}
+
+
+/* Hide sidebar search completely */
+.main-sidebar .input-group,
+.main-sidebar [data-widget="sidebar-search"],
+.main-sidebar .sidebar-search-results,
+.sidebar-search,
+.main-sidebar form {
+    display: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* ============================================
+   ZERO PADDING - Full width tables & content
+   ============================================ */
+
+/* Kill ALL padding on content wrappers */
+.content-wrapper > .content,
+.content-wrapper > section.content {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.content-wrapper > .content > .container-fluid,
+.content-wrapper > .content > .container-xl,
+.content-wrapper > .content > .container-lg,
+.content-wrapper > .content > div[class*="container"] {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Content main */
+#content-main,
+#content-main > form,
+#content-main > form > .row,
+#content-main .col-12,
+#content-main .col-lg-9,
+#content-main .col-12.col-lg-9,
+#content-main .col-12.col-lg-3 {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    flex: 0 0 100% !important;
+}
+
+/* Cards - zero margin/padding around them */
+.content-wrapper .card {
+    margin: 0 0 5px 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.content-wrapper .card .card-body {
+    padding: 5px !important;
+}
+
+.content-wrapper .card .card-header {
+    padding: 8px 5px !important;
+}
+
+/* Tab content */
+.tab-content,
+.tab-pane,
+.tab-pane .card,
+.tab-pane .card .card-body {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+/* Inline groups - zero padding */
+.inline-group,
+.inline-related,
+.tabular,
+.tabular .module {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+}
+
+/* Tables full width */
+.tabular table,
+.inline-group table,
+table.table,
+#result_list {
+    width: 100% !important;
+    table-layout: auto !important;
+    margin: 0 !important;
+}
+
+/* Compact cells */
+.tabular td, .tabular th,
+table.table td, table.table th,
+#result_list td, #result_list th {
+    padding: 4px 5px !important;
+    font-size: 12.5px !important;
+    white-space: nowrap !important;
+}
+
+/* Inputs inside tables */
+.tabular input[type="text"],
+.tabular input[type="number"],
+.tabular select {
+    padding: 3px 5px !important;
+    font-size: 12px !important;
+    min-width: 80px !important;
+}
+
+/* Fieldsets */
+fieldset,
+.form-row,
+.form-group {
+    padding: 2px 5px !important;
+}
+
+/* Change list full width */
+#changelist {
+    width: 100% !important;
+    padding: 0 !important;
+}
+
+#changelist .results {
+    overflow-x: auto !important;
+    padding: 0 !important;
+}
+
+/* Breadcrumb bar compact */
+.content-header {
+    padding: 5px 10px !important;
+}
+
+
+/* ============================================
+   Clean inline tables - compact & structured
+   ============================================ */
+
+/* Hide "Note: You are X hours behind server time" */
+.timezonewarning,
+span.timezonewarning,
+.help.timezonewarning,
+p.help {
+    display: none !important;
+}
+
+/* Hide "Today | calendar" links next to date fields */
+.datetimeshortcuts,
+span.datetimeshortcuts {
+    display: none !important;
+}
+
+/* Tabular inline rows - tight spacing */
+.tabular .form-row,
+.tabular tr {
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.tabular td,
+.tabular th {
+    padding: 6px 8px !important;
+    vertical-align: middle !important;
+    border: none !important;
+    font-size: 13px !important;
+}
+
+.tabular th {
+    background: var(--primary, #1e3a5f) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 8px !important;
+    white-space: nowrap !important;
+}
+
+/* Alternate row colors */
+.tabular tbody tr:nth-child(even) {
+    background: #f8fafc !important;
+}
+
+.tabular tbody tr:hover {
+    background: #edf2f7 !important;
+}
+
+/* Inputs in table - compact */
+.tabular input[type="text"],
+.tabular input[type="number"] {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px !important;
+    padding: 5px 8px !important;
+    font-size: 13px !important;
+    height: 32px !important;
+    width: 100% !important;
+    min-width: 70px !important;
+}
+
+.tabular select {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px !important;
+    padding: 4px 6px !important;
+    font-size: 13px !important;
+    height: 32px !important;
+    min-width: 100px !important;
+}
+
+.tabular input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer !important;
+}
+
+/* Remove button - compact */
+.tabular .inline-deletelink,
+.tabular a.inline-deletelink {
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    border-radius: 4px !important;
+}
+
+/* Add another row button */
+.tabular .add-row td,
+tr.add-row td {
+    padding: 10px !important;
+    text-align: right !important;
+}
+
+.tabular .add-row a,
+tr.add-row a {
+    padding: 6px 16px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+}
+
+/* Stacked inlines - also compact */
+.inline-related .form-row {
+    padding: 4px 8px !important;
+}
+
+/* Fieldset labels */
+.inline-related h3,
+.inline-group h2 {
+    padding: 8px 10px !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+}
+
+/* Original field (first column with link) */
+.tabular .original p {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 12px !important;
 }

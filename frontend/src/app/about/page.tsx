@@ -20,6 +20,8 @@ import {
   LucideIcon,
 } from 'lucide-react';
 import { contactApi } from '@/lib/api';
+import { useLanguageStore } from '@/store/languageStore';
+import { aboutT, t } from '@/lib/translations';
 
 const iconMap: Record<string, LucideIcon> = {
   clock: Clock,
@@ -87,38 +89,6 @@ function CountUp({ value, duration = 2000 }: { value: string; duration?: number 
   return <div ref={ref} className="text-4xl font-bold text-gray-900 mb-2">{display}</div>;
 }
 
-const values = [
-  {
-    icon: Shield,
-    title: 'Trust & Safety',
-    description: 'Your safety is our priority. We ensure all our tours meet the highest safety standards.',
-  },
-  {
-    icon: Heart,
-    title: 'Passion for Travel',
-    description: 'We love what we do, and it shows in every tour we organize and every experience we create.',
-  },
-  {
-    icon: Star,
-    title: 'Excellence',
-    description: 'We strive for excellence in every aspect, from planning to execution of your dream vacation.',
-  },
-  {
-    icon: Users,
-    title: 'Customer First',
-    description: 'Your satisfaction is our success. We go above and beyond to exceed your expectations.',
-  },
-];
-
-const milestones = [
-  { year: '2010', title: 'Company Founded', description: 'Girasol Egypt Travel and Tours was established in Cairo' },
-  { year: '2012', title: 'First 1000 Customers', description: 'Reached our first milestone of happy travelers' },
-  { year: '2015', title: 'Expanded Operations', description: 'Opened offices in Luxor, Aswan, and Sharm El Sheikh' },
-  { year: '2018', title: 'International Tours', description: 'Started offering tours to Greece, Jordan, and Turkey' },
-  { year: '2020', title: 'Digital Transformation', description: 'Launched our online booking platform' },
-  { year: '2023', title: '50K+ Travelers', description: 'Celebrated serving over 50,000 happy customers' },
-];
-
 const leadership = [
   {
     name: 'Emad Khalifa',
@@ -173,8 +143,53 @@ const team = [
 ];
 
 export default function AboutPage() {
+  const { language } = useLanguageStore();
   const [stats, setStats] = useState(defaultStats);
   const [offices, setOffices] = useState<{ city: string; is_headquarters: boolean }[]>([]);
+
+  const values = [
+    {
+      icon: Shield,
+      title: t(aboutT, language, 'trustSafety'),
+      description: t(aboutT, language, 'trustSafetyDesc'),
+    },
+    {
+      icon: Heart,
+      title: t(aboutT, language, 'passionTravel'),
+      description: t(aboutT, language, 'passionTravelDesc'),
+    },
+    {
+      icon: Star,
+      title: t(aboutT, language, 'excellence'),
+      description: t(aboutT, language, 'excellenceDesc'),
+    },
+    {
+      icon: Users,
+      title: t(aboutT, language, 'customerFirst'),
+      description: t(aboutT, language, 'customerFirstDesc'),
+    },
+  ];
+
+  const milestones = [
+    { year: '2010', title: t(aboutT, language, 'milestone1Title'), description: t(aboutT, language, 'milestone1Desc') },
+    { year: '2012', title: t(aboutT, language, 'milestone2Title'), description: t(aboutT, language, 'milestone2Desc') },
+    { year: '2015', title: t(aboutT, language, 'milestone3Title'), description: t(aboutT, language, 'milestone3Desc') },
+    { year: '2018', title: t(aboutT, language, 'milestone4Title'), description: t(aboutT, language, 'milestone4Desc') },
+    { year: '2020', title: t(aboutT, language, 'milestone5Title'), description: t(aboutT, language, 'milestone5Desc') },
+    { year: '2023', title: t(aboutT, language, 'milestone6Title'), description: t(aboutT, language, 'milestone6Desc') },
+  ];
+
+  const services = [
+    t(aboutT, language, 'service1'),
+    t(aboutT, language, 'service2'),
+    t(aboutT, language, 'service3'),
+    t(aboutT, language, 'service4'),
+    t(aboutT, language, 'service5'),
+    t(aboutT, language, 'service6'),
+    t(aboutT, language, 'service7'),
+    t(aboutT, language, 'service8'),
+    t(aboutT, language, 'service9'),
+  ];
 
   useEffect(() => {
     contactApi.getStatistics().then((res) => {
@@ -212,7 +227,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-display font-bold mb-3 sm:mb-6"
           >
-            About Girasol Tours
+            {t(aboutT, language, 'heroTitle')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -220,7 +235,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl md:text-2xl text-white/90"
           >
-            Your trusted partner for unforgettable Egyptian adventures since 2010
+            {t(aboutT, language, 'heroSubtitle')}
           </motion.p>
         </div>
       </section>
@@ -263,35 +278,26 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-4xl font-display font-bold text-gray-900 mb-6">
-                Our Story
+                {t(aboutT, language, 'ourStory')}
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  Girasol Egypt Travel and Tours was established in 2010 in Cairo, Egypt,
-                  with a passion for sharing the wonders of this ancient land with the world.
-                  Our management team brings over 25 years of expertise in the tourism industry,
-                  ensuring every journey is crafted with knowledge, care, and attention to detail.
+                  {t(aboutT, language, 'storyP1')}
                 </p>
                 <p>
-                  We operate as a receptive incoming travel company specializing in Egypt tours
-                  and excursions. From the majestic pyramids of Giza to the serene waters of the Nile,
-                  from the vibrant coral reefs of the Red Sea to the timeless temples of Luxor and Aswan,
-                  we bring Egypt's treasures to life.
+                  {t(aboutT, language, 'storyP2')}
                 </p>
                 <p>
-                  Today, we have local offices throughout Egypt including Aswan, Luxor, Hurghada,
-                  Dahab, and Sharm El Sheikh. We also maintain qualified service suppliers across
-                  multiple international destinations including Brazil, Peru, Greece, Turkey, Jordan,
-                  the UAE, Morocco, India, Thailand, and Vietnam.
+                  {t(aboutT, language, 'storyP3')}
                 </p>
               </div>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/tours" className="btn btn-primary btn-lg">
-                  Explore Our Tours
+                  {t(aboutT, language, 'exploreOurTours')}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
                 <Link href="/contact" className="btn btn-outline btn-lg">
-                  Contact Us
+                  {t(aboutT, language, 'contactUs')}
                 </Link>
               </div>
             </motion.div>
@@ -317,8 +323,8 @@ export default function AboutPage() {
                     <Award className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">Licensed</div>
-                    <div className="text-gray-600">Travel Agency</div>
+                    <div className="text-2xl font-bold text-gray-900">{t(aboutT, language, 'licensed')}</div>
+                    <div className="text-gray-600">{t(aboutT, language, 'travelAgency')}</div>
                   </div>
                 </div>
               </div>
@@ -337,10 +343,10 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
-              Our Values
+              {t(aboutT, language, 'ourValues')}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              These core values guide everything we do at Girasol Tours
+              {t(aboutT, language, 'valuesSubtitle')}
             </p>
           </motion.div>
 
@@ -375,27 +381,17 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-display font-bold mb-4">
-              What We Offer
+              {t(aboutT, language, 'whatWeOffer')}
             </h2>
             <p className="text-xl text-white/80 max-w-2xl mx-auto">
-              Comprehensive tourism services tailored to your needs
+              {t(aboutT, language, 'offerSubtitle')}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              'Short and long-duration Egypt tour packages',
-              'Multi-destination combination tours',
-              'Spiritual and meditation-focused journeys',
-              'Cultural and educational programs',
-              'Nile River cruises (3-7 nights)',
-              'Daily city excursions',
-              'Hotel reservations',
-              'Domestic and international airline ticketing',
-              'Event and conference organization',
-            ].map((service, index) => (
+            {services.map((service, index) => (
               <motion.div
-                key={service}
+                key={index}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -420,10 +416,10 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
-              Our Journey
+              {t(aboutT, language, 'ourJourney')}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Key milestones in our story
+              {t(aboutT, language, 'journeySubtitle')}
             </p>
           </motion.div>
 
@@ -469,10 +465,10 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
-              Leadership & Team
+              {t(aboutT, language, 'leadershipTeam')}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              The People Behind Girasol
+              {t(aboutT, language, 'teamSubtitle')}
             </p>
           </motion.div>
 
@@ -546,10 +542,10 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
-              Our Offices
+              {t(aboutT, language, 'ourOffices')}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We have presence across major Egyptian destinations
+              {t(aboutT, language, 'officesSubtitle')}
             </p>
           </motion.div>
 
@@ -584,19 +580,18 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-display font-bold text-white mb-6">
-              Ready to Explore Egypt?
+              {t(aboutT, language, 'readyToExplore')}
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Let us help you create memories that will last a lifetime.
-              Contact us today to start planning your dream Egyptian adventure.
+              {t(aboutT, language, 'ctaDescription')}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/tours" className="btn bg-white text-primary-600 hover:bg-gray-100 btn-lg">
-                Browse Tours
+                {t(aboutT, language, 'browseTours')}
               </Link>
               <Link href="/contact" className="btn btn-outline border-white text-white hover:bg-white/10 btn-lg">
                 <Phone className="w-5 h-5 mr-2" />
-                Contact Us
+                {t(aboutT, language, 'contactUs')}
               </Link>
             </div>
           </motion.div>

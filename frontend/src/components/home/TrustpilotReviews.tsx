@@ -1,360 +1,526 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight, ExternalLink, Quote } from "lucide-react";
-import Image from "next/image";
+import { useState, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ExternalLink, Star, ChevronDown, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation } from 'swiper/modules';
+import type { Swiper as SwiperType } from 'swiper';
+import { useLanguageStore } from '@/store/languageStore';
+import { trustpilotT, t } from '@/lib/translations';
 
-const TRUSTPILOT_URL = "https://www.trustpilot.com/review/girasoltours.com";
+import 'swiper/css';
+import 'swiper/css/navigation';
 
-const reviews = [
+const TRUSTPILOT_URL = 'https://www.trustpilot.com/review/girasoltours.com';
+
+const AVATAR_COLORS = [
+  '#00b67a', '#0077b6', '#e85d04', '#7209b7', '#d62828',
+  '#2d6a4f', '#4361ee', '#f77f00', '#9b2226', '#3a86a7',
+  '#6a4c93', '#588157', '#bc6c25', '#264653', '#e76f51',
+  '#2a9d8f', '#023e8a', '#6d6875', '#b5838d', '#e63946',
+  '#457b9d', '#1d3557', '#a8dadc', '#f4a261',
+];
+
+interface Review {
+  name: string;
+  rating: number;
+  title: string;
+  text: string;
+  date: string;
+  imageUrl?: string;
+}
+
+const reviews: Review[] = [
   {
-    name: "Juhee",
+    name: 'Juhee',
     rating: 5,
-    title: "Professional Coordination & Exceptional Cruise Staff",
-    text: "The agency showed great professionalism throughout our 4-Day Nile Journey. The cruise staff were incredibly hospitable, with diverse international and Egyptian cuisine. Truly a wonderful experience!",
-    date: "Dec 2025",
-    color: "bg-rose-500",
-    image: "",
+    title: 'Professional Coordination by Girasol Tour and Exceptional Cruise Staff',
+    text: 'I booked a 3-night, 4-day Nile Cruise (December 5\u20138, 2025) through Girasol Tours. The correspondence with the agency was timely and professional, and all information provided prior to the trip was accurate. The Jamila 5 Nile Cruise ship was modest but clean and satisfactory. The menu offered a great variety of international dishes\u2014including beef, chicken, vegetables, and fruit\u2014alongside traditional Egyptian cuisine. Most of all, the true highlight of our journey was the cheerful hospitality and professionalism of the Jamila staff. Thank you all for making us feel so welcome!',
+    date: 'Dec 2025',
   },
   {
-    name: "Carlos Alberto Toriani",
+    name: 'Carlos Alberto Toriani',
     rating: 5,
-    title: "An unforgettable trip",
-    text: "All tours are very well planned. The Guide is prepared and experienced. Everything was perfectly organized from start to finish.",
-    date: "Oct 2025",
-    color: "bg-blue-500",
-    image: "https://user-images.trustpilot.com/68f7fd954a804f78fea20604/73x73.png",
+    title: 'An unforgettable trip.',
+    text: 'All tours are very well planned. The Guide is prepared and experienced.',
+    date: 'Oct 2025',
+    imageUrl: 'https://user-images.trustpilot.com/68f7fd954a804f78fea20604/73x73.png',
   },
   {
-    name: "Jeane Da Silva Pantaleao",
+    name: 'Cristina Scorza',
     rating: 5,
-    title: "Egypt beyond the pyramids and temples!",
-    text: "Egypt is incredible! The professional team supported us throughout the entire journey with a remarkable itinerary and unique experiences.",
-    date: "Jan 2025",
-    color: "bg-purple-500",
-    image: "https://user-images.trustpilot.com/67953af3b8b55545ba7949d1/73x73.png",
+    title: 'Extraordinario!',
+    text: 'Una Experiencia Extraordinaria! Los gu\u00edas excelentes y el trato VIP. Cristina y Germ\u00e1n',
+    date: 'Oct 2025',
+    imageUrl: 'https://user-images.trustpilot.com/68e2e8b3412e4c77115fa59c/73x73.png',
   },
   {
-    name: "Janaina Ferreira",
+    name: 'Cliente',
     rating: 5,
-    title: "Making a dream come true",
-    text: "The trip exceeded all expectations with proactive agency support and excellent itinerary planning. A truly life-changing experience in Egypt!",
-    date: "Jan 2025",
-    color: "bg-teal-500",
-    image: "",
+    title: 'Experiencia fant\u00e1stica',
+    text: 'Vivo em Brasil y estaba buscando una agencia para hacer un viaje para Egipto y Jordania, con otra pareja de amigos uruguayos como nosotros. Buscando en la internet encontr\u00e9 la Girasol Egypt Travel and Tours. Desde el comienzo me pareci\u00f3 una agencia confiable. Trat\u00e9 directamente con Emad que desde el principio se mostr\u00f3 super solicito respondiendo siempre inmediatamente. Consegu\u00ed montar con \u00e9l un viaje personalizado y a mejor precio. En Egipto todo funcion\u00f3 perfectamente a lo planeado. Tuvimos siempre un van a nuestra disposici\u00f3n y un gu\u00eda Sameh que nos acompa\u00f1\u00f3 por todos los viajes. Sam fue excepcional, nos mostr\u00f3 un gran conocimiento de historia y cultura egipcia. Destaco la buena organizaci\u00f3n de la empresa Girasol, la puntualidad de todos los servicios y la calidad humana del personal. Recomiendo fuertemente esta empresa.',
+    date: 'Oct 2025',
   },
   {
-    name: "Jennifer",
+    name: 'Cristiana Di Fuzio',
     rating: 5,
-    title: "Excellent!!",
-    text: "Amazing experience from start to finish. The team made our Egyptian adventure truly special and unforgettable. Highly recommended!",
-    date: "Nov 2024",
-    color: "bg-pink-500",
-    image: "",
+    title: 'Ci siamo trovati molto bene',
+    text: "Ci siamo trovati molto bene con la nostra guida e l'hotel era molto bello. Abbiamo trascorso al Cairo una settimana e la nostra guida ci ha fatto fare un tour bellissimo.",
+    date: 'Jun 2025',
+    imageUrl: 'https://user-images.trustpilot.com/683dd0cf8a5375f6285aaa8d/73x73.png',
   },
   {
-    name: "Solange Guedes",
+    name: 'Luisa Accietto',
     rating: 5,
-    title: "Simply the best!",
-    text: "Our experience with Girasol was wonderful. Mr. Walid's airport reception was great, and the staff quality was simply the best throughout our entire stay!",
-    date: "May 2024",
-    color: "bg-amber-500",
-    image: "https://user-images.trustpilot.com/663f38f19aac91270cc525ee/73x73.png",
+    title: 'Puntualit\u00e0 e professionalit\u00e0',
+    text: "La settimana scorsa siamo stati in Cairo e grazie alla compagnia Girasol questo viaggio \u00e8 stato bellissimo. Sono stati molto scrupolosi in ogni dettaglio, dalla scelta dell'hotel, situato in una posizione strategica con vista sulle piramidi, alla scelta della guida, che si \u00e8 dimostrato sempre disponibile, gentile e molto preparato.",
+    date: 'Jun 2025',
+    imageUrl: 'https://user-images.trustpilot.com/683c00184e662d13812cb71c/73x73.png',
   },
   {
-    name: "Khaled Khalifa",
-    rating: 5,
-    title: "An amazing Nile cruise experience",
-    text: "The Nile cruise was so enjoyable, well organised and incredibly safe. A good mix of tourist locations. Would definitely use Girasol again!",
-    date: "Apr 2024",
-    color: "bg-emerald-500",
-    image: "https://user-images.trustpilot.com/661bf081fc6ed600122d4f13/73x73.png",
+    name: 'Neusa Ab',
+    rating: 1,
+    title: 'Treinamento e Respeito',
+    text: 'Ao decidir uma viagem para o Egito, esperei encontrar l\u00e1, dos respons\u00e1veis pelo pacote, profissionais treinados, simp\u00e1ticos, n\u00e3o foi isso que aconteceu. Ofereceram guia repetitivo, \u00e0s vezes quando explicava, tinha atitudes inadequadas. Ficava a todo tempo nos importunando com rela\u00e7\u00e3o \u00e0s gorjetas.',
+    date: 'May 2025',
+    imageUrl: 'https://user-images.trustpilot.com/683718a32f2478bab004933b/73x73.png',
   },
   {
-    name: "Ralf Risser",
+    name: 'Angela Petralia',
     rating: 5,
-    title: "Even better than expected",
-    text: "Seven-day cruise with very efficient planning and first class boat quality. Our guide Taher Mohammed was incredibly knowledgeable. Organizer Nessma and assistants were excellent.",
-    date: "Feb 2024",
-    color: "bg-indigo-500",
-    image: "",
+    title: 'Un viaggio speciale',
+    text: "Un viaggio speciale organizzato da Tarek Khalifa e l'agenzia Girasol Travel. Dal Cairo in fuoristrada alle Oasi del Deserto Occidentale Egiziano sino a Luxor per rientrare in aeroporto al Cairo. Dieci giorni magnifici dall'ambiente desertico delle magnifiche oasi all'Egitto dei Faraoni. Due viaggi in uno. Ottima guida Mohamed sempre con noi. Le sistemazioni tutte di ottimo livello. Siamo partiti in otto amici e tutti molto soddisfatti con il desiderio di ritornare. Grazie Tarek!",
+    date: 'May 2025',
   },
   {
-    name: "Malati Rai",
+    name: 'Andri Secaf',
+    rating: 2,
+    title: 'Cautela em suas escolhas',
+    text: 'Amei a viagem, um pa\u00eds de cultura infind\u00e1vel, hoteis \u00f3timos, mas confesso que fiquei um pouco frustrada com alguns acontecimentos no decorrer do passeio. Nosso grupo escolheu a girassol justamente pelas \u00f3timas avalia\u00e7\u00f5es mas creio que n\u00e3o tivemos a boa experi\u00eancia pelo fato de n\u00e3o termos contratado todos os passeios pela mesma empresa.',
+    date: 'May 2025',
+    imageUrl: 'https://user-images.trustpilot.com/68347a348a5375880150cba7/73x73.png',
+  },
+  {
+    name: 'Fernando M. H. Moreira',
+    rating: 1,
+    title: 'Look for another agency to travel to Egypt',
+    text: 'In May 2025 we took a group trip to Egypt and hired this agency to organise part of the trip, especially the reception, internal air travel, hotels and morning tours on the days of our stay. We chose not to buy the optional tours that this agency offered us, as their prices were absurdly more expensive than those offered by competing agencies on TripAdvisor, Viator and GetYourGuide.',
+    date: 'May 2025',
+  },
+  {
+    name: 'Amilton Morais do Sacramento',
+    rating: 5,
+    title: 'Excelente\u2026',
+    text: 'Excelente assist\u00eancia desde a chegada no aeroporto do Cairo, check in nos aeroportos, check in nos hoteis, servi\u00e7o dos hot\u00e9is, transfer, passeios, transporte, motoristas, guias... com destaque para o guia Maher.',
+    date: 'Feb 2025',
+  },
+  {
+    name: 'Jeane Da Silva Pantaleao',
+    rating: 5,
+    title: 'Egypt beyond the pyramids and temples!',
+    text: 'Egypt has proven to be an incredible, safe, beautiful destination, with lots of history, culture, art, impeccable cuisine and warm and friendly people. Girasol Egypt travel and tours created an itinerary that provided remarkable, unique and unforgettable experiences. The entire team, from the very first contact, was very professional and attentive. We received all the support and every moment of the trip.',
+    date: 'Jan 2025',
+    imageUrl: 'https://user-images.trustpilot.com/67953af3b8b55545ba7949d1/73x73.png',
+  },
+  {
+    name: 'Janaina Ferreira',
+    rating: 5,
+    title: 'Making a dream come true',
+    text: 'The trip was an incredible experience, it exceeded expectations. The Girasol Egypt agency was very proactive and gave us the best itinerary. The trip was incredible and unforgettable.',
+    date: 'Jan 2025',
+  },
+  {
+    name: 'Jennifer',
+    rating: 5,
+    title: 'Excellent!!',
+    text: 'Excellent!!',
+    date: 'Nov 2024',
+  },
+  {
+    name: 'Jumil Ortiz',
+    rating: 5,
+    title: 'Nuestro guia Sam hizo que nuestra experiencia sea super agradable',
+    text: 'Nuestro guia Sam hizo que nuestra experiencia sea super agradable, tiene conocimiento de la historia y nos explicaba en cada templo. 10/10 para nuestro guia!',
+    date: 'Nov 2024',
+    imageUrl: 'https://user-images.trustpilot.com/672a771b0580f520196e0df2/73x73.png',
+  },
+  {
+    name: 'Diana Santana',
+    rating: 5,
+    title: 'Excelente experiencia',
+    text: 'El gu\u00eda Sam Massoud recomendado al 100%, respetuoso, maneja muy bien la historia de todo Egipto, se nota que le apasiona lo que hace; adicional, es atento y cuida a los turistas. La agencia tiene un itinerario muy organizado, son puntuales con los horarios y se preocupan porque est\u00e9s cuidado. Adicional el representante es muy atento, te buscan y te ayudan hacer las gestiones en los aeropuertos.',
+    date: 'Nov 2024',
+  },
+  {
+    name: 'Eduardo Nolla',
+    rating: 5,
+    title: 'Maher nota 10/10',
+    text: 'Maher foi um excelente guia, nos explicou tudo sobre a hist\u00f3ria do Egito, tem forma\u00e7\u00e3o em Hist\u00f3ria e conseguiu traduzir super bem tudo que foi Egito Antigo para a sociedade e civiliza\u00e7\u00e3o atual. Foi super pontual, correto, fala o portugu\u00eas muito bem e nos levou para todos os lugares que pedimos. Excelente experi\u00eancia e dias com ele!',
+    date: 'Jun 2024',
+    imageUrl: 'https://user-images.trustpilot.com/6661951bb579e15bb4b47d91/73x73.png',
+  },
+  {
+    name: 'Mario',
+    rating: 5,
+    title: "Serieta', efficienza, affidabilita'",
+    text: "Agenzia efficiente e puntuale. Ci si pu\u00f2 fidare nel mandare i soldi in anticipo, Tarek \u00e8 una persona molto seria. Disponibile anche a cambiare il programma durante il viaggio. Le macchine private sempre pulite e abbastanza nuove. Autisti capaci e prudenti. Gli hotel prenotati e la nave sul Nilo si sono rivelati pi\u00f9 che buoni; il cibo scelto sempre all'altezza anche per italiani. Il viaggio \u00e8 andato benissimo e molto ben cadenzato. Guida ben preparata, con un pi\u00f9 che buono italiano.",
+    date: 'May 2024',
+  },
+  {
+    name: 'Solange Guedes',
+    rating: 5,
+    title: 'Our experience with Girasol was just great!',
+    text: "Our experience with Girasol company was just great! Since our arrival we were received by Mr Walid who welcomed us at the airport and supported us in all our transfers to the hotels and local flights with all safety and commodity. We were very lucky and pleased to have met such special persons like Mr Walid during our stay in Egypt. Girasol's staff are simply the best!",
+    date: 'May 2024',
+    imageUrl: 'https://user-images.trustpilot.com/663f38f19aac91270cc525ee/73x73.png',
+  },
+  {
+    name: 'Khaled Khalifa',
+    rating: 5,
+    title: 'Well organised and incredibly safe',
+    text: 'Have just come back from the Nile cruise of Egypt organised by Girasol Travel and Tours. The tour was so enjoyable, well organised, and it was incredibly safe. There was a really good mix of different tourist spots to satisfy most of the group. Would definitely use Girasol Travel and Tours again.',
+    date: 'Apr 2024',
+    imageUrl: 'https://user-images.trustpilot.com/661bf081fc6ed600122d4f13/73x73.png',
+  },
+  {
+    name: 'Ralf Risser',
+    rating: 5,
+    title: 'Even better than expected',
+    text: 'Seven day cruise on the Nile between Assuan/Abu Simbel and Luxor, including transfers Airport Cairo to hotel, hotel to train in Cairo, train to boat in Luxor et vice versa. A very efficient planning and strict following of the plans. The most impressive aspect was the acting persons: organising agent Nessma, local assistants Waleed and Abdullah, and our fantastic tour guide Taher Mohammed. The boat contracted by the agency Girasol was first class, everything \u2014 room, food, personnel \u2014 extraordinary.',
+    date: 'Feb 2024',
+  },
+  {
+    name: 'Malati Rai',
     rating: 4,
-    title: "Great visit to Egypt",
-    text: "Appreciated the punctuality and representative Walid's five-star assistance with airport formalities. Tour guide Ahmed Abdullah had excellent communication and knowledge.",
-    date: "Jan 2024",
-    color: "bg-cyan-500",
-    image: "https://user-images.trustpilot.com/65a8032a49f0e00012a783e3/73x73.png",
+    title: 'Visit to Egypt.',
+    text: 'This travel seems to be perfect in all sense \u2014 punctuality, vehicle etc. Provision of representatives is a great idea. We met Walid our representative in the airport. For our every travel he was there right on time doing all the formalities up to the extent of filling up immigration form. All 5 Stars to him. Ahmed Abdullah a tour guide was with us in Luxor and Aswan. He could communicate excellently, good English and well versed in his subject. Very nice with good behaviorism. 4 Stars for Ahmed.',
+    date: 'Jan 2024',
+    imageUrl: 'https://user-images.trustpilot.com/65a8032a49f0e00012a783e3/73x73.png',
   },
   {
-    name: "Maria Claudia Giometti",
+    name: 'Maria Claudia Giometti',
     rating: 5,
-    title: "We had an incredible experience!",
-    text: "A perfect trip with no problems. Emad was very attentive and handled flight delays skillfully. Guides Mohamed, assistant Walid and driver were all exceptional. Already planning our next trip!",
-    date: "Apr 2023",
-    color: "bg-violet-500",
-    image: "https://user-images.trustpilot.com/6446b3736ce5cc001294dd03/73x73.png",
+    title: 'Tivemos uma experi\u00eancia incr\u00edvel!',
+    text: 'Tivemos uma experi\u00eancia incr\u00edvel! A viagem foi perfeita. N\u00e3o tivemos nenhum problema, ao contr\u00e1rio, todos os cuidados e detalhes foram tomados para tornar nossa experi\u00eancia \u00fanica. O Emad foi super atencioso todo o tempo. Tivemos atrasos nos voos mas ele conciliou tudo com maestria. Os guias Mohamed(s), o assistente Wallid, o motorista Ramad\u00e3\u2026 J\u00e1 estamos programando o pr\u00f3ximo destino com a Girasol.',
+    date: 'Apr 2023',
+    imageUrl: 'https://user-images.trustpilot.com/6446b3736ce5cc001294dd03/73x73.png',
   },
   {
-    name: "Zulkiflee Bin Abdul Rahman",
+    name: 'Zulkiflee Bin Abdul Rahman',
     rating: 5,
-    title: "Thank you Girasol!",
-    text: "Emad responded quickly and called personally to customize our trip. Guides Taha and Hazem were professional, knowledgeable and great company. A hustle-free memorable experience!",
-    date: "Dec 2022",
-    color: "bg-sky-500",
-    image: "",
-  },
-  {
-    name: "Cristina Scorza",
-    rating: 5,
-    title: "Extraordinary!",
-    text: "An extraordinary experience in Egypt. Everything was perfectly organized and the team went above and beyond to make our trip unforgettable.",
-    date: "2023",
-    color: "bg-fuchsia-500",
-    image: "",
-  },
-  {
-    name: "Cristiana Di Fuzio",
-    rating: 5,
-    title: "We had a great time!",
-    text: "We had a great time with Girasol. Everything was well organized, the guides were knowledgeable, and the whole trip was smooth and enjoyable.",
-    date: "2023",
-    color: "bg-orange-500",
-    image: "",
-  },
-  {
-    name: "Luisa Accietto",
-    rating: 5,
-    title: "Punctuality and professionalism",
-    text: "Outstanding punctuality and professionalism throughout our entire Egyptian journey. Every detail was taken care of perfectly.",
-    date: "2023",
-    color: "bg-lime-600",
-    image: "",
-  },
-  {
-    name: "Angela Petralia",
-    rating: 5,
-    title: "A special journey",
-    text: "A truly special journey through Egypt. The team made everything seamless and the experience was beyond our expectations.",
-    date: "2023",
-    color: "bg-red-500",
-    image: "",
-  },
-  {
-    name: "Amilton Morais",
-    rating: 5,
-    title: "Excellent!",
-    text: "Excellent service from start to finish. Girasol made our Egyptian dream come true with impeccable organization and wonderful guides.",
-    date: "2023",
-    color: "bg-blue-600",
-    image: "",
-  },
-  {
-    name: "Diana Santana",
-    rating: 5,
-    title: "Excellent experience",
-    text: "An excellent experience traveling with Girasol. Professional team, great itinerary, and unforgettable memories in Egypt!",
-    date: "2023",
-    color: "bg-green-500",
-    image: "",
-  },
-  {
-    name: "Eduardo Nolla",
-    rating: 5,
-    title: "Maher 10 out of 10!",
-    text: "Our guide Maher was absolutely outstanding - 10 out of 10! The whole trip was perfectly organized and we had the time of our lives.",
-    date: "2023",
-    color: "bg-yellow-600",
-    image: "",
-  },
-  {
-    name: "Mario",
-    rating: 5,
-    title: "Reliability and efficiency",
-    text: "Girasol showed great reliability and efficiency throughout our trip. Professional service with attention to every detail. Highly recommended!",
-    date: "2023",
-    color: "bg-slate-500",
-    image: "",
+    title: 'Thank you Girasol!',
+    text: "From the moment we touched down until we left Cairo, Girasol's Mr Emad and his team made sure it was smooth sailing and a memorable vacation for us. Our guides Mr Taha (Cairo) and Mr Hazem (Nile cruise) are very professional, knowledgeable, witty and good company. Mr Walid from Girasol made sure that for our domestic and international departure flights, we were escorted by the airport assistance to help with the procedures. This is what a vacation is meant to be. Hustle free, great company and no worries about admin and logistics. Thank you Girasol!",
+    date: 'Dec 2022',
   },
 ];
 
-function StarRating({ rating }: { rating: number }) {
+const totalReviews = reviews.length;
+const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1);
+
+function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'lg' }) {
+  const sizeClass = size === 'lg' ? 'w-5 h-5' : 'w-4 h-4';
   return (
     <div className="flex gap-0.5">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <div
-          key={i}
-          className={`w-5 h-5 flex items-center justify-center ${
-            i <= rating ? "bg-[#00b67a]" : "bg-[#dcdce6]"
+      {[1, 2, 3, 4, 5].map((star) => (
+        <Star
+          key={star}
+          className={`${sizeClass} ${
+            star <= rating ? 'text-[#00b67a] fill-[#00b67a]' : 'text-gray-300 fill-gray-300'
           }`}
-        >
-          <Star className="w-3 h-3 text-white fill-white" />
-        </div>
+        />
       ))}
     </div>
   );
 }
 
-export function TrustpilotReviews() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const reviewsPerPage = typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 3;
-  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+function getInitials(name: string) {
+  const parts = name.split(' ');
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
 
-  const next = () => setCurrentIndex((prev) => (prev + 1) % totalPages);
-  const prev = () => setCurrentIndex((prev) => (prev - 1 + totalPages) % totalPages);
+function ReviewCard({ review, index, onReadMore }: { review: Review; index: number; onReadMore: (review: Review, index: number) => void }) {
+  const { language } = useLanguageStore();
+  const isLong = review.text.length > 150;
 
-  const visibleReviews = reviews.slice(
-    currentIndex * reviewsPerPage,
-    currentIndex * reviewsPerPage + reviewsPerPage
+  return (
+    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex flex-col h-full">
+      {/* Top: Avatar + Name + Date */}
+      <div className="flex items-center gap-3 mb-4 flex-shrink-0">
+        {review.imageUrl ? (
+          <Image
+            src={review.imageUrl}
+            alt={review.name}
+            width={44}
+            height={44}
+            className="w-11 h-11 rounded-full object-cover flex-shrink-0"
+            unoptimized
+          />
+        ) : (
+          <div
+            className="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+            style={{ backgroundColor: AVATAR_COLORS[index % AVATAR_COLORS.length] }}
+          >
+            {getInitials(review.name)}
+          </div>
+        )}
+        <div className="min-w-0">
+          <p className="font-semibold text-gray-900 text-sm truncate">{review.name}</p>
+          <p className="text-xs text-gray-400">{review.date}</p>
+        </div>
+      </div>
+
+      {/* Stars */}
+      <div className="mb-3 flex-shrink-0">
+        <StarRating rating={review.rating} />
+      </div>
+
+      {/* Title */}
+      <h3 className="font-semibold text-gray-900 text-[15px] mb-2 line-clamp-1 flex-shrink-0">
+        {review.title}
+      </h3>
+
+      {/* Review text */}
+      <div className="flex-grow">
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
+          {review.text}
+        </p>
+        {isLong && (
+          <button
+            onClick={() => onReadMore(review, index)}
+            className="text-[#00b67a] text-xs font-medium mt-2 hover:underline inline-flex items-center gap-0.5"
+          >
+            Read more <ChevronDown className="w-3 h-3" />
+          </button>
+        )}
+      </div>
+
+      {/* Footer: Verified badge */}
+      <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between flex-shrink-0">
+        <span className="text-[11px] text-[#00b67a] font-medium flex items-center gap-1">
+          <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 fill-[#00b67a]">
+            <path d="M8 0l2.2 5.1L16 5.8l-4 3.7 1 5.5L8 12.4 2.9 15l1-5.5-4-3.7 5.9-.7z"/>
+          </svg>
+          {t(trustpilotT, language, 'verifiedReview')}
+        </span>
+        <a
+          href={TRUSTPILOT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[11px] text-gray-400 hover:text-[#00b67a] transition-colors"
+        >
+          Trustpilot
+        </a>
+      </div>
+    </div>
   );
+}
+
+function ReviewModal({ review, index, onClose }: { review: Review; index: number; onClose: () => void }) {
+  const { language } = useLanguageStore();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ duration: 0.2 }}
+        className="bg-white rounded-2xl p-6 md:p-8 max-w-lg w-full max-h-[80vh] overflow-y-auto shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-5">
+          {review.imageUrl ? (
+            <Image
+              src={review.imageUrl}
+              alt={review.name}
+              width={52}
+              height={52}
+              className="w-13 h-13 rounded-full object-cover flex-shrink-0"
+              style={{ width: 52, height: 52 }}
+              unoptimized
+            />
+          ) : (
+            <div
+              className="rounded-full flex items-center justify-center text-white font-bold text-base flex-shrink-0"
+              style={{ backgroundColor: AVATAR_COLORS[index % AVATAR_COLORS.length], width: 52, height: 52 }}
+            >
+              {getInitials(review.name)}
+            </div>
+          )}
+          <div>
+            <p className="font-semibold text-gray-900">{review.name}</p>
+            <p className="text-sm text-gray-400">{review.date}</p>
+          </div>
+        </div>
+
+        {/* Stars */}
+        <div className="mb-4">
+          <StarRating rating={review.rating} size="lg" />
+        </div>
+
+        {/* Title */}
+        <h3 className="font-bold text-gray-900 text-lg mb-4">
+          {review.title}
+        </h3>
+
+        {/* Full text */}
+        <p className="text-gray-600 text-[15px] leading-relaxed whitespace-pre-line">
+          {review.text}
+        </p>
+
+        {/* Footer */}
+        <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+          <span className="text-xs text-[#00b67a] font-medium flex items-center gap-1">
+            <svg viewBox="0 0 16 16" className="w-4 h-4 fill-[#00b67a]">
+              <path d="M8 0l2.2 5.1L16 5.8l-4 3.7 1 5.5L8 12.4 2.9 15l1-5.5-4-3.7 5.9-.7z"/>
+            </svg>
+            {t(trustpilotT, language, 'verifiedReview')} — Trustpilot
+          </span>
+          <button
+            onClick={onClose}
+            className="text-sm text-gray-500 hover:text-gray-800 font-medium"
+          >
+            Close
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+export function TrustpilotReviews() {
+  const { language } = useLanguageStore();
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [modalReview, setModalReview] = useState<{ review: Review; index: number } | null>(null);
+
+  const handleReadMore = useCallback((review: Review, index: number) => {
+    setModalReview({ review, index });
+    // Pause autoplay when modal is open
+    swiperRef.current?.autoplay?.stop();
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModalReview(null);
+    swiperRef.current?.autoplay?.start();
+  }, []);
 
   return (
     <section className="section-padding bg-gray-50">
       <div className="container-custom">
-        {/* Header */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
           <span className="text-primary-600 font-medium mb-2 block">
-            What Our Travelers Say
+            {t(trustpilotT, language, 'whatClientsSay')}
           </span>
           <h2 className="heading-2 text-gray-900 mb-4">
-            Trusted by Travelers Worldwide
+            {t(trustpilotT, language, 'travelerReviews')}
           </h2>
 
-          {/* Trustpilot Summary */}
-          <div className="flex items-center justify-center gap-3 flex-wrap">
+          {/* Overall Rating */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <div className="flex items-center gap-2">
-              <svg viewBox="0 0 24 24" className="w-7 h-7" fill="#00b67a">
-                <path d="M12 0L15.09 8.26L24 9.27L17.45 14.14L19.18 22.9L12 18.77L4.82 22.9L6.55 14.14L0 9.27L8.91 8.26L12 0Z" />
-              </svg>
-              <span className="text-xl font-bold text-gray-900">Trustpilot</span>
+              <StarRating rating={5} size="lg" />
+              <span className="text-2xl font-bold text-gray-900">{avgRating}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex gap-0.5">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-7 h-7 bg-[#00b67a] flex items-center justify-center">
-                    <Star className="w-4 h-4 text-white fill-white" />
-                  </div>
-                ))}
-                <div className="w-7 h-7 bg-[#73cf11] flex items-center justify-center">
-                  <Star className="w-4 h-4 text-white fill-white" />
-                </div>
-              </div>
-              <span className="text-gray-600 font-medium">4.2 / 5</span>
-              <span className="text-gray-400">|</span>
-              <span className="text-gray-600">26 reviews</span>
-            </div>
+            <span className="text-gray-500 text-sm">
+              {t(trustpilotT, language, 'basedOn')} {totalReviews} {t(trustpilotT, language, 'reviews')}
+            </span>
+            <a
+              href={TRUSTPILOT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[#00b67a] font-semibold hover:underline text-sm"
+            >
+              Trustpilot
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           </div>
         </motion.div>
 
         {/* Reviews Carousel */}
-        <div className="relative">
-          <div className="grid md:grid-cols-3 gap-6 ">
-            <AnimatePresence mode="wait">
-              {visibleReviews.map((review, idx) => (
-                <motion.div
-                  key={`${currentIndex}-${idx}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3, delay: idx * 0.1 }}
-                  className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow relative flex flex-col"
-                >
-                  <Quote className="absolute top-4 right-4 w-8 h-8 text-gray-100" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative"
+        >
+          {/* Custom Navigation Arrows - Desktop only */}
+          <button
+            onClick={() => swiperRef.current?.slidePrev()}
+            className="hidden lg:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 items-center justify-center hover:bg-gray-50 hover:shadow-lg transition-all"
+            aria-label="Previous review"
+          >
+            <ChevronLeft className="w-5 h-5 text-gray-700" />
+          </button>
+          <button
+            onClick={() => swiperRef.current?.slideNext()}
+            className="hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 items-center justify-center hover:bg-gray-50 hover:shadow-lg transition-all"
+            aria-label="Next review"
+          >
+            <ChevronRight className="w-5 h-5 text-gray-700" />
+          </button>
 
-                  <StarRating rating={review.rating} />
-
-                  <h3 className="font-bold text-gray-900 mt-3 mb-2 text-[15px]">
-                    {review.title}
-                  </h3>
-
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4 flex-1">
-                    &ldquo;{review.text}&rdquo;
-                  </p>
-
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div className="flex items-center gap-2.5">
-                      {review.image ? (
-                        <Image
-                          src={review.image}
-                          alt={review.name}
-                          width={36}
-                          height={36}
-                          className="w-9 h-9 rounded-full object-cover shadow-sm"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className={`w-9 h-9 rounded-full ${review.color} flex items-center justify-center shadow-sm`}>
-                          <span className="text-white font-bold text-sm">
-                            {review.name.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-                      <span className="font-medium text-gray-900 text-sm">{review.name}</span>
-                    </div>
-                    <span className="text-xs text-gray-400">{review.date}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <button
-              onClick={prev}
-              className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
-              aria-label="Previous reviews"
-            >
-              <ChevronLeft className="w-5 h-5 text-gray-600" />
-            </button>
-
-            <div className="flex gap-1.5">
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentIndex(i)}
-                  className={`h-2.5 rounded-full transition-all ${
-                    i === currentIndex
-                      ? "bg-[#00b67a] w-6"
-                      : "bg-gray-300 hover:bg-gray-400 w-2.5"
-                  }`}
-                  aria-label={`Page ${i + 1}`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={next}
-              className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
-              aria-label="Next reviews"
-            >
-              <ChevronRight className="w-5 h-5 text-gray-600" />
-            </button>
-          </div>
-        </div>
+          <Swiper
+            modules={[Autoplay, Navigation]}
+            onSwiper={(swiper) => { swiperRef.current = swiper; }}
+            spaceBetween={24}
+            slidesPerView={1}
+            loop={true}
+            grabCursor={true}
+            autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+            className="pb-4 [&_.swiper-slide]:!h-auto"
+          >
+            {reviews.map((review, index) => (
+              <SwiperSlide key={index}>
+                <ReviewCard review={review} index={index} onReadMore={handleReadMore} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </motion.div>
 
         {/* CTA */}
-        <div className="text-center mt-10">
+        <div className="text-center mt-8">
           <a
             href={TRUSTPILOT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#00b67a] hover:bg-[#00a06a] text-white px-6 py-3 rounded-xl font-semibold transition-colors"
+            className="inline-flex items-center gap-2 bg-[#00b67a] hover:bg-[#00a06a] text-white px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            <Star className="w-4 h-4 fill-current" />
-            See All Reviews on Trustpilot
+            {t(trustpilotT, language, 'rateUs')}
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>
       </div>
+
+      {/* Review Modal */}
+      <AnimatePresence>
+        {modalReview && (
+          <ReviewModal
+            review={modalReview.review}
+            index={modalReview.index}
+            onClose={handleCloseModal}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }

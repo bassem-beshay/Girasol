@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { contactApi } from '@/lib/api';
 import { motion } from 'framer-motion';
@@ -23,18 +23,8 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-
-// Declare grecaptcha global
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (cb: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
-    };
-  }
-}
-
-const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
+import { useLanguageStore } from '@/store/languageStore';
+import { contactT, t } from '@/lib/translations';
 
 const contactSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -48,60 +38,65 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-const contactInfo = [
-  {
-    icon: Phone,
-    title: 'Phone',
-    details: ['+20 2 3771 5511', '+20 1227 011 900'],
-    action: 'tel:+20237715511',
-  },
-  {
-    icon: Mail,
-    title: 'Email',
-    details: ['info@girasoltours.com'],
-    action: 'mailto:info@girasoltours.com',
-  },
-  {
-    icon: MapPin,
-    title: 'Address',
-    details: [
-      'Panorama Pyramids Tower',
-      'Entrance 1, Apt. 202 - 2nd floor',
-      'Al Haram St. Mashaal, Al Haram',
-      'Giza, Egypt 12512',
-    ],
-  },
-  {
-    icon: Clock,
-    title: 'Working Hours',
-    details: ['Sunday - Thursday: 9:00 AM - 6:00 PM', 'Friday - Saturday: 10:00 AM - 4:00 PM'],
-  },
-];
-
 const socialLinks = [
   { icon: Facebook, href: 'https://www.facebook.com/girasolegypt', label: 'Facebook' },
   { icon: Instagram, href: 'https://www.instagram.com/girasolegypt/', label: 'Instagram' },
   { icon: Twitter, href: 'https://twitter.com/girasolegypt', label: 'Twitter' },
 ];
 
-const tourTypes = [
-  'Egypt Tour Packages',
-  'Nile Cruises',
-  'Day Tours & Excursions',
-  'Multi-Country Tours',
-  'Beach & Relaxation',
-  'Cultural & Historical Tours',
-  'Spiritual & Meditation Tours',
-  'Corporate Events',
-  'Other',
-];
+const tourTypeKeys = [
+  'egyptTourPackages',
+  'nileCruises',
+  'dayTours',
+  'multiCountry',
+  'beach',
+  'cultural',
+  'spiritual',
+  'corporate',
+  'other',
+] as const;
 
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { language } = useLanguageStore();
+
+  const contactInfo = [
+    {
+      icon: Phone,
+      title: t(contactT, language, 'phone'),
+      details: ['+20 2 3771 5511', '+20 1227 011 900'],
+      action: 'tel:+20237715511',
+    },
+    {
+      icon: Mail,
+      title: t(contactT, language, 'email'),
+      details: ['info@girasoltours.com'],
+      action: 'mailto:info@girasoltours.com',
+    },
+    {
+      icon: MapPin,
+      title: t(contactT, language, 'address'),
+      details: [
+        'Panorama Pyramids Tower',
+        'Entrance 1, Apt. 202 - 2nd floor',
+        'Al Haram St. Mashaal, Al Haram',
+        'Giza, Egypt 12512',
+      ],
+    },
+    {
+      icon: Clock,
+      title: t(contactT, language, 'workingHours'),
+      details: ['Sunday - Thursday: 9:00 AM - 6:00 PM', 'Friday - Saturday: 10:00 AM - 4:00 PM'],
+    },
+  ];
+
+  const tourTypes = tourTypeKeys.map(
+    (key) => t(contactT, language, `tourType_${key}`)
+  );
 
   // Contact form submission mutation
   const contactMutation = useMutation({
-    mutationFn: async (data: ContactFormData & { recaptchaToken?: string }) => {
+    mutationFn: async (data: ContactFormData) => {
       const response = await contactApi.sendMessage({
         name: `${data.firstName} ${data.lastName}`,
         email: data.email,
@@ -109,7 +104,6 @@ export default function ContactPage() {
         subject: data.subject,
         message: data.message,
         tour_interest: data.tourInterest || '',
-        recaptcha_token: data.recaptchaToken || '',
       });
       return response.data;
     },
@@ -132,21 +126,9 @@ export default function ContactPage() {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = useCallback(async (data: ContactFormData) => {
-    try {
-      // Get reCAPTCHA token
-      if (window.grecaptcha && RECAPTCHA_SITE_KEY) {
-        await new Promise<void>((resolve) => window.grecaptcha.ready(resolve));
-        const recaptchaToken = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact_form' });
-        contactMutation.mutate({ ...data, recaptchaToken });
-      } else {
-        contactMutation.mutate(data);
-      }
-    } catch {
-      // If reCAPTCHA fails, still submit
-      contactMutation.mutate(data);
-    }
-  }, [contactMutation]);
+  const onSubmit = (data: ContactFormData) => {
+    contactMutation.mutate(data);
+  };
 
   return (
     <div className="min-h-screen">
@@ -164,7 +146,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
             className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-display font-bold mb-3 sm:mb-6"
           >
-            Contact Us
+            {t(contactT, language, 'contactUs')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -172,7 +154,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl md:text-2xl text-white/90 mb-8"
           >
-            We're here to help you plan your perfect Egyptian adventure
+            {t(contactT, language, 'heroSubtitle')}
           </motion.p>
           <motion.a
             href="#quote-form"
@@ -181,7 +163,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="inline-flex items-center gap-2 bg-white text-primary-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg"
           >
-            Get Free Quote
+            {t(contactT, language, 'getFreeQuote')}
             <ArrowRight className="w-5 h-5" />
           </motion.a>
         </div>
@@ -232,10 +214,10 @@ export default function ContactPage() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl font-display font-bold text-gray-900 mb-2">
-                Send Us a Message
+                {t(contactT, language, 'sendUsMessage')}
               </h2>
               <p className="text-gray-600 mb-8">
-                Fill out the form below and we'll get back to you within 24 hours.
+                {t(contactT, language, 'formDescription')}
               </p>
 
               {isSubmitted ? (
@@ -247,15 +229,15 @@ export default function ContactPage() {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Message Sent!</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{t(contactT, language, 'messageSent')}</h3>
                   <p className="text-gray-600 mb-6">
-                    Thank you for contacting us. We'll get back to you within 24 hours.
+                    {t(contactT, language, 'thankYouMessage')}
                   </p>
                   <button
                     onClick={() => setIsSubmitted(false)}
                     className="btn btn-primary btn-md"
                   >
-                    Send Another Message
+                    {t(contactT, language, 'sendAnother')}
                   </button>
                 </motion.div>
               ) : (
@@ -263,7 +245,7 @@ export default function ContactPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        First Name *
+                        {t(contactT, language, 'firstName')}
                       </label>
                       <input
                         type="text"
@@ -279,7 +261,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Last Name *
+                        {t(contactT, language, 'lastName')}
                       </label>
                       <input
                         type="text"
@@ -298,7 +280,7 @@ export default function ContactPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email Address *
+                        {t(contactT, language, 'emailAddress')}
                       </label>
                       <input
                         type="email"
@@ -314,7 +296,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone Number
+                        {t(contactT, language, 'phoneNumber')}
                       </label>
                       <input
                         type="tel"
@@ -327,13 +309,13 @@ export default function ContactPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tour Interest
+                      {t(contactT, language, 'tourInterest')}
                     </label>
                     <select
                       {...register('tourInterest')}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                     >
-                      <option value="">Select a tour type</option>
+                      <option value="">{t(contactT, language, 'selectTourType')}</option>
                       {tourTypes.map((type) => (
                         <option key={type} value={type}>
                           {type}
@@ -344,7 +326,7 @@ export default function ContactPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Subject *
+                      {t(contactT, language, 'subject')}
                     </label>
                     <input
                       type="text"
@@ -352,7 +334,7 @@ export default function ContactPage() {
                       className={`w-full px-4 py-3 rounded-xl border ${
                         errors.subject ? 'border-red-300' : 'border-gray-200'
                       } focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
-                      placeholder="How can we help you?"
+                      placeholder={t(contactT, language, 'subjectPlaceholder')}
                     />
                     {errors.subject && (
                       <p className="mt-1 text-sm text-red-500">{errors.subject.message}</p>
@@ -361,7 +343,7 @@ export default function ContactPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Message *
+                      {t(contactT, language, 'message')}
                     </label>
                     <textarea
                       {...register('message')}
@@ -369,7 +351,7 @@ export default function ContactPage() {
                       className={`w-full px-4 py-3 rounded-xl border ${
                         errors.message ? 'border-red-300' : 'border-gray-200'
                       } focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none`}
-                      placeholder="Tell us about your travel plans, interests, and any questions you have..."
+                      placeholder={t(contactT, language, 'messagePlaceholder')}
                     />
                     {errors.message && (
                       <p className="mt-1 text-sm text-red-500">{errors.message.message}</p>
@@ -386,12 +368,12 @@ export default function ContactPage() {
                     {contactMutation.isPending ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        Sending...
+                        {t(contactT, language, 'sending')}
                       </>
                     ) : (
                       <>
                         <Send className="w-5 h-5" />
-                        Send Message
+                        {t(contactT, language, 'sendMessage')}
                       </>
                     )}
                   </button>
@@ -427,8 +409,8 @@ export default function ContactPage() {
                     <MessageSquare className="w-7 h-7" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold mb-1">Chat on WhatsApp</h3>
-                    <p className="text-white/80 text-sm">Get instant responses to your queries</p>
+                    <h3 className="text-lg font-bold mb-1">{t(contactT, language, 'chatOnWhatsApp')}</h3>
+                    <p className="text-white/80 text-sm">{t(contactT, language, 'instantResponses')}</p>
                   </div>
                   <a
                     href="https://wa.me/201060873700"
@@ -436,14 +418,14 @@ export default function ContactPage() {
                     rel="noopener noreferrer"
                     className="bg-white text-green-600 px-6 py-3 rounded-xl font-semibold hover:bg-green-50 transition-colors"
                   >
-                    Chat Now
+                    {t(contactT, language, 'chatNow')}
                   </a>
                 </div>
               </div>
 
               {/* Social Links */}
               <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Follow Us</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">{t(contactT, language, 'followUs')}</h3>
                 <div className="flex gap-4">
                   {socialLinks.map((social) => (
                     <a
@@ -461,27 +443,27 @@ export default function ContactPage() {
 
               {/* Quick Links */}
               <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Links</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">{t(contactT, language, 'quickLinks')}</h3>
                 <div className="space-y-3">
                   <Link
                     href="/tours"
                     className="flex items-center justify-between text-gray-600 hover:text-primary-600 transition-colors"
                   >
-                    <span>Browse Our Tours</span>
+                    <span>{t(contactT, language, 'browseOurTours')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
                     href="/destinations"
                     className="flex items-center justify-between text-gray-600 hover:text-primary-600 transition-colors"
                   >
-                    <span>Explore Destinations</span>
+                    <span>{t(contactT, language, 'exploreDestinations')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
                     href="/about"
                     className="flex items-center justify-between text-gray-600 hover:text-primary-600 transition-colors"
                   >
-                    <span>About Girasol Tours</span>
+                    <span>{t(contactT, language, 'aboutGirasol')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -492,38 +474,32 @@ export default function ContactPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-white">
-        <div className="container-custom px-4 sm:px-6">
+      <section className="py-20 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mx-4 lg:mx-16 mb-16 rounded-2xl">
+        <div className="container-custom text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-3xl py-12 sm:py-16 md:py-20 px-6 sm:px-10 md:px-16 text-center relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-500/10 rounded-full blur-2xl" />
-            <div className="relative z-10">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-4 sm:mb-6">
-                Ready to Start Your Adventure?
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto">
-                Let us help you create the Egyptian journey of your dreams.
-                Our team is ready to assist you every step of the way.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/tours" className="btn bg-primary-500 text-white hover:bg-primary-600 btn-lg rounded-xl">
-                  Explore Tours
-                </Link>
-                <a
-                  href="https://wa.me/201060873700"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-outline border-white/30 text-white hover:bg-white/10 btn-lg rounded-xl"
-                >
-                  <MessageSquare className="w-5 h-5 mr-2" />
-                  WhatsApp Us
-                </a>
-              </div>
+            <h2 className="text-4xl font-display font-bold text-white mb-6">
+              {t(contactT, language, 'readyToStart')}
+            </h2>
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              {t(contactT, language, 'adventureDesc')}
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/tours" className="btn bg-white text-primary-600 hover:bg-gray-100 btn-lg">
+                {t(contactT, language, 'exploreTours')}
+              </Link>
+              <a
+                href="https://wa.me/201060873700"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline border-white text-white hover:bg-white/10 btn-lg"
+              >
+                <MessageSquare className="w-5 h-5 mr-2" />
+                {t(contactT, language, 'whatsAppUs')}
+              </a>
             </div>
           </motion.div>
         </div>

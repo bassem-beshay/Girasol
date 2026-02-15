@@ -7,6 +7,8 @@ import { toursApi, fixImageUrl } from '@/lib/api';
 import { MapPin, Clock, Star, Users, Sparkles, Plane } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useLanguageStore } from '@/store/languageStore';
+import { toursPageT, t } from '@/lib/translations';
 
 interface Tour {
   id: number;
@@ -55,22 +57,14 @@ interface ToursResponse {
   results: Tour[];
 }
 
-// Page titles for each type
-const typeTitles: Record<string, string> = {
-  'nile_cruise': 'Nile Cruises',
-  'day_tour': 'Day Tours',
-  'multi_country': 'Multi-Country Tours',
-  'multi-destination': 'Multi Destination Tours',
-  'package': 'Package Tours',
-};
-
 function ToursLoading() {
+  const { language } = useLanguageStore();
   return (
     <div className="min-h-screen pt-32 pb-16">
       <div className="container-custom">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading tours...</p>
+          <p className="mt-4 text-gray-600">{t(toursPageT, language, 'loadingTours')}</p>
         </div>
       </div>
     </div>
@@ -86,6 +80,7 @@ export default function ToursPage() {
 }
 
 function ToursContent() {
+  const { language } = useLanguageStore();
   const searchParams = useSearchParams();
   const typeParam = searchParams.get('type');
   const earlyBookingParam = searchParams.get('early_booking');
@@ -93,13 +88,21 @@ function ToursContent() {
   const isEarlyBookingFilter = earlyBookingParam === 'true';
   const isMultiDestFilter = multiDestParam === 'true' || typeParam === 'multi-destination';
 
+  const typeTitles: Record<string, string> = {
+    'nile_cruise': t(toursPageT, language, 'nileCruises'),
+    'day_tour': t(toursPageT, language, 'dayTours'),
+    'multi_country': t(toursPageT, language, 'multiCountryTours'),
+    'multi-destination': t(toursPageT, language, 'multiDestinationTours'),
+    'package': t(toursPageT, language, 'packageTours'),
+  };
+
   const pageTitle = isEarlyBookingFilter
-    ? 'Early Bird Tours'
+    ? t(toursPageT, language, 'earlyBirdTours')
     : isMultiDestFilter
-      ? 'Multi Destination Tours'
+      ? t(toursPageT, language, 'multiDestinationTours')
       : typeParam
-        ? typeTitles[typeParam] || 'Tours'
-        : 'Explore Our Tours';
+        ? typeTitles[typeParam] || t(toursPageT, language, 'tours')
+        : t(toursPageT, language, 'exploreOurTours');
 
   const { data, isLoading, error } = useQuery<ToursResponse>({
     queryKey: ['tours', typeParam, earlyBookingParam, multiDestParam],
@@ -128,7 +131,7 @@ function ToursContent() {
         <div className="container-custom">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading tours...</p>
+            <p className="mt-4 text-gray-600">{t(toursPageT, language, 'loadingTours')}</p>
           </div>
         </div>
       </div>
@@ -140,7 +143,7 @@ function ToursContent() {
       <div className="min-h-screen pt-32 pb-16">
         <div className="container-custom">
           <div className="text-center text-red-500">
-            <p>Error loading tours. Please try again later.</p>
+            <p>{t(toursPageT, language, 'errorLoading')}</p>
           </div>
         </div>
       </div>
@@ -157,7 +160,7 @@ function ToursContent() {
             ? 'bg-gradient-to-r from-blue-600 to-indigo-700'
             : 'bg-gradient-to-r from-primary-600 to-primary-800'
       }`}>
-        {!isEarlyBookingFilter && !isMultiDestFilter && (
+        {!isEarlyBookingFilter && (
           <div
             className="absolute inset-0 bg-cover bg-bottom"
             style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/media/tours/tours-hero.jpg)` }}
@@ -169,24 +172,24 @@ function ToursContent() {
             {isEarlyBookingFilter && (
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-sm font-medium mb-3">
                 <Sparkles className="w-4 h-4" />
-                Limited Time Offers
+                {t(toursPageT, language, 'limitedTimeOffers')}
               </div>
             )}
             {isMultiDestFilter && (
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-sm font-medium mb-3">
                 <Plane className="w-4 h-4" />
-                Explore Multiple Countries
+                {t(toursPageT, language, 'exploreMultipleCountries')}
               </div>
             )}
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-4">{pageTitle}</h1>
             <p className="text-sm sm:text-base md:text-xl text-white/80 max-w-xl mx-auto">
               {isEarlyBookingFilter
-                ? 'Book early and save big on these exclusive tour packages!'
+                ? t(toursPageT, language, 'earlyBirdSubtitle')
                 : isMultiDestFilter
-                  ? 'Experience the best of Egypt combined with Jordan, Dubai & more'
+                  ? t(toursPageT, language, 'multiDestSubtitle')
                   : typeParam
-                    ? `Browse our ${typeTitles[typeParam]?.toLowerCase() || 'tours'}`
-                    : 'Discover Egypt with our carefully curated tour packages'
+                    ? `${t(toursPageT, language, 'browseOur')} ${typeTitles[typeParam]?.toLowerCase() || t(toursPageT, language, 'tours').toLowerCase()}`
+                    : t(toursPageT, language, 'defaultSubtitle')
               }
             </p>
           </div>
@@ -199,8 +202,8 @@ function ToursContent() {
           <div className="mb-4 sm:mb-8">
             <p className="text-gray-600 text-sm sm:text-base">
               {isEarlyBookingFilter
-                ? `Showing ${tours.length} Early Bird tours`
-                : `Showing ${tours.length} of ${data?.count || 0} tours`
+                ? t(toursPageT, language, 'showingEarlyBird').replace('{count}', String(tours.length))
+                : t(toursPageT, language, 'showingOf').replace('{count}', String(tours.length)).replace('{total}', String(data?.count || 0))
               }
             </p>
           </div>
@@ -210,8 +213,8 @@ function ToursContent() {
               <Sparkles className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500 text-lg">
                 {isEarlyBookingFilter
-                  ? 'No Early Bird tours available at the moment.'
-                  : 'No tours available at the moment.'
+                  ? t(toursPageT, language, 'noEarlyBird')
+                  : t(toursPageT, language, 'noTours')
                 }
               </p>
             </div>
@@ -231,7 +234,7 @@ function ToursContent() {
                         alt={tour.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy" />
+                      />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-200">
                         <span className="text-primary-400 text-lg font-medium">
@@ -245,28 +248,28 @@ function ToursContent() {
                       {tour.is_multi_destination && (
                         <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-medium rounded-full flex items-center gap-1">
                           <Plane className="w-3 h-3" />
-                          Multi Destination
+                          {t(toursPageT, language, 'multiDestination')}
                         </span>
                       )}
                       {tour.is_early_booking && (
                         <span className="px-3 py-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs font-medium rounded-full flex items-center gap-1">
                           <Sparkles className="w-3 h-3" />
-                          {tour.early_booking_badge || 'Early Bird'}
+                          {tour.early_booking_badge || t(toursPageT, language, 'earlyBird')}
                         </span>
                       )}
                       {tour.is_best_seller && (
                         <span className="px-3 py-1 bg-primary-500 text-white text-xs font-medium rounded-full">
-                          Best Seller
+                          {t(toursPageT, language, 'bestSeller')}
                         </span>
                       )}
                       {tour.is_new && (
                         <span className="px-3 py-1 bg-green-500 text-white text-xs font-medium rounded-full">
-                          New
+                          {t(toursPageT, language, 'new')}
                         </span>
                       )}
                       {tour.has_discount && tour.discount_percentage && (
                         <span className="px-3 py-1 bg-red-500 text-white text-xs font-medium rounded-full">
-                          {tour.discount_percentage}% OFF
+                          {tour.discount_percentage}% {t(toursPageT, language, 'off')}
                         </span>
                       )}
                     </div>
@@ -309,21 +312,21 @@ function ToursContent() {
                         </span>
                       </div>
                       <span className="text-gray-400 text-xs sm:text-sm">
-                        ({tour.review_count} reviews)
+                        ({tour.review_count} {t(toursPageT, language, 'reviews')})
                       </span>
                     </div>
 
                     {/* Group Size - Hidden on very small screens */}
                     <div className="hidden sm:flex items-center text-gray-500 text-sm mb-4">
                       <Users className="w-4 h-4 mr-1" />
-                      Max {tour.max_group_size} people
+                      {t(toursPageT, language, 'maxPeople').replace('{count}', String(tour.max_group_size))}
                     </div>
 
                     {/* Price */}
                     <div className="flex items-center justify-between pt-3 sm:pt-4 border-t">
                       <div>
                         <span className="text-gray-500 text-xs sm:text-sm">
-                          {tour.is_early_booking ? 'Early Bird' : 'From'}
+                          {tour.is_early_booking ? t(toursPageT, language, 'earlyBird') : t(toursPageT, language, 'from')}
                         </span>
                         <div className="flex items-center gap-1 sm:gap-2">
                           <span className={`text-lg sm:text-xl font-bold ${tour.is_early_booking ? 'text-orange-500' : 'text-primary-600'}`}>
@@ -337,7 +340,7 @@ function ToursContent() {
                         </div>
                       </div>
                       <span className="text-primary-600 font-medium text-sm sm:text-base">
-                        View Details
+                        {t(toursPageT, language, 'viewDetails')}
                       </span>
                     </div>
                   </div>

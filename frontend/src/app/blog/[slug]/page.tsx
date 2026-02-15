@@ -22,6 +22,8 @@ import {
   ChevronRight,
   Eye,
 } from 'lucide-react';
+import { useLanguageStore } from '@/store/languageStore';
+import { blogDetailT, t } from '@/lib/translations';
 
 interface BlogCategory {
   id: number;
@@ -56,6 +58,7 @@ interface RelatedPostsResponse {
 }
 
 export default function BlogPostPage() {
+  const { language } = useLanguageStore();
   const params = useParams();
   const slug = params.slug as string;
 
@@ -121,7 +124,7 @@ export default function BlogPostPage() {
         <div className="container-custom">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading article...</p>
+            <p className="mt-4 text-gray-600">{t(blogDetailT, language, 'loadingArticle')}</p>
           </div>
         </div>
       </div>
@@ -134,10 +137,10 @@ export default function BlogPostPage() {
         <div className="container-custom">
           <div className="text-center">
             <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Article Not Found</h1>
-            <p className="text-gray-600 mb-8">The article you&apos;re looking for doesn&apos;t exist.</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">{t(blogDetailT, language, 'articleNotFound')}</h1>
+            <p className="text-gray-600 mb-8">{t(blogDetailT, language, 'articleNotFoundDesc')}</p>
             <Link href="/blog" className="btn btn-primary btn-md">
-              Back to Blog
+              {t(blogDetailT, language, 'backToBlog')}
             </Link>
           </div>
         </div>
@@ -176,7 +179,7 @@ export default function BlogPostPage() {
                 className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Back to Blog
+                {t(blogDetailT, language, 'backToBlog')}
               </Link>
 
               {/* Category */}
@@ -204,11 +207,11 @@ export default function BlogPostPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5" />
-                  <span>{post.reading_time} min read</span>
+                  <span>{post.reading_time} {t(blogDetailT, language, 'minRead')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Eye className="w-5 h-5" />
-                  <span>{post.view_count} views</span>
+                  <span>{post.view_count} {t(blogDetailT, language, 'views')}</span>
                 </div>
               </div>
             </motion.div>
@@ -257,7 +260,7 @@ export default function BlogPostPage() {
                   <div className="flex items-center gap-4">
                     <span className="text-gray-600 font-medium flex items-center gap-2">
                       <Share2 className="w-5 h-5" />
-                      Share this article:
+                      {t(blogDetailT, language, 'shareArticle')}
                     </span>
                     <div className="flex gap-2">
                       <a
@@ -298,16 +301,16 @@ export default function BlogPostPage() {
                   {post.author_name?.charAt(0) || 'A'}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-1">{post.author_name || 'Anonymous'}</h3>
-                <p className="text-gray-500 text-sm mb-4">Travel Writer</p>
+                <p className="text-gray-500 text-sm mb-4">{t(blogDetailT, language, 'travelWriter')}</p>
                 <p className="text-gray-600 text-sm">
-                  Sharing stories and tips about Egypt&apos;s amazing destinations.
+                  {t(blogDetailT, language, 'authorBio')}
                 </p>
               </div>
 
               {/* Related Posts */}
               {relatedPosts.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 shadow-md">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Related Articles</h3>
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">{t(blogDetailT, language, 'relatedArticles')}</h3>
                   <div className="space-y-4">
                     {relatedPosts.map((relatedPost) => (
                       <Link
@@ -323,7 +326,7 @@ export default function BlogPostPage() {
                               width={80}
                               height={80}
                               className="w-full h-full object-cover"
-                            loading="lazy" />
+                            />
                           ) : (
                             <BookOpen className="w-8 h-8 text-primary-400" />
                           )}
@@ -344,15 +347,15 @@ export default function BlogPostPage() {
 
               {/* CTA */}
               <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 text-white">
-                <h3 className="text-lg font-bold mb-2">Plan Your Trip</h3>
+                <h3 className="text-lg font-bold mb-2">{t(blogDetailT, language, 'planYourTrip')}</h3>
                 <p className="text-white/80 text-sm mb-4">
-                  Ready to experience Egypt? Browse our tours and start your adventure.
+                  {t(blogDetailT, language, 'planDesc')}
                 </p>
                 <Link
                   href="/tours"
                   className="block w-full py-3 bg-white text-primary-600 rounded-xl font-semibold text-center hover:bg-gray-100 transition-colors"
                 >
-                  Explore Tours
+                  {t(blogDetailT, language, 'exploreTours')}
                 </Link>
               </div>
             </aside>
@@ -365,12 +368,12 @@ export default function BlogPostPage() {
         <section className="py-16 bg-gray-50">
           <div className="container-custom">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-display font-bold text-gray-900">More Articles</h2>
+              <h2 className="text-2xl font-display font-bold text-gray-900">{t(blogDetailT, language, 'moreArticles')}</h2>
               <Link
                 href="/blog"
                 className="text-primary-600 font-medium flex items-center gap-1 hover:gap-2 transition-all"
               >
-                View All
+                {t(blogDetailT, language, 'viewAll')}
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
@@ -393,7 +396,7 @@ export default function BlogPostPage() {
                           alt={relatedPost.title}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy" />
+                        />
                       ) : (
                         <div className="w-full h-full bg-primary-500 flex items-center justify-center">
                           <BookOpen className="w-12 h-12 text-white/30" />
@@ -439,18 +442,17 @@ export default function BlogPostPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-display font-bold text-white mb-6">
-              Ready to Experience Egypt?
+              {t(blogDetailT, language, 'readyToExperience')}
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Turn your travel dreams into reality. Browse our tours and start planning your
-              unforgettable Egyptian adventure today.
+              {t(blogDetailT, language, 'readyDesc')}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/tours" className="btn bg-white text-primary-600 hover:bg-gray-100 btn-lg">
-                Explore Tours
+                {t(blogDetailT, language, 'exploreTours')}
               </Link>
               <Link href="/contact" className="btn btn-outline border-white text-white hover:bg-white/10 btn-lg">
-                Contact Us
+                {t(blogDetailT, language, 'contactUs')}
               </Link>
             </div>
           </motion.div>

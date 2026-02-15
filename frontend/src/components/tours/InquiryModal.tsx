@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguageStore } from '@/store/languageStore';
+import { inquiryFormT, t } from '@/lib/translations';
 
 interface InquiryModalProps {
   isOpen: boolean;
@@ -82,6 +84,7 @@ const nationalities = [
 ];
 
 export function InquiryModal({ isOpen, onClose, tourName }: InquiryModalProps) {
+  const { language } = useLanguageStore();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -181,7 +184,7 @@ ${formData.specialRequests || 'None'}`;
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
               {/* Header */}
               <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between rounded-t-2xl">
-                <h2 className="text-xl font-bold text-gray-900">Enquire Now</h2>
+                <h2 className="text-xl font-bold text-gray-900">{t(inquiryFormT, language, 'enquireNow')}</h2>
                 <button
                   onClick={onClose}
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -195,7 +198,7 @@ ${formData.specialRequests || 'None'}`;
                 {/* Full Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Full Name<span className="text-red-500">*</span>
+                    {t(inquiryFormT, language, 'fullName')}<span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -210,7 +213,7 @@ ${formData.specialRequests || 'None'}`;
                 {/* Email */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email<span className="text-red-500">*</span>
+                    {t(inquiryFormT, language, 'email')}<span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
@@ -225,7 +228,7 @@ ${formData.specialRequests || 'None'}`;
                 {/* Nationality */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nationality<span className="text-red-500">*</span>
+                    {t(inquiryFormT, language, 'nationality')}<span className="text-red-500">*</span>
                   </label>
                   <select
                     name="nationality"
@@ -236,7 +239,7 @@ ${formData.specialRequests || 'None'}`;
                   >
                     {nationalities.map(nat => (
                       <option key={nat} value={nat === 'Select Nationality' ? '' : nat}>
-                        {nat}
+                        {nat === 'Select Nationality' ? t(inquiryFormT, language, 'selectNationality') : nat}
                       </option>
                     ))}
                   </select>
@@ -245,7 +248,7 @@ ${formData.specialRequests || 'None'}`;
                 {/* Phone */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone<span className="text-red-500">*</span>
+                    {t(inquiryFormT, language, 'phone')}<span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
@@ -261,7 +264,7 @@ ${formData.specialRequests || 'None'}`;
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      From
+                      {t(inquiryFormT, language, 'from')}
                     </label>
                     <input
                       type="date"
@@ -273,7 +276,7 @@ ${formData.specialRequests || 'None'}`;
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      To
+                      {t(inquiryFormT, language, 'to')}
                     </label>
                     <input
                       type="date"
@@ -288,7 +291,7 @@ ${formData.specialRequests || 'None'}`;
                 {/* Travelers */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    No. of Adults (+12 Years)
+                    {t(inquiryFormT, language, 'noAdults')}
                   </label>
                   <input
                     type="number"
@@ -303,7 +306,7 @@ ${formData.specialRequests || 'None'}`;
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    No. of Children (2 to 11 Years)
+                    {t(inquiryFormT, language, 'noChildren')}
                   </label>
                   <input
                     type="number"
@@ -318,7 +321,7 @@ ${formData.specialRequests || 'None'}`;
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    No. of Infants (0 to 2 Years)
+                    {t(inquiryFormT, language, 'noInfants')}
                   </label>
                   <input
                     type="number"
@@ -334,7 +337,7 @@ ${formData.specialRequests || 'None'}`;
                 {/* Special Requests */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Special Requests
+                    {t(inquiryFormT, language, 'specialRequests')}
                   </label>
                   <textarea
                     name="specialRequests"
@@ -357,9 +360,9 @@ ${formData.specialRequests || 'None'}`;
                     className="mt-1 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                   />
                   <label htmlFor="agreeTerms" className="text-sm text-gray-600">
-                    I agree to the{' '}
+                    {t(inquiryFormT, language, 'agreeTerms')}{' '}
                     <a href="/terms" target="_blank" className="text-primary-600 hover:underline">
-                      Terms and Conditions
+                      {t(inquiryFormT, language, 'termsAndConditions')}
                     </a>
                   </label>
                 </div>
@@ -370,7 +373,7 @@ ${formData.specialRequests || 'None'}`;
                   disabled={isSubmitting || !formData.agreeTerms}
                   className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Sending...' : submitted ? 'Sent!' : 'SEND BOOKING INQUIRY'}
+                  {isSubmitting ? t(inquiryFormT, language, 'sending') : submitted ? t(inquiryFormT, language, 'sent') : t(inquiryFormT, language, 'sendBookingInquiry')}
                 </button>
               </form>
             </div>

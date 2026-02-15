@@ -6,6 +6,8 @@ import { contactApi } from '@/lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { HelpCircle, ChevronDown, Search, Loader2, MessageCircle } from 'lucide-react';
+import { useLanguageStore } from '@/store/languageStore';
+import { faqT, t } from '@/lib/translations';
 
 interface FAQ {
   id: number;
@@ -14,15 +16,6 @@ interface FAQ {
   category: string;
   order: number;
 }
-
-const categories = [
-  { id: 'all', name: 'All Questions' },
-  { id: 'booking', name: 'Booking & Reservations' },
-  { id: 'payment', name: 'Payment & Pricing' },
-  { id: 'tours', name: 'Tours & Activities' },
-  { id: 'travel', name: 'Travel Information' },
-  { id: 'cancellation', name: 'Cancellation & Refunds' },
-];
 
 function FAQItem({ faq, isOpen, onToggle }: { faq: FAQ; isOpen: boolean; onToggle: () => void }) {
   return (
@@ -56,9 +49,19 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: FAQ; isOpen: boolean; onToggl
 }
 
 export default function FAQPage() {
+  const { language } = useLanguageStore();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+
+  const categories = [
+    { id: 'all', name: t(faqT, language, 'allQuestions') },
+    { id: 'booking', name: t(faqT, language, 'booking') },
+    { id: 'payment', name: t(faqT, language, 'payment') },
+    { id: 'tours', name: t(faqT, language, 'tours') },
+    { id: 'travel', name: t(faqT, language, 'travel') },
+    { id: 'cancellation', name: t(faqT, language, 'cancellation') },
+  ];
 
   const { data: faqsData, isLoading, error } = useQuery<{ count: number; results: FAQ[] }>({
     queryKey: ['faqs', activeCategory],
@@ -80,22 +83,26 @@ export default function FAQPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-24 bg-gradient-to-r from-primary-600 to-primary-700">
-        <div className="absolute inset-0 bg-hero-pattern opacity-10" />
-        <div className="container-custom relative z-10">
+      <section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[100vh] min-h-[250px] sm:min-h-[300px] md:min-h-[400px] lg:min-h-[600px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-900/90 to-primary-800/80 z-10" />
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/contact-hero.jpg')" }}
+        />
+        <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center text-white"
+            className="text-center"
           >
             <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center">
               <HelpCircle className="w-8 h-8" />
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
-              Frequently Asked Questions
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4 sm:mb-6">
+              {t(faqT, language, 'title')}
             </h1>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto">
-              Find answers to common questions about our tours, booking process, and travel information.
+            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+              {t(faqT, language, 'description')}
             </p>
           </motion.div>
         </div>
@@ -112,7 +119,7 @@ export default function FAQPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search for answers..."
+                placeholder={t(faqT, language, 'searchPlaceholder')}
                 className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
@@ -143,29 +150,29 @@ export default function FAQPage() {
           {isLoading ? (
             <div className="flex items-center justify-center py-16">
               <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
-              <span className="ml-3 text-gray-600">Loading FAQs...</span>
+              <span className="ml-3 text-gray-600">{t(faqT, language, 'loadingFaqs')}</span>
             </div>
           ) : error ? (
             <div className="text-center py-16">
-              <p className="text-red-500">Failed to load FAQs. Please try again later.</p>
+              <p className="text-red-500">{t(faqT, language, 'failedToLoad')}</p>
             </div>
           ) : filteredFAQs.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
                 <HelpCircle className="w-12 h-12 text-gray-400" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">No Results Found</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t(faqT, language, 'noResults')}</h2>
               <p className="text-gray-600 mb-8">
                 {searchQuery
-                  ? `No FAQs match "${searchQuery}". Try a different search term.`
-                  : 'No FAQs available in this category.'}
+                  ? `${t(faqT, language, 'noMatch')} "${searchQuery}"${t(faqT, language, 'tryDifferent')}`
+                  : t(faqT, language, 'noFaqsCategory')}
               </p>
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
                   className="btn btn-primary"
                 >
-                  Clear Search
+                  {t(faqT, language, 'clearSearch')}
                 </button>
               )}
             </div>
@@ -196,13 +203,13 @@ export default function FAQPage() {
               <MessageCircle className="w-8 h-8 text-primary-600" />
             </div>
             <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
-              Still Have Questions?
+              {t(faqT, language, 'stillHaveQuestions')}
             </h2>
             <p className="text-gray-600 mb-8">
-              Can&apos;t find the answer you&apos;re looking for? Our friendly team is here to help.
+              {t(faqT, language, 'cantFindAnswer')}
             </p>
             <Link href="/contact" className="btn btn-primary btn-lg">
-              Contact Us
+              {t(faqT, language, 'contactUs')}
             </Link>
           </div>
         </div>
