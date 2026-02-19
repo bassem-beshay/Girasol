@@ -6,6 +6,7 @@ import { Share2, X } from 'lucide-react';
 import { useUserStore } from '@/store/userStore';
 import { useLanguageStore } from '@/store/languageStore';
 import { inquiryFormT, t } from '@/lib/translations';
+import { nationalityPhoneCode } from '@/lib/countryCodeMap';
 
 interface InquiryFormProps {
   tourName: string;
@@ -103,6 +104,7 @@ export function InquiryForm({ tourName, tourSlug, tourPrice, tourDuration }: Inq
     agreeTerms: false,
   });
   const [isSubmitting, setIsSubmitting] = useState<'whatsapp' | 'email' | null>(null);
+  const [phoneCode, setPhoneCode] = useState<{ flag: string; dial: string } | null>(null);
 
   // Pre-fill form with saved user data
   useEffect(() => {
@@ -116,6 +118,15 @@ export function InquiryForm({ tourName, tourSlug, tourPrice, tourDuration }: Inq
       }));
     }
   }, [user]);
+
+  // Auto-update phone code when nationality changes
+  useEffect(() => {
+    if (formData.nationality && nationalityPhoneCode[formData.nationality]) {
+      setPhoneCode(nationalityPhoneCode[formData.nationality]);
+    } else {
+      setPhoneCode(null);
+    }
+  }, [formData.nationality]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -136,7 +147,7 @@ export function InquiryForm({ tourName, tourSlug, tourPrice, tourDuration }: Inq
 - Name: ${formData.fullName}
 - Email: ${formData.email}
 - Nationality: ${formData.nationality}
-- Phone: ${formData.phone}
+- Phone: ${phoneCode ? phoneCode.dial + ' ' : ''}${formData.phone}
 
 *Travel Details:*
 - From: ${formData.fromDate || 'Not specified'}
@@ -155,7 +166,7 @@ ${formData.specialRequests || 'None'}`;
         fullName: formData.fullName,
         email: formData.email,
         nationality: formData.nationality,
-        phone: formData.phone,
+        phone: (phoneCode ? phoneCode.dial + ' ' : '') + formData.phone,
       });
     }
   };
@@ -192,7 +203,7 @@ Personal Details:
 - Name: ${formData.fullName}
 - Email: ${formData.email}
 - Nationality: ${formData.nationality}
-- Phone: ${formData.phone}
+- Phone: ${phoneCode ? phoneCode.dial + ' ' : ''}${formData.phone}
 
 Travel Details:
 - From: ${formData.fromDate || 'Not specified'}
@@ -267,13 +278,21 @@ ${formData.specialRequests || 'None'}`;
           <label className="block text-sm font-medium text-gray-700 mb-1">
             {t(inquiryFormT, language, 'phone')}<span className="text-red-500">*</span>
           </label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-0 outline-none transition-colors text-sm"
-          />
+          <div className="flex">
+            {phoneCode && (
+              <span className="inline-flex items-center px-2.5 border-2 border-r-0 border-amber-200 rounded-l-lg bg-amber-50/80 text-sm text-gray-600 whitespace-nowrap select-none gap-1.5">
+                <span className="text-base leading-none">{phoneCode.flag}</span>
+                <span className="font-medium">{phoneCode.dial}</span>
+              </span>
+            )}
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className={`flex-1 min-w-0 px-3 py-2 border-2 border-amber-200 ${phoneCode ? 'rounded-r-lg border-l-amber-100' : 'rounded-lg'} focus:border-amber-400 focus:ring-0 outline-none transition-colors text-sm`}
+            />
+          </div>
         </div>
 
         {/* === OPTIONAL FIELDS === */}

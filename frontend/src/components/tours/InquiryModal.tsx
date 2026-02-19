@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguageStore } from '@/store/languageStore';
 import { inquiryFormT, t } from '@/lib/translations';
+import { nationalityPhoneCode } from '@/lib/countryCodeMap';
 
 interface InquiryModalProps {
   isOpen: boolean;
@@ -99,7 +100,17 @@ export function InquiryModal({ isOpen, onClose, tourName }: InquiryModalProps) {
     agreeTerms: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneCode, setPhoneCode] = useState<{ flag: string; dial: string } | null>(null);
   const [submitted, setSubmitted] = useState(false);
+
+  // Auto-update phone code when nationality changes
+  useEffect(() => {
+    if (formData.nationality && nationalityPhoneCode[formData.nationality]) {
+      setPhoneCode(nationalityPhoneCode[formData.nationality]);
+    } else {
+      setPhoneCode(null);
+    }
+  }, [formData.nationality]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,7 +125,7 @@ export function InquiryModal({ isOpen, onClose, tourName }: InquiryModalProps) {
 - Name: ${formData.fullName}
 - Email: ${formData.email}
 - Nationality: ${formData.nationality}
-- Phone: ${formData.phone}
+- Phone: ${phoneCode ? phoneCode.dial + ' ' : ''}${formData.phone}
 
 *Travel Details:*
 - From: ${formData.fromDate}
@@ -250,14 +261,22 @@ ${formData.specialRequests || 'None'}`;
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t(inquiryFormT, language, 'phone')}<span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-colors"
-                  />
+                  <div className="flex">
+                    {phoneCode && (
+                      <span className="inline-flex items-center px-2.5 border-2 border-r-0 border-gray-200 rounded-l-lg bg-gray-50 text-sm text-gray-600 whitespace-nowrap select-none gap-1.5">
+                        <span className="text-base leading-none">{phoneCode.flag}</span>
+                        <span className="font-medium">{phoneCode.dial}</span>
+                      </span>
+                    )}
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      className={`flex-1 min-w-0 px-4 py-2.5 border-2 border-gray-200 ${phoneCode ? 'rounded-r-lg' : 'rounded-lg'} focus:border-primary-500 focus:ring-0 outline-none transition-colors`}
+                    />
+                  </div>
                 </div>
 
                 {/* Date Range */}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { contactApi } from '@/lib/api';
 import { motion } from 'framer-motion';
@@ -24,13 +24,16 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useLanguageStore } from '@/store/languageStore';
-import { contactT, t } from '@/lib/translations';
+import { contactT, inquiryFormT, t } from '@/lib/translations';
+import { useUserStore } from '@/store/userStore';
+import { nationalityPhoneCode } from '@/lib/countryCodeMap';
 
 const contactSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
   phone: z.string().optional(),
+  nationality: z.string().optional(),
   subject: z.string().min(5, 'Subject must be at least 5 characters'),
   message: z.string().min(20, 'Message must be at least 20 characters'),
   tourInterest: z.string().optional(),
@@ -58,6 +61,9 @@ const tourTypeKeys = [
 
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [phoneCode, setPhoneCode] = useState<{ flag: string; dial: string } | null>(null);
+  const { user } = useUserStore();
+  const nationalities = Object.keys(nationalityPhoneCode);
   const { language } = useLanguageStore();
 
   const contactInfo = [
@@ -100,7 +106,7 @@ export default function ContactPage() {
       const response = await contactApi.sendMessage({
         name: `${data.firstName} ${data.lastName}`,
         email: data.email,
-        phone: data.phone || '',
+        phone: (phoneCode ? phoneCode.dial + ' ' : '') + (data.phone || ''),
         subject: data.subject,
         message: data.message,
         tour_interest: data.tourInterest || '',
@@ -121,10 +127,42 @@ export default function ContactPage() {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
+
+  const watchedNationality = watch('nationality');
+
+  // Auto-fill from saved user data
+  useEffect(() => {
+    if (user) {
+      const names = (user.fullName || '').trim().split(/\s+/);
+      if (names[0]) setValue('firstName', names[0]);
+      if (names.length > 1) setValue('lastName', names.slice(1).join(' '));
+      if (user.email) setValue('email', user.email);
+      if (user.nationality) setValue('nationality', user.nationality);
+      if (user.phone) {
+        const codeInfo = user.nationality ? nationalityPhoneCode[user.nationality] : null;
+        if (codeInfo && user.phone.startsWith(codeInfo.dial)) {
+          setValue('phone', user.phone.slice(codeInfo.dial.length).trim());
+        } else {
+          setValue('phone', user.phone);
+        }
+      }
+    }
+  }, [user, setValue]);
+
+  // Auto-update phone code when nationality changes
+  useEffect(() => {
+    if (watchedNationality && nationalityPhoneCode[watchedNationality]) {
+      setPhoneCode(nationalityPhoneCode[watchedNationality]);
+    } else {
+      setPhoneCode(null);
+    }
+  }, [watchedNationality]);
 
   const onSubmit = (data: ContactFormData) => {
     contactMutation.mutate(data);
@@ -286,32 +324,56 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        {t(contactT, language, 'phoneNumber')}
+                        {t(inquiryFormT, language, 'nationality')}
                       </label>
-                      <input
-                        type="tel"
-                        {...register('phone')}
+                      <select
+                        {...register('nationality')}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                        placeholder="+1 234 567 8900"
-                      />
+                      >
+                        <option value="">{t(inquiryFormT, language, 'selectNationality')}</option>
+                        {nationalities.map((nat) => (
+                          <option key={nat} value={nat}>{nat}</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {t(contactT, language, 'tourInterest')}
-                    </label>
-                    <select
-                      {...register('tourInterest')}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                    >
-                      <option value="">{t(contactT, language, 'selectTourType')}</option>
-                      {tourTypes.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {t(contactT, language, 'phoneNumber')}
+                      </label>
+                      <div className="flex">
+                        {phoneCode && (
+                          <span className="inline-flex items-center px-3 border border-r-0 border-gray-200 rounded-l-xl bg-gray-50 text-sm text-gray-600 whitespace-nowrap select-none gap-1.5">
+                            <span className="text-base leading-none">{phoneCode.flag}</span>
+                            <span className="font-medium">{phoneCode.dial}</span>
+                          </span>
+                        )}
+                        <input
+                          type="tel"
+                          {...register('phone')}
+                          className={`flex-1 min-w-0 px-4 py-3 border border-gray-200 ${phoneCode ? 'rounded-r-xl' : 'rounded-xl'} focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
+                          placeholder="234 567 8900"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {t(contactT, language, 'tourInterest')}
+                      </label>
+                      <select
+                        {...register('tourInterest')}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                      >
+                        <option value="">{t(contactT, language, 'selectTourType')}</option>
+                        {tourTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {type}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   <div>
