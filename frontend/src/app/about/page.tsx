@@ -93,7 +93,7 @@ const leadership = [
   {
     name: 'Emad Khalifa',
     role: 'Chairman & CEO',
-    image: '/images/team/emad-khalifa.jpeg',
+    image: '/images/team/emad-khalifa-v2.jpeg',
     description: 'With over 30 years of expertise in the tourism industry, Emad leads Girasol with a visionary approach to showcasing Egypt\'s timeless beauty to the world.',
   },
   {

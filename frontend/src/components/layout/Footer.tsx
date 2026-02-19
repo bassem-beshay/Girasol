@@ -291,11 +291,11 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/20 bg-black/40">
           <div className="container-custom py-5 px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-xs md:text-sm text-white/70">
+            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-xs text-white/70">
               <p className="text-center md:text-left">
                 © {new Date().getFullYear()} Girasol Egypt Travel and Tours. {t(footerT, language, 'allRightsReserved')} | Designed by <a href="https://wa.me/201228986508" target="_blank" rel="noopener noreferrer" className="underline text-white/90 hover:text-white transition-colors">ENG-Bassem Beshay</a>
               </p>
-              <div className="flex items-center gap-4 md:gap-6 md:ml-auto md:mr-[10%]">
+              <div className="flex items-center gap-3 md:gap-4 md:ml-auto md:mr-[10%] whitespace-nowrap">
                 <Link href="/terms" className="hover:text-white transition-colors">
                   {t(footerT, language, 'termsConditions')}
                 </Link>
