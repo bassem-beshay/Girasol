@@ -8,6 +8,8 @@ import Image from 'next/image';
 import { ChevronRight, Star, MapPin, Clock, Loader2, Globe2, Plane } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { useInView } from '@/hooks/useInView';
+import { useLanguageStore } from '@/store/languageStore';
+import { multiDestT, t } from '@/lib/translations';
 
 interface Tour {
   id: number;
@@ -38,6 +40,7 @@ interface ToursResponse {
 
 export function MultiDestinationTours() {
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+  const { language } = useLanguageStore();
 
   const { data, isLoading, error } = useQuery<ToursResponse>({
     queryKey: ['multi-destination-tours'],
@@ -69,7 +72,7 @@ export function MultiDestinationTours() {
               className="inline-flex items-center gap-2 text-blue-600 font-medium mb-2"
             >
               <Globe2 className="w-5 h-5" />
-              Multi-Destination Tours
+              {t(multiDestT, language, 'multiDestTours')}
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -78,7 +81,7 @@ export function MultiDestinationTours() {
               transition={{ delay: 0.1 }}
               className="heading-2 text-gray-900"
             >
-              Explore Multiple Countries
+              {t(multiDestT, language, 'exploreMultiple')}
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -87,7 +90,7 @@ export function MultiDestinationTours() {
               transition={{ delay: 0.15 }}
               className="text-gray-600 mt-2 max-w-xl"
             >
-              Combine the wonders of Egypt with Jordan, Dubai, and more in one unforgettable journey
+              {t(multiDestT, language, 'description')}
             </motion.p>
           </div>
           <motion.div
@@ -99,7 +102,7 @@ export function MultiDestinationTours() {
               href="/tours?multi_destination=true"
               className="inline-flex items-center text-blue-600 font-medium hover:text-blue-700"
             >
-              View All Multi-Destination Tours
+              {t(multiDestT, language, 'viewAll')}
               <ChevronRight className="w-5 h-5 ml-1" />
             </Link>
           </motion.div>
@@ -109,14 +112,14 @@ export function MultiDestinationTours() {
         {isLoading && (
           <div className="flex items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-            <span className="ml-3 text-gray-600">Loading tours...</span>
+            <span className="ml-3 text-gray-600">{t(multiDestT, language, 'loadingTours')}</span>
           </div>
         )}
 
         {/* Error state */}
         {error && (
           <div className="text-center py-16">
-            <p className="text-gray-500">Unable to load tours. Please try again later.</p>
+            <p className="text-gray-500">{t(multiDestT, language, 'unableToLoad')}</p>
           </div>
         )}
 
@@ -154,10 +157,10 @@ export function MultiDestinationTours() {
                     <div className="absolute top-4 left-4 flex flex-col gap-2">
                       <span className="badge bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center gap-1.5 shadow-lg">
                         <Plane className="w-3.5 h-3.5" />
-                        Multi-Country
+                        {t(multiDestT, language, 'multiCountry')}
                       </span>
                       {tour.is_best_seller && (
-                        <span className="badge bg-amber-500 text-white">Best Seller</span>
+                        <span className="badge bg-amber-500 text-white">{t(multiDestT, language, 'bestSeller')}</span>
                       )}
                       {tour.has_discount && tour.discount_percentage && (
                         <span className="badge bg-red-500 text-white">
@@ -196,13 +199,13 @@ export function MultiDestinationTours() {
                         <Star className="w-4 h-4 text-gold-400 fill-current" />
                         <span className="ml-1 text-sm font-medium">{tour.average_rating || '5.0'}</span>
                       </div>
-                      <span className="text-gray-400 text-sm">({tour.review_count || 0} reviews)</span>
+                      <span className="text-gray-400 text-sm">({tour.review_count || 0} {t(multiDestT, language, 'reviews')})</span>
                     </div>
 
                     {/* Price */}
                     <div className="flex items-center justify-between pt-3 border-t mt-auto">
                       <div>
-                        <span className="text-gray-500 text-sm">From</span>
+                        <span className="text-gray-500 text-sm">{t(multiDestT, language, 'from')}</span>
                         <div className="flex items-center gap-2">
                           <span className="text-xl font-bold text-blue-600">
                             {formatCurrency(parseFloat(tour.discounted_price || tour.price))}
@@ -215,7 +218,7 @@ export function MultiDestinationTours() {
                         </div>
                       </div>
                       <span className="text-blue-600 font-medium group-hover:translate-x-1 transition-transform inline-flex items-center">
-                        Details
+                        {t(multiDestT, language, 'details')}
                         <ChevronRight className="w-4 h-4" />
                       </span>
                     </div>

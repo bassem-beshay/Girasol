@@ -7,6 +7,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, MapPin, Loader2 } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
+import { useLanguageStore } from '@/store/languageStore';
+import { destinationsHomeT, t } from '@/lib/translations';
 
 interface Destination {
   id: number;
@@ -26,6 +28,7 @@ interface DestinationsResponse {
 
 export function Destinations() {
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+  const { language } = useLanguageStore();
 
   const { data, isLoading, error } = useQuery<DestinationsResponse>({
     queryKey: ['featured-destinations'],
@@ -50,7 +53,7 @@ export function Destinations() {
             viewport={{ once: true }}
             className="text-primary-600 font-medium mb-2 block"
           >
-            Explore Egypt
+            {t(destinationsHomeT, language, 'exploreEgypt')}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -59,7 +62,7 @@ export function Destinations() {
             transition={{ delay: 0.1 }}
             className="heading-2 text-gray-900 mb-4"
           >
-            Popular Destinations
+            {t(destinationsHomeT, language, 'popularDestinations')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -68,8 +71,7 @@ export function Destinations() {
             transition={{ delay: 0.2 }}
             className="text-gray-600"
           >
-            From ancient temples to pristine beaches, discover the diverse
-            wonders of Egypt.
+            {t(destinationsHomeT, language, 'description')}
           </motion.p>
         </div>
 
@@ -77,14 +79,14 @@ export function Destinations() {
         {isLoading && (
           <div className="flex items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
-            <span className="ml-3 text-gray-600">Loading destinations...</span>
+            <span className="ml-3 text-gray-600">{t(destinationsHomeT, language, 'loadingDestinations')}</span>
           </div>
         )}
 
         {/* Error state */}
         {error && (
           <div className="text-center py-16">
-            <p className="text-gray-500">Unable to load destinations. Please try again later.</p>
+            <p className="text-gray-500">{t(destinationsHomeT, language, 'unableToLoad')}</p>
           </div>
         )}
 
@@ -121,17 +123,17 @@ export function Destinations() {
                   {/* Content */}
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <span className="text-primary-400 text-sm font-medium mb-1 block">
-                      {destination.tagline || 'Discover'}
+                      {destination.tagline || t(destinationsHomeT, language, 'discover')}
                     </span>
                     <h3 className="text-2xl font-display font-bold text-white mb-2">
                       {destination.name}
                     </h3>
                     <div className="flex items-center justify-between">
                       <span className="text-white/80 text-sm">
-                        {destination.tour_count} Tours
+                        {destination.tour_count} {t(destinationsHomeT, language, 'tours')}
                       </span>
                       <span className="inline-flex items-center text-white font-medium group-hover:text-primary-400 transition-colors">
-                        Explore
+                        {t(destinationsHomeT, language, 'explore')}
                         <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                       </span>
                     </div>
@@ -149,7 +151,7 @@ export function Destinations() {
         {!isLoading && !error && destinations.length === 0 && (
           <div className="text-center py-16">
             <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No destinations available at the moment.</p>
+            <p className="text-gray-500">{t(destinationsHomeT, language, 'noDestinations')}</p>
           </div>
         )}
 
@@ -165,7 +167,7 @@ export function Destinations() {
               href="/destinations"
               className="btn btn-outline btn-lg"
             >
-              View All Destinations
+              {t(destinationsHomeT, language, 'viewAllDestinations')}
               <ChevronRight className="w-5 h-5 ml-1" />
             </Link>
           </motion.div>

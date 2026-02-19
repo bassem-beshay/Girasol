@@ -10,15 +10,8 @@ import {
   Mail,
   MessageCircle,
 } from 'lucide-react';
-
-const quickLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Tours', href: '/tours' },
-  { name: 'Destinations', href: '/destinations' },
-  { name: 'About', href: '/about' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'Contact', href: '/contact' },
-];
+import { useLanguageStore } from '@/store/languageStore';
+import { footerT, t } from '@/lib/translations';
 
 const socialLinks = [
   { name: 'Facebook', icon: Facebook, href: 'https://www.facebook.com/share/1C8PJLKaiM/?mibextid=wwXIfr' },
@@ -50,6 +43,17 @@ const memberships = [
 ];
 
 export function Footer() {
+  const { language } = useLanguageStore();
+
+  const quickLinks = [
+    { name: t(footerT, language, 'home'), href: '/' },
+    { name: t(footerT, language, 'tours'), href: '/tours' },
+    { name: t(footerT, language, 'destinations'), href: '/destinations' },
+    { name: t(footerT, language, 'about'), href: '/about' },
+    { name: t(footerT, language, 'blog'), href: '/blog' },
+    { name: t(footerT, language, 'contact'), href: '/contact' },
+  ];
+
   return (
     <footer className="bg-gradient-to-r from-orange-500 via-orange-700 via-[13%] to-gray-900">
       {/* Mobile Footer - Simple */}
@@ -88,7 +92,7 @@ export function Footer() {
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-6 text-sm">
             {quickLinks.map((link) => (
               <Link
-                key={link.name}
+                key={link.href}
                 href={link.href}
                 className="text-white/80 hover:text-white"
               >
@@ -112,7 +116,7 @@ export function Footer() {
           {/* Memberships - Mobile */}
           <div className="mb-6">
             <p className="text-white/60 text-xs uppercase tracking-wider text-center mb-4">
-              Member of
+              {t(footerT, language, 'memberOf')}
             </p>
             <div className="grid grid-cols-2 gap-3">
               {memberships.map((member) => (
@@ -132,7 +136,7 @@ export function Footer() {
                   </span>
                   {member.licence && (
                     <span className="text-orange-300 text-[10px] mt-1 font-medium">
-                      Lic: {member.licence}
+                      {t(footerT, language, 'licence')}: {member.licence}
                     </span>
                   )}
                 </div>
@@ -144,11 +148,11 @@ export function Footer() {
         {/* Copyright */}
         <div className="border-t border-white/20 py-4 px-4 text-center text-xs text-white/60 space-y-2">
           <div className="flex items-center justify-center gap-3">
-            <Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">{t(footerT, language, 'termsConditions')}</Link>
             <span className="text-white/30">|</span>
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">{t(footerT, language, 'privacyPolicy')}</Link>
           </div>
-          <p>© {new Date().getFullYear()} Girasol Egypt Travel and Tours. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Girasol Egypt Travel and Tours. {t(footerT, language, 'allRightsReserved')}</p>
           <p>Designed by <a href="https://wa.me/201228986508" target="_blank" rel="noopener noreferrer" className="underline text-white/80 hover:text-white transition-colors">ENG-Bassem Beshay</a></p>
         </div>
       </div>
@@ -174,12 +178,12 @@ export function Footer() {
             {/* Quick Links */}
             <div>
               <h4 className="text-white font-bold mb-5 text-base uppercase tracking-wider">
-                Quick Links
+                {t(footerT, language, 'quickLinks')}
               </h4>
               <div className="flex flex-col gap-3">
                 {quickLinks.map((link) => (
                   <Link
-                    key={link.name}
+                    key={link.href}
                     href={link.href}
                     className="text-white/80 hover:text-white hover:translate-x-1 transition-all text-base"
                   >
@@ -192,7 +196,7 @@ export function Footer() {
             {/* Contact Info */}
             <div>
               <h4 className="text-white font-bold mb-5 text-base uppercase tracking-wider">
-                Contact Us
+                {t(footerT, language, 'contactUs')}
               </h4>
               <ul className="space-y-4">
                 <li className="flex items-center gap-3">
@@ -226,7 +230,7 @@ export function Footer() {
             {/* Social Links */}
             <div>
               <h4 className="text-white font-bold mb-5 text-base uppercase tracking-wider">
-                Follow Us
+                {t(footerT, language, 'followUs')}
               </h4>
               <div className="flex gap-3">
                 {socialLinks.map((social) => (
@@ -243,7 +247,7 @@ export function Footer() {
                 ))}
               </div>
               <p className="mt-4 text-white/50 text-sm">
-                Follow us for the latest updates and travel inspiration.
+                {t(footerT, language, 'followUsDesc')}
               </p>
             </div>
           </div>
@@ -252,7 +256,7 @@ export function Footer() {
           <div className="mt-12 pt-10 border-t border-white/10">
             <div className="flex flex-col items-center gap-8">
               <p className="text-white text-lg uppercase tracking-widest font-semibold">
-                Member of
+                {t(footerT, language, 'memberOf')}
               </p>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-5xl">
                 {memberships.map((member) => (
@@ -274,7 +278,7 @@ export function Footer() {
                     </span>
                     {member.licence && (
                       <span className="text-orange-300 text-sm mt-2 font-semibold">
-                        Licence: {member.licence}
+                        {t(footerT, language, 'licence')}: {member.licence}
                       </span>
                     )}
                   </div>
@@ -289,15 +293,15 @@ export function Footer() {
           <div className="container-custom py-5 px-6 lg:px-8">
             <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-xs md:text-sm text-white/70">
               <p className="text-center md:text-left">
-                © {new Date().getFullYear()} Girasol Egypt Travel and Tours. All rights reserved. | Designed by <a href="https://wa.me/201228986508" target="_blank" rel="noopener noreferrer" className="underline text-white/90 hover:text-white transition-colors">ENG-Bassem Beshay</a>
+                © {new Date().getFullYear()} Girasol Egypt Travel and Tours. {t(footerT, language, 'allRightsReserved')} | Designed by <a href="https://wa.me/201228986508" target="_blank" rel="noopener noreferrer" className="underline text-white/90 hover:text-white transition-colors">ENG-Bassem Beshay</a>
               </p>
               <div className="flex items-center gap-4 md:gap-6 md:ml-auto md:mr-[10%]">
                 <Link href="/terms" className="hover:text-white transition-colors">
-                  Terms & Conditions
+                  {t(footerT, language, 'termsConditions')}
                 </Link>
                 <span className="text-white/30">|</span>
                 <Link href="/privacy" className="hover:text-white transition-colors">
-                  Privacy Policy
+                  {t(footerT, language, 'privacyPolicy')}
                 </Link>
               </div>
             </div>

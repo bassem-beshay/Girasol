@@ -15,6 +15,8 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
+import { useLanguageStore } from '@/store/languageStore';
+import { earlyBookingT, t } from '@/lib/translations';
 
 interface EarlyBookingTour {
   id: number;
@@ -56,6 +58,7 @@ interface EarlyBookingResponse {
 
 // Countdown Timer Component
 function CountdownTimer({ endDate }: { endDate: string }) {
+  const { language } = useLanguageStore();
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -89,7 +92,7 @@ function CountdownTimer({ endDate }: { endDate: string }) {
             {String(timeLeft.days).padStart(2, '0')}
           </span>
         </div>
-        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">Days</span>
+        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">{t(earlyBookingT, language, 'days')}</span>
       </div>
       <span className="text-lg sm:text-xl md:text-2xl text-white/50 font-bold -mt-4">:</span>
       <div className="text-center">
@@ -98,7 +101,7 @@ function CountdownTimer({ endDate }: { endDate: string }) {
             {String(timeLeft.hours).padStart(2, '0')}
           </span>
         </div>
-        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">Hours</span>
+        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">{t(earlyBookingT, language, 'hours')}</span>
       </div>
       <span className="text-lg sm:text-xl md:text-2xl text-white/50 font-bold -mt-4">:</span>
       <div className="text-center">
@@ -107,7 +110,7 @@ function CountdownTimer({ endDate }: { endDate: string }) {
             {String(timeLeft.minutes).padStart(2, '0')}
           </span>
         </div>
-        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">Mins</span>
+        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">{t(earlyBookingT, language, 'mins')}</span>
       </div>
       <span className="text-lg sm:text-xl md:text-2xl text-white/50 font-bold -mt-4">:</span>
       <div className="text-center">
@@ -116,13 +119,14 @@ function CountdownTimer({ endDate }: { endDate: string }) {
             {String(timeLeft.seconds).padStart(2, '0')}
           </span>
         </div>
-        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">Secs</span>
+        <span className="text-[8px] sm:text-[10px] md:text-xs text-white/70 mt-1 block">{t(earlyBookingT, language, 'secs')}</span>
       </div>
     </div>
   );
 }
 
 export function EarlyBookingSlider() {
+  const { language } = useLanguageStore();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
@@ -258,7 +262,7 @@ export function EarlyBookingSlider() {
                 className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full bg-white/15 backdrop-blur-sm text-white text-xs sm:text-sm font-semibold mb-3 sm:mb-6 border border-white/20"
               >
                 <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
-                {currentOffer.badge_text || 'Early Bird Offer'}
+                {currentOffer.badge_text || t(earlyBookingT, language, 'earlyBirdOffer')}
               </motion.div>
 
               {/* Title */}
@@ -302,7 +306,7 @@ export function EarlyBookingSlider() {
               >
                 <div className="flex items-center justify-center gap-2 text-white/70 text-xs sm:text-sm mb-2 sm:mb-4">
                   <Timer className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span>Offer Ends In</span>
+                  <span>{t(earlyBookingT, language, 'offerEndsIn')}</span>
                 </div>
                 <div className="flex justify-center">
                   <CountdownTimer endDate={currentOffer.offer_end_date} />
@@ -318,14 +322,14 @@ export function EarlyBookingSlider() {
               >
                 {currentOffer.tours_with_early_price && currentOffer.tours_with_early_price.length > 0 && (
                   <span className="text-white/70 text-xs sm:text-sm">
-                    {currentOffer.tours_with_early_price.length} tours available
+                    {currentOffer.tours_with_early_price.length} {t(earlyBookingT, language, 'toursAvailable')}
                   </span>
                 )}
                 <Link
                   href="/tours?early_booking=true"
                   className="inline-flex items-center gap-2 px-5 sm:px-8 py-2.5 sm:py-4 bg-white text-gray-900 text-sm sm:text-base font-semibold rounded-full hover:bg-gray-100 transition-all hover:scale-105 shadow-xl"
                 >
-                  View Early Bird Tours
+                  {t(earlyBookingT, language, 'viewEarlyBird')}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </motion.div>

@@ -14,38 +14,9 @@ import {
   Check,
 } from 'lucide-react';
 import { useLanguageStore, languages, Language } from '@/store/languageStore';
+import { headerT, t } from '@/lib/translations';
 import { useUserStore } from '@/store/userStore';
 
-const navigation = [
-  { name: 'Home', href: '/' },
-  {
-    name: 'Tours',
-    href: '/tours',
-    children: [
-      { name: 'All Tours', href: '/tours' },
-      { name: 'Package Tours', href: '/tours?type=package' },
-      { name: 'Nile Cruises', href: '/tours?type=nile_cruise' },
-      { name: 'Day Tours', href: '/tours?type=day_tour' },
-      { name: 'Multi Destination', href: '/tours?type=multi-destination' },
-    ],
-  },
-  {
-    name: 'Destinations',
-    href: '/destinations',
-    children: [
-      { name: 'Cairo', href: '/destinations/cairo' },
-      { name: 'Luxor', href: '/destinations/luxor' },
-      { name: 'Aswan', href: '/destinations/aswan' },
-      { name: 'Sharm El Sheikh', href: '/destinations/sharm-el-sheikh' },
-      { name: 'Hurghada', href: '/destinations/hurghada' },
-      { name: 'Alexandria', href: '/destinations/alexandria' },
-    ],
-  },
-  { name: 'About', href: '/about' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'FAQ', href: '/faq' },
-  { name: 'Contact', href: '/contact' },
-];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -57,6 +28,37 @@ export function Header() {
 
   // Language store
   const { language, setLanguage } = useLanguageStore();
+
+  const navigation = [
+    { name: t(headerT, language, 'home'), href: '/' },
+    {
+      name: t(headerT, language, 'tours'),
+      href: '/tours',
+      children: [
+        { name: t(headerT, language, 'allTours'), href: '/tours' },
+        { name: t(headerT, language, 'packageTours'), href: '/tours?type=package' },
+        { name: t(headerT, language, 'nileCruises'), href: '/tours?type=nile_cruise' },
+        { name: t(headerT, language, 'dayTours'), href: '/tours?type=day_tour' },
+        { name: t(headerT, language, 'multiDestination'), href: '/tours?type=multi-destination' },
+      ],
+    },
+    {
+      name: t(headerT, language, 'destinations'),
+      href: '/destinations',
+      children: [
+        { name: 'Cairo', href: '/destinations/cairo' },
+        { name: 'Luxor', href: '/destinations/luxor' },
+        { name: 'Aswan', href: '/destinations/aswan' },
+        { name: 'Sharm El Sheikh', href: '/destinations/sharm-el-sheikh' },
+        { name: 'Hurghada', href: '/destinations/hurghada' },
+        { name: 'Alexandria', href: '/destinations/alexandria' },
+      ],
+    },
+    { name: t(headerT, language, 'about'), href: '/about' },
+    { name: t(headerT, language, 'blog'), href: '/blog' },
+    { name: t(headerT, language, 'faq'), href: '/faq' },
+    { name: t(headerT, language, 'contact'), href: '/contact' },
+  ];
   const currentLangOption = languages.find(l => l.code === language) || languages[0];
 
   // User store
@@ -215,13 +217,13 @@ export function Header() {
                     onClick={logout}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                   >
-                    Logout
+                    {t(headerT, language, 'logout')}
                   </button>
                 </div>
               </div>
             ) : null}
             <Link href="/contact#quote-form" className="btn btn-primary btn-md">
-              Get Free Quote
+              {t(headerT, language, 'getFreeQuote')}
             </Link>
           </div>
 
@@ -269,7 +271,7 @@ export function Header() {
             <div className="pt-4 mt-2 border-t border-gray-200 space-y-3">
               {/* Language Selection for Mobile */}
               <div className="mb-3">
-                <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 px-2">Language</p>
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 px-2">{t(headerT, language, 'language')}</p>
                 <div className="flex gap-2">
                   {languages.map((lang) => (
                     <button
@@ -307,7 +309,7 @@ export function Header() {
                     }}
                     className="text-sm text-red-600 hover:text-red-700 font-medium"
                   >
-                    Logout
+                    {t(headerT, language, 'logout')}
                   </button>
                 </div>
               )}
@@ -316,7 +318,7 @@ export function Header() {
                 className="btn btn-primary w-full py-3 text-center font-semibold"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Get Free Quote
+                {t(headerT, language, 'getFreeQuote')}
               </Link>
             </div>
           </nav>

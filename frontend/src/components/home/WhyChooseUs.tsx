@@ -2,6 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { contactApi } from '@/lib/api';
+import { useLanguageStore, Language } from '@/store/languageStore';
+import { whyChooseUsT, t } from '@/lib/translations';
 import { motion } from 'framer-motion';
 import { Clock, MapPin, Headphones, BadgePercent, Users, Globe, Award, Star, Heart, Shield, LucideIcon, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -84,29 +86,29 @@ function AnimatedCounter({ value, className }: { value: string; className?: stri
 }
 
 // Features will use dynamic data from API
-const getFeatures = (yearsExperience: string) => [
+const getFeatures = (yearsExperience: string, lang: Language) => [
   {
     icon: Award,
-    title: 'Experts in Egypt',
-    description: `When traveling with Girasol Egypt Travel and Tours, you choose a team of professionals and experts in Egypt with over ${yearsExperience} years of experience. We care for every detail of your journey to ensure an unforgettable experience.`,
+    title: t(whyChooseUsT, lang, 'expertsTitle'),
+    description: `${t(whyChooseUsT, lang, 'expertsPrefix')}${yearsExperience} ${t(whyChooseUsT, lang, 'expertsSuffix')}`,
     link: '/about/who-we-are',
   },
   {
     icon: MapPin,
-    title: 'Privileges & Facilities',
-    description: 'With local offices in Cairo, Luxor, Aswan, Sharm El Sheikh, Hurghada, and partners in various countries worldwide. You will receive high-quality services and on-ground support wherever you travel.',
+    title: t(whyChooseUsT, lang, 'privilegesTitle'),
+    description: t(whyChooseUsT, lang, 'privilegesDesc'),
     link: '/about/booking',
   },
   {
     icon: Headphones,
-    title: '24/7 Dedicated Support',
-    description: 'We care about all your requirements, making your reservations quick and efficient. Our dedicated team is available around the clock via WhatsApp, phone, or email to serve you whenever and wherever you are.',
+    title: t(whyChooseUsT, lang, 'supportTitle'),
+    description: t(whyChooseUsT, lang, 'supportDesc'),
     link: '/about/service-quality',
   },
   {
     icon: Heart,
-    title: 'Our Working Style',
-    description: 'Love and care for your needs and requests is our working style with all our clients. Our professional team realizes and advises on all your requirements with personalized attention and genuine hospitality.',
+    title: t(whyChooseUsT, lang, 'styleTitle'),
+    description: t(whyChooseUsT, lang, 'styleDesc'),
     link: '/about/our-philosophy',
   },
 ];
@@ -130,6 +132,8 @@ interface StatisticsResponse {
 
 
 export function WhyChooseUs() {
+  const { language } = useLanguageStore();
+
   const { data: statisticsData } = useQuery<StatisticsResponse>({
     queryKey: ['statistics'],
     queryFn: async () => {
@@ -145,7 +149,7 @@ export function WhyChooseUs() {
     s.label.toLowerCase().includes('experience') || s.label.toLowerCase().includes('years')
   )?.value?.replace('+', '') || '';
 
-  const features = getFeatures(yearsExperience);
+  const features = getFeatures(yearsExperience, language);
 
   return (
     <section className="section-padding bg-gray-50">
@@ -169,7 +173,7 @@ export function WhyChooseUs() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold text-primary-600 mb-4 whitespace-nowrap"
           >
-            Why Girasol Egypt Travel and Tours
+            {t(whyChooseUsT, language, 'mainTitle')}
           </motion.h2>
           <motion.h3
             initial={{ opacity: 0, y: 30 }}
@@ -178,7 +182,7 @@ export function WhyChooseUs() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900 mb-4"
           >
-            Your Trusted Partner in Egyptian Tourism
+            {t(whyChooseUsT, language, 'subtitle')}
           </motion.h3>
           <motion.div
             initial={{ scaleX: 0 }}
@@ -194,8 +198,7 @@ export function WhyChooseUs() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-base md:text-lg text-gray-600"
           >
-            We combine deep local knowledge with international service standards
-            to deliver experiences that exceed expectations.
+            {t(whyChooseUsT, language, 'description')}
           </motion.p>
         </div>
 
@@ -263,7 +266,7 @@ export function WhyChooseUs() {
                       href={feature.link}
                       className="inline-flex items-center gap-2 bg-primary-50 text-primary-600 font-semibold text-sm px-6 py-3 rounded-full hover:bg-primary-600 hover:text-white hover:shadow-lg hover:shadow-primary-500/25 hover:-translate-y-0.5 transition-all duration-300 group/link"
                     >
-                      Read More
+                      {t(whyChooseUsT, language, 'readMore')}
                       <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1.5 transition-transform duration-300" />
                     </Link>
                   </motion.div>

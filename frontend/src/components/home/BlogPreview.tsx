@@ -8,6 +8,8 @@ import Image from 'next/image';
 import { ChevronRight, Calendar, Clock, Loader2, BookOpen } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { useInView } from '@/hooks/useInView';
+import { useLanguageStore } from '@/store/languageStore';
+import { blogPreviewT, t } from '@/lib/translations';
 
 interface BlogCategory {
   id: number;
@@ -33,6 +35,7 @@ interface BlogResponse {
 
 export function BlogPreview() {
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+  const { language } = useLanguageStore();
 
   const { data, isLoading, error } = useQuery<BlogResponse>({
     queryKey: ['latest-blog'],
@@ -58,7 +61,7 @@ export function BlogPreview() {
               viewport={{ once: true }}
               className="text-primary-600 font-medium mb-2 block"
             >
-              Travel Blog
+              {t(blogPreviewT, language, 'travelBlog')}
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -67,7 +70,7 @@ export function BlogPreview() {
               transition={{ delay: 0.1 }}
               className="heading-2 text-gray-900"
             >
-              Tips, Guides & Stories
+              {t(blogPreviewT, language, 'tipsGuides')}
             </motion.h2>
           </div>
           <motion.div
@@ -79,7 +82,7 @@ export function BlogPreview() {
               href="/blog"
               className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700"
             >
-              View All Articles
+              {t(blogPreviewT, language, 'viewAllArticles')}
               <ChevronRight className="w-5 h-5 ml-1" />
             </Link>
           </motion.div>
@@ -89,14 +92,14 @@ export function BlogPreview() {
         {isLoading && (
           <div className="flex items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
-            <span className="ml-3 text-gray-600">Loading articles...</span>
+            <span className="ml-3 text-gray-600">{t(blogPreviewT, language, 'loadingArticles')}</span>
           </div>
         )}
 
         {/* Error state */}
         {error && (
           <div className="text-center py-16">
-            <p className="text-gray-500">Unable to load articles. Please try again later.</p>
+            <p className="text-gray-500">{t(blogPreviewT, language, 'unableToLoad')}</p>
           </div>
         )}
 
@@ -147,7 +150,7 @@ export function BlogPreview() {
                       )}
                       <span className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
-                        {post.reading_time} min read
+                        {post.reading_time} {t(blogPreviewT, language, 'minRead')}
                       </span>
                     </div>
 
@@ -163,7 +166,7 @@ export function BlogPreview() {
 
                     {/* Read more - Always at bottom */}
                     <span className="inline-flex items-center text-primary-600 font-medium mt-auto pt-4 group-hover:translate-x-1 transition-transform">
-                      Read More
+                      {t(blogPreviewT, language, 'readMore')}
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </span>
                   </div>
@@ -177,7 +180,7 @@ export function BlogPreview() {
         {!isLoading && !error && blogPosts.length === 0 && (
           <div className="text-center py-16">
             <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No articles available at the moment.</p>
+            <p className="text-gray-500">{t(blogPreviewT, language, 'noArticles')}</p>
           </div>
         )}
       </div>

@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Star, Quote, Loader2, User } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
+import { useLanguageStore } from '@/store/languageStore';
+import { testimonialsT, t } from '@/lib/translations';
 
 interface Testimonial {
   id: number;
@@ -25,6 +27,7 @@ interface TestimonialsResponse {
 
 export function Testimonials() {
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+  const { language } = useLanguageStore();
 
   const { data, isLoading, error } = useQuery<TestimonialsResponse>({
     queryKey: ['testimonials'],
@@ -54,7 +57,7 @@ export function Testimonials() {
             viewport={{ once: true }}
             className="text-primary-600 font-medium mb-2 block"
           >
-            Testimonials
+            {t(testimonialsT, language, 'testimonials')}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -63,7 +66,7 @@ export function Testimonials() {
             transition={{ delay: 0.1 }}
             className="heading-2 text-gray-900 mb-4"
           >
-            What Our Travelers Say
+            {t(testimonialsT, language, 'whatTravelersSay')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -72,8 +75,7 @@ export function Testimonials() {
             transition={{ delay: 0.2 }}
             className="text-gray-600"
           >
-            Don&apos;t just take our word for it. Here&apos;s what our guests have to say
-            about their Egyptian adventures.
+            {t(testimonialsT, language, 'description')}
           </motion.p>
         </div>
 
@@ -90,8 +92,8 @@ export function Testimonials() {
             ))}
           </div>
           <div className="text-gray-600">
-            <span className="font-bold text-gray-900">{avgRating}</span> out of 5 based on
-            <span className="font-medium text-gray-900"> {data?.count || 500}+ reviews</span>
+            <span className="font-bold text-gray-900">{avgRating}</span> {t(testimonialsT, language, 'outOf5')}
+            <span className="font-medium text-gray-900"> {data?.count || 500}+ {t(testimonialsT, language, 'reviews')}</span>
           </div>
         </motion.div>
 
@@ -99,14 +101,14 @@ export function Testimonials() {
         {isLoading && (
           <div className="flex items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
-            <span className="ml-3 text-gray-600">Loading testimonials...</span>
+            <span className="ml-3 text-gray-600">{t(testimonialsT, language, 'loadingTestimonials')}</span>
           </div>
         )}
 
         {/* Error state */}
         {error && (
           <div className="text-center py-16">
-            <p className="text-gray-500">Unable to load testimonials. Please try again later.</p>
+            <p className="text-gray-500">{t(testimonialsT, language, 'unableToLoad')}</p>
           </div>
         )}
 
@@ -170,7 +172,7 @@ export function Testimonials() {
         {!isLoading && !error && testimonials.length === 0 && (
           <div className="text-center py-16">
             <Quote className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No testimonials available at the moment.</p>
+            <p className="text-gray-500">{t(testimonialsT, language, 'noTestimonials')}</p>
           </div>
         )}
       </div>

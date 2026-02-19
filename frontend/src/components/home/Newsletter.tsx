@@ -6,6 +6,8 @@ import { contactApi } from '@/lib/api';
 import { motion } from 'framer-motion';
 import { Mail, Send, Check, Loader2, MailCheck, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useLanguageStore } from '@/store/languageStore';
+import { newsletterT, t } from '@/lib/translations';
 
 // Declare grecaptcha global
 declare global {
@@ -29,6 +31,7 @@ type SubscriptionStatus =
 export function Newsletter() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<SubscriptionStatus>('idle');
+  const { language } = useLanguageStore();
 
   // Newsletter subscription mutation
   const subscribeMutation = useMutation({
@@ -108,11 +111,11 @@ export function Newsletter() {
               <MailCheck className="w-8 h-8" />
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">Check Your Email!</h3>
+              <h3 className="text-xl font-semibold mb-2">{t(newsletterT, language, 'checkEmail')}</h3>
               <p className="text-white/80">
-                We&apos;ve sent a confirmation link to your email.
+                {t(newsletterT, language, 'confirmationSent')}
                 <br />
-                Click the link to complete your subscription.
+                {t(newsletterT, language, 'clickToConfirm')}
               </p>
             </div>
             <button
@@ -120,7 +123,7 @@ export function Newsletter() {
               className="mt-4 text-sm text-white/60 hover:text-white flex items-center gap-2"
             >
               <RefreshCw className="w-4 h-4" />
-              Subscribe with a different email
+              {t(newsletterT, language, 'differentEmail')}
             </button>
           </motion.div>
         );
@@ -136,11 +139,11 @@ export function Newsletter() {
               <Check className="w-8 h-8" />
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">You&apos;re Already Subscribed!</h3>
+              <h3 className="text-xl font-semibold mb-2">{t(newsletterT, language, 'alreadySubscribed')}</h3>
               <p className="text-white/80">
-                Great news - you&apos;re already on our list!
+                {t(newsletterT, language, 'alreadyOnList')}
                 <br />
-                Keep an eye on your inbox for exclusive offers.
+                {t(newsletterT, language, 'keepEye')}
               </p>
             </div>
             <button
@@ -148,7 +151,7 @@ export function Newsletter() {
               className="mt-4 text-sm text-white/60 hover:text-white flex items-center gap-2"
             >
               <RefreshCw className="w-4 h-4" />
-              Try another email
+              {t(newsletterT, language, 'tryAnother')}
             </button>
           </motion.div>
         );
@@ -164,11 +167,11 @@ export function Newsletter() {
               <Check className="w-8 h-8" />
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">Welcome Back!</h3>
+              <h3 className="text-xl font-semibold mb-2">{t(newsletterT, language, 'welcomeBack')}</h3>
               <p className="text-white/80">
-                Your subscription has been reactivated.
+                {t(newsletterT, language, 'reactivated')}
                 <br />
-                You&apos;ll start receiving our updates again!
+                {t(newsletterT, language, 'startReceiving')}
               </p>
             </div>
           </motion.div>
@@ -207,11 +210,10 @@ export function Newsletter() {
 
                 {/* Content */}
                 <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
-                  Get Exclusive Deals & Travel Tips
+                  {t(newsletterT, language, 'title')}
                 </h2>
                 <p className="text-lg text-white/80 mb-8">
-                  Subscribe to our newsletter and be the first to know about special
-                  offers, new tours, and insider travel tips.
+                  {t(newsletterT, language, 'description')}
                 </p>
 
                 {/* Form */}
@@ -222,7 +224,7 @@ export function Newsletter() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
+                      placeholder={t(newsletterT, language, 'placeholder')}
                       className="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50"
                     />
                   </div>
@@ -234,11 +236,10 @@ export function Newsletter() {
                     {subscribeMutation.isPending ? (
                       <span className="flex items-center">
                         <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                        Subscribing...
+                        {t(newsletterT, language, 'subscribing')}
                       </span>
                     ) : (
-                      <>
-                        Subscribe
+                      <>{t(newsletterT, language, 'subscribe')}
                         <Send className="w-5 h-5 ml-2" />
                       </>
                     )}
@@ -248,7 +249,7 @@ export function Newsletter() {
                 {/* Disclaimer */}
                 <p className="text-sm text-white/60 mt-4 flex items-center justify-center gap-2">
                   <Check className="w-4 h-4" />
-                  No spam, unsubscribe anytime
+                  {t(newsletterT, language, 'noSpam')}
                 </p>
               </>
             ) : (

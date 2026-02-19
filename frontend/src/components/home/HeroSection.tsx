@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import { ChevronRight, Shield, Award, Clock } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { contactApi } from '@/lib/api';
+import { useLanguageStore } from '@/store/languageStore';
+import { heroT, t } from '@/lib/translations';
 
 interface Statistic {
   id: number;
@@ -85,6 +87,7 @@ function AnimatedCounter({ value, className }: { value: string; className?: stri
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { language } = useLanguageStore();
 
   // Fetch statistics from API
   const { data: statisticsData } = useQuery<StatisticsResponse>({
@@ -102,9 +105,9 @@ export function HeroSection() {
   const isLoaded = stats.length > 0;
 
   const trustBadges = [
-    { icon: Shield, label: 'IATA Certified' },
-    { icon: Award, label: isLoaded ? `${yearsExperience} Years Experience` : '' },
-    { icon: Clock, label: '24/7 Support' },
+    { icon: Shield, label: t(heroT, language, 'iataCertified') },
+    { icon: Award, label: isLoaded ? `${yearsExperience} ${t(heroT, language, 'yearsExperience')}` : '' },
+    { icon: Clock, label: t(heroT, language, 'support247') },
   ];
 
   useEffect(() => {
@@ -146,7 +149,7 @@ export function HeroSection() {
           >
             <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-[10px] sm:text-xs md:text-sm mb-3 sm:mb-6">
               <span className="w-1 sm:w-1.5 md:w-2 h-1 sm:h-1.5 md:h-2 rounded-full bg-primary-500 animate-pulse" />
-              {isLoaded ? <>Trusted by <AnimatedCounter value={travelersCount} className="tabular-nums" /> travelers worldwide</> : 'Your Trusted Travel Partner'}
+              {isLoaded ? <>{t(heroT, language, 'trustedBy')} <AnimatedCounter value={travelersCount} className="tabular-nums" /> {t(heroT, language, 'travelersWorldwide')}</> : t(heroT, language, 'trustedBy')}
             </span>
           </motion.div>
 
@@ -157,9 +160,9 @@ export function HeroSection() {
             transition={{ delay: 0.4 }}
             className="text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-bold text-white mb-2 sm:mb-4 leading-tight"
           >
-            {isLoaded ? <>Discover Egypt with{' '}
-            <span className="text-primary-400"><AnimatedCounter value={yearsExperience} className="inline tabular-nums" /> Years</span> of Excellence</> : <>Discover Egypt with{' '}
-            <span className="text-primary-400">Decades</span> of Excellence</>}
+            {isLoaded ? <>{t(heroT, language, 'discoverEgyptWith')}{' '}
+            <span className="text-primary-400"><AnimatedCounter value={yearsExperience} className="inline tabular-nums" /> {t(heroT, language, 'yearsOfExcellence')}</span></> : <>{t(heroT, language, 'discoverEgyptWith')}{' '}
+            <span className="text-primary-400">{t(heroT, language, 'yearsOfExcellence')}</span></>}
           </motion.h1>
 
           {/* Subtitle */}
@@ -169,8 +172,7 @@ export function HeroSection() {
             transition={{ delay: 0.6 }}
             className="text-xs sm:text-base md:text-lg lg:text-xl text-gray-200 mb-4 sm:mb-8 leading-relaxed"
           >
-            Tailor-made tours, Nile cruises & unforgettable experiences.
-            Let us craft your perfect Egyptian adventure.
+            {t(heroT, language, 'subtitle')}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -181,14 +183,14 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row gap-2 sm:gap-4"
           >
             <Link href="/tours" className="btn btn-primary py-2 sm:py-3 md:py-4 px-4 sm:px-6 md:px-8 text-center font-semibold text-sm sm:text-base">
-              Explore Tours
+              {t(heroT, language, 'exploreTours')}
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1 inline" />
             </Link>
             <Link
               href="/contact#quote-form"
               className="btn py-2 sm:py-3 md:py-4 px-4 sm:px-6 md:px-8 bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20 text-center font-semibold text-sm sm:text-base"
             >
-              Get Free Quote
+              {t(heroT, language, 'getFreeQuote')}
             </Link>
           </motion.div>
 
@@ -219,7 +221,7 @@ export function HeroSection() {
       >
         <div className="flex flex-col items-center gap-2 text-white/60">
           <span className="text-xs uppercase tracking-widest rotate-90 origin-center translate-x-6">
-            Scroll
+            {t(heroT, language, 'scroll')}
           </span>
           <div className="w-px h-16 bg-gradient-to-b from-white/60 to-transparent" />
         </div>

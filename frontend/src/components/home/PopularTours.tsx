@@ -8,6 +8,8 @@ import Image from 'next/image';
 import { ChevronRight, Star, MapPin, Clock, Loader2, Sparkles } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { useInView } from '@/hooks/useInView';
+import { useLanguageStore } from '@/store/languageStore';
+import { popularToursT, t } from '@/lib/translations';
 
 interface Tour {
   id: number;
@@ -43,6 +45,7 @@ interface ToursResponse {
 
 export function PopularTours() {
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
+  const { language } = useLanguageStore();
 
   const { data, isLoading, error } = useQuery<ToursResponse>({
     queryKey: ['featured-tours'],
@@ -68,7 +71,7 @@ export function PopularTours() {
               viewport={{ once: true }}
               className="text-primary-600 font-medium mb-2 block"
             >
-              Popular Tours
+              {t(popularToursT, language, 'popularTours')}
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -77,7 +80,7 @@ export function PopularTours() {
               transition={{ delay: 0.1 }}
               className="heading-2 text-gray-900"
             >
-              Most Loved Tour Packages
+              {t(popularToursT, language, 'mostLoved')}
             </motion.h2>
           </div>
           <motion.div
@@ -89,7 +92,7 @@ export function PopularTours() {
               href="/tours"
               className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700"
             >
-              View All Tours
+              {t(popularToursT, language, 'viewAllTours')}
               <ChevronRight className="w-5 h-5 ml-1" />
             </Link>
           </motion.div>
@@ -99,14 +102,14 @@ export function PopularTours() {
         {isLoading && (
           <div className="flex items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
-            <span className="ml-3 text-gray-600">Loading tours...</span>
+            <span className="ml-3 text-gray-600">{t(popularToursT, language, 'loadingTours')}</span>
           </div>
         )}
 
         {/* Error state */}
         {error && (
           <div className="text-center py-16">
-            <p className="text-gray-500">Unable to load tours. Please try again later.</p>
+            <p className="text-gray-500">{t(popularToursT, language, 'unableToLoad')}</p>
           </div>
         )}
 
@@ -145,14 +148,14 @@ export function PopularTours() {
                       {tour.is_early_booking && (
                         <span className="badge bg-gradient-to-r from-orange-500 to-amber-500 text-white flex items-center gap-1">
                           <Sparkles className="w-3 h-3" />
-                          {tour.early_booking_badge || 'Early Bird'}
+                          {tour.early_booking_badge || t(popularToursT, language, 'earlyBird')}
                         </span>
                       )}
                       {tour.is_best_seller && (
-                        <span className="badge bg-primary-500 text-white">Best Seller</span>
+                        <span className="badge bg-primary-500 text-white">{t(popularToursT, language, 'bestSeller')}</span>
                       )}
                       {tour.is_new && (
-                        <span className="badge bg-green-500 text-white">New</span>
+                        <span className="badge bg-green-500 text-white">{t(popularToursT, language, 'new')}</span>
                       )}
                       {tour.has_discount && tour.discount_percentage && (
                         <span className="badge bg-red-500 text-white">
@@ -189,14 +192,14 @@ export function PopularTours() {
                         <Star className="w-4 h-4 text-gold-400 fill-current" />
                         <span className="ml-1 text-sm font-medium">{tour.average_rating || '5.0'}</span>
                       </div>
-                      <span className="text-gray-400 text-sm">({tour.review_count || 0} reviews)</span>
+                      <span className="text-gray-400 text-sm">({tour.review_count || 0} {t(popularToursT, language, 'reviews')})</span>
                     </div>
 
                     {/* Price - Always at bottom */}
                     <div className="flex items-center justify-between pt-3 border-t mt-auto">
                       <div>
                         <span className="text-gray-500 text-sm">
-                          {tour.is_early_booking ? 'Early Bird' : 'From'}
+                          {tour.is_early_booking ? t(popularToursT, language, 'earlyBird') : t(popularToursT, language, 'from')}
                         </span>
                         <div className="flex items-center gap-2">
                           <span className={`text-xl font-bold ${tour.is_early_booking ? 'text-orange-500' : 'text-primary-600'}`}>
@@ -210,7 +213,7 @@ export function PopularTours() {
                         </div>
                       </div>
                       <span className="text-primary-600 font-medium group-hover:translate-x-1 transition-transform inline-flex items-center">
-                        Details
+                        {t(popularToursT, language, 'details')}
                         <ChevronRight className="w-4 h-4" />
                       </span>
                     </div>
@@ -225,7 +228,7 @@ export function PopularTours() {
         {!isLoading && !error && tours.length === 0 && (
           <div className="text-center py-16">
             <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No tours available at the moment.</p>
+            <p className="text-gray-500">{t(popularToursT, language, 'noTours')}</p>
           </div>
         )}
       </div>
