@@ -1,38 +1,62 @@
 {% extends "emails/base_email.html" %}
 
-{% block title %}Unsubscribed{% endblock %}
-{% block header_subtitle %}Unsubscribed{% endblock %}
+{% block title %}Unsubscribed - Girasol Tours{% endblock %}
 
 {% block content %}
-<p style="color: #333; font-size: 14px; margin: 0 0 15px 0;">
-    Hi {{ name|default:"there" }},
-</p>
-
-<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 15px 0;">
+<!-- English -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">Goodbye {{ name|default:"there" }},</p>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 6px 0;">
     You have been unsubscribed from Girasol Tours newsletter. You will no longer receive emails from us.
 </p>
 
-<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 20px 0;">
-    Changed your mind? You can subscribe again anytime.
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
+
+<!-- Spanish -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">Adi&oacute;s {{ name|default:"" }},</p>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 6px 0;">
+    Te has dado de baja del bolet&iacute;n de Girasol Tours. Ya no recibir&aacute;s correos de nuestra parte.
 </p>
 
-<table role="presentation" style="margin: 0 auto 15px auto;">
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
+
+<!-- Portuguese -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">At&eacute; logo {{ name|default:"" }},</p>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 6px 0;">
+    Voc&ecirc; cancelou a inscri&ccedil;&atilde;o no boletim da Girasol Tours. N&atilde;o receber&aacute; mais e-mails nossos.
+</p>
+
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
+
+<!-- Arabic -->
+<div dir="rtl" style="text-align: right;">
+    <p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">&#1608;&#1583;&#1575;&#1593;&#1575;&#1611; {{ name|default:"" }}&#1548;</p>
+    <p style="color: #555; font-size: 13px; line-height: 1.8; margin: 0 0 6px 0;">
+        &#1578;&#1605; &#1573;&#1604;&#1594;&#1575;&#1569; &#1575;&#1588;&#1578;&#1585;&#1575;&#1603;&#1603; &#1601;&#1610; &#1606;&#1588;&#1585;&#1577; &#1580;&#1610;&#1585;&#1575;&#1587;&#1608;&#1604; &#1578;&#1608;&#1585;&#1586;. &#1604;&#1606; &#1578;&#1578;&#1604;&#1602;&#1609; &#1585;&#1587;&#1575;&#1574;&#1604; &#1576;&#1585;&#1610;&#1583; &#1573;&#1604;&#1603;&#1578;&#1585;&#1608;&#1606;&#1610; &#1605;&#1606;&#1575; &#1576;&#1593;&#1583; &#1575;&#1604;&#1570;&#1606;.
+    </p>
+</div>
+
+<!-- CTA Button -->
+<table role="presentation" style="margin: 25px auto 15px auto;">
     <tr>
-        <td style="border: 1px solid #ea580c; border-radius: 5px;">
-            <a href="{{ resubscribe_url }}" style="display: inline-block; padding: 10px 25px; color: #ea580c; text-decoration: none; font-size: 13px;">
-                Subscribe Again
+        <td style="border: 2px solid #ea580c; border-radius: 6px;">
+            <a href="{{ resubscribe_url|default:'https://girasoltours.com' }}" style="display: inline-block; padding: 12px 35px; color: #ea580c; text-decoration: none; font-size: 13px; font-weight: bold;">
+                Subscribe Again / Suscribirse de nuevo
             </a>
         </td>
     </tr>
 </table>
 
-<p style="color: #888; font-size: 11px; margin: 0; text-align: center;">
-    Thank you for being part of our community.
+<p style="color: #999; font-size: 11px; margin: 0; text-align: center;">
+    Thank you for being part of our community.<br/>
+    Gracias por ser parte de nuestra comunidad.
 </p>
 {% endblock %}
 
 {% block footer_links %}
-<p style="margin: 10px 0 0 0;">
-    <a href="{{ website_url|default:'http://50.6.250.81:3000' }}" style="color: #ea580c; font-size: 11px; text-decoration: none;">Visit Website</a>
+<p style="margin: 0;">
+    <a href="https://girasoltours.com" style="color: #ea580c; font-size: 11px; text-decoration: none; font-weight: 600;">Visit Website</a>
 </p>
 {% endblock %}

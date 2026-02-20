@@ -1,35 +1,59 @@
 {% extends "emails/base_email.html" %}
 
 {% block title %}Welcome to Girasol Tours{% endblock %}
-{% block header_subtitle %}Welcome aboard{% endblock %}
 
 {% block content %}
-<p style="color: #333; font-size: 14px; margin: 0 0 15px 0;">
-    Hi {{ name|default:"there" }},
+<!-- English -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">Welcome {{ name|default:"there" }}!</p>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 6px 0;">
+    You are now subscribed to Girasol Tours! You'll receive our latest travel updates, exclusive offers, and tips for exploring Egypt.
 </p>
 
-<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 15px 0;">
-    Welcome to Girasol Tours! You are now subscribed to receive our latest travel updates, exclusive offers, and tips for exploring Egypt.
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
+
+<!-- Spanish -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">&iexcl;Bienvenido/a {{ name|default:"" }}!</p>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 6px 0;">
+    Ahora est&aacute;s suscrito a Girasol Tours. Recibir&aacute;s nuestras &uacute;ltimas actualizaciones, ofertas exclusivas y consejos para explorar Egipto.
 </p>
 
-<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 20px 0;">
-    <strong>What you will receive:</strong>
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
+
+<!-- Portuguese -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">Bem-vindo/a {{ name|default:"" }}!</p>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 6px 0;">
+    Agora voc&ecirc; est&aacute; inscrito na Girasol Tours! Receber&aacute; nossas &uacute;ltimas novidades, ofertas exclusivas e dicas para explorar o Egito.
 </p>
 
-<ul style="color: #555; font-size: 13px; line-height: 1.8; margin: 0 0 20px 0; padding-left: 20px;">
-    <li>Special offers and discounts</li>
-    <li>New tour announcements</li>
-    <li>Travel tips and guides</li>
-    <li>Egypt destination highlights</li>
-</ul>
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
 
-<table role="presentation" style="margin: 0 auto 15px auto;">
+<!-- Arabic -->
+<div dir="rtl" style="text-align: right;">
+    <p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">&#1605;&#1585;&#1581;&#1576;&#1575;&#1611; &#1576;&#1603; {{ name|default:"" }}!</p>
+    <p style="color: #555; font-size: 13px; line-height: 1.8; margin: 0 0 6px 0;">
+        &#1571;&#1606;&#1578; &#1575;&#1604;&#1570;&#1606; &#1605;&#1588;&#1578;&#1585;&#1603; &#1601;&#1610; &#1580;&#1610;&#1585;&#1575;&#1587;&#1608;&#1604; &#1578;&#1608;&#1585;&#1586;! &#1587;&#1578;&#1578;&#1604;&#1602;&#1609; &#1570;&#1582;&#1585; &#1575;&#1604;&#1593;&#1585;&#1608;&#1590; &#1575;&#1604;&#1581;&#1589;&#1585;&#1610;&#1577; &#1608;&#1606;&#1589;&#1575;&#1574;&#1581; &#1604;&#1575;&#1587;&#1578;&#1603;&#1588;&#1575;&#1601; &#1605;&#1589;&#1585;.
+    </p>
+</div>
+
+<!-- CTA Button -->
+<table role="presentation" style="margin: 25px auto 15px auto;">
     <tr>
-        <td style="background-color: #ea580c; border-radius: 5px;">
-            <a href="{{ tours_url }}" style="display: inline-block; padding: 12px 30px; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: bold;">
-                Explore Tours
+        <td style="background-color: #ea580c; border-radius: 6px;">
+            <a href="{{ tours_url|default:'https://girasoltours.com/tours' }}" style="display: inline-block; padding: 14px 40px; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: bold; letter-spacing: 0.3px;">
+                Explore Tours / Explorar
             </a>
         </td>
     </tr>
 </table>
+{% endblock %}
+
+{% block footer_links %}
+<p style="margin: 0;">
+    <a href="https://girasoltours.com" style="color: #ea580c; font-size: 11px; text-decoration: none; font-weight: 600;">Visit Website</a>
+    <span style="color: #ccc;"> &nbsp;|&nbsp; </span>
+    <a href="{{ unsubscribe_url }}" style="color: #999; font-size: 11px; text-decoration: none;">Unsubscribe</a>
+</p>
 {% endblock %}

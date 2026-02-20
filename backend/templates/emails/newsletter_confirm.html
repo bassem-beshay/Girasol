@@ -1,34 +1,62 @@
 {% extends "emails/base_email.html" %}
 
-{% block title %}Confirm Subscription{% endblock %}
-{% block header_subtitle %}Confirm your email{% endblock %}
+{% block title %}Confirm Subscription - Girasol Tours{% endblock %}
 
 {% block content %}
-<p style="color: #333; font-size: 14px; margin: 0 0 15px 0;">
-    Hello {{ name|default:"there" }},
-</p>
-
+<!-- English -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">Hello {{ name|default:"there" }},</p>
 <p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 20px 0;">
-    Thank you for subscribing to Girasol Tours newsletter. Please confirm your email to receive travel updates and exclusive offers.
+    Thank you for subscribing to Girasol Tours newsletter! Please confirm your email to receive travel updates and exclusive offers.
 </p>
 
-<table role="presentation" style="margin: 0 auto 20px auto;">
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 0 0 20px 0;" />
+
+<!-- Spanish -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">Hola {{ name|default:"" }},</p>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 20px 0;">
+    Gracias por suscribirte al bolet&iacute;n de Girasol Tours. Por favor, confirma tu correo electr&oacute;nico para recibir actualizaciones y ofertas exclusivas.
+</p>
+
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 0 0 20px 0;" />
+
+<!-- Portuguese -->
+<p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">Ol&aacute; {{ name|default:"" }},</p>
+<p style="color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 20px 0;">
+    Obrigado por se inscrever no boletim da Girasol Tours! Confirme seu e-mail para receber atualiza&ccedil;&otilde;es e ofertas exclusivas.
+</p>
+
+<!-- Divider -->
+<hr style="border: none; border-top: 1px solid #eee; margin: 0 0 20px 0;" />
+
+<!-- Arabic -->
+<div dir="rtl" style="text-align: right;">
+    <p style="color: #333; font-size: 15px; margin: 0 0 8px 0; font-weight: 600;">&#1605;&#1585;&#1581;&#1576;&#1575;&#1611; {{ name|default:"" }}&#1548;</p>
+    <p style="color: #555; font-size: 13px; line-height: 1.8; margin: 0 0 20px 0;">
+        &#1588;&#1603;&#1585;&#1575;&#1611; &#1604;&#1575;&#1588;&#1578;&#1585;&#1575;&#1603;&#1603; &#1601;&#1610; &#1606;&#1588;&#1585;&#1577; &#1580;&#1610;&#1585;&#1575;&#1587;&#1608;&#1604; &#1578;&#1608;&#1585;&#1586;! &#1610;&#1585;&#1580;&#1609; &#1578;&#1571;&#1603;&#1610;&#1583; &#1576;&#1585;&#1610;&#1583;&#1603; &#1575;&#1604;&#1573;&#1604;&#1603;&#1578;&#1585;&#1608;&#1606;&#1610; &#1604;&#1578;&#1604;&#1602;&#1610; &#1570;&#1582;&#1585; &#1575;&#1604;&#1593;&#1585;&#1608;&#1590; &#1608;&#1575;&#1604;&#1578;&#1581;&#1583;&#1610;&#1579;&#1575;&#1578;.
+    </p>
+</div>
+
+<!-- CTA Button -->
+<table role="presentation" style="margin: 25px auto 20px auto;">
     <tr>
-        <td style="background-color: #ea580c; border-radius: 5px;">
-            <a href="{{ confirm_url }}" style="display: inline-block; padding: 12px 30px; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: bold;">
-                Confirm Email
+        <td style="background-color: #ea580c; border-radius: 6px;">
+            <a href="{{ confirm_url }}" style="display: inline-block; padding: 14px 40px; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: bold; letter-spacing: 0.3px;">
+                Confirm Email / Confirmar
             </a>
         </td>
     </tr>
 </table>
 
-<p style="color: #888; font-size: 11px; margin: 0;">
-    This link expires in 7 days. If you did not subscribe, please ignore this email.
+<p style="color: #999; font-size: 11px; margin: 0; text-align: center;">
+    This link expires in 7 days. If you did not subscribe, please ignore this email.<br/>
+    Este enlace caduca en 7 d&iacute;as. &bull; Este link expira em 7 dias.
 </p>
 {% endblock %}
 
 {% block footer_links %}
-<p style="margin: 10px 0 0 0;">
-    <a href="{{ website_url|default:'http://50.6.250.81:3000' }}" style="color: #ea580c; font-size: 11px; text-decoration: none;">Visit Website</a>
+<p style="margin: 0;">
+    <a href="https://girasoltours.com" style="color: #ea580c; font-size: 11px; text-decoration: none; font-weight: 600;">Visit Website</a>
 </p>
 {% endblock %}
