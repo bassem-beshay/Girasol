@@ -215,7 +215,7 @@ Travel Details:
 Special Requests:
 ${formData.specialRequests || 'None'}`;
 
-    const mailtoUrl = `mailto:info@girasoltours.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoUrl = `mailto:hello@girasoltours.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUrl;
     setTimeout(() => setIsSubmitting(null), 1000);
   };

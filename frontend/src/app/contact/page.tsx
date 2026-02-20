@@ -87,8 +87,8 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: t(contactT, language, 'email'),
-      details: ['info@girasoltours.com'],
-      action: 'mailto:info@girasoltours.com',
+      details: ['hello@girasoltours.com'],
+      action: 'mailto:hello@girasoltours.com',
     },
     {
       icon: MapPin,
