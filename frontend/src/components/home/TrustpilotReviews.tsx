@@ -474,18 +474,6 @@ export function TrustpilotReviews() {
           </Swiper>
         </motion.div>
 
-        {/* CTA */}
-        <div className="text-center mt-8">
-          <a
-            href={TRUSTPILOT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#00b67a] hover:bg-[#00a06a] text-white px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            {t(trustpilotT, language, 'rateUs')}
-            <ExternalLink className="w-4 h-4" />
-          </a>
-        </div>
       </div>
 
       {/* Review Modal */}
