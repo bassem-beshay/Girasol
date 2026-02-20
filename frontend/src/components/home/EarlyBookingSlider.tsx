@@ -37,14 +37,19 @@ interface EarlyBookingTour {
 interface EarlyBookingOffer {
   id: number;
   title: string;
-  title_ar: string;
+  title_es?: string;
+  title_pt?: string;
   subtitle: string;
+  subtitle_es?: string;
+  subtitle_pt?: string;
   description: string;
   discount_percentage: number;
   offer_end_date: string;
   tours_with_early_price: EarlyBookingTour[];
   benefits: string[];
   badge_text: string;
+  badge_text_es?: string;
+  badge_text_pt?: string;
   banner_image: string | null;
   background_color: string;
   is_currently_active: boolean;
@@ -123,6 +128,15 @@ function CountdownTimer({ endDate }: { endDate: string }) {
       </div>
     </div>
   );
+}
+
+// Helper to get translated field based on language
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getField(offer: EarlyBookingOffer, field: string, lang: string): string {
+  const o = offer as any;
+  if (lang === 'es' && o[field + '_es']) return o[field + '_es'];
+  if (lang === 'pt' && o[field + '_pt']) return o[field + '_pt'];
+  return o[field] || '';
 }
 
 export function EarlyBookingSlider() {
@@ -228,7 +242,7 @@ export function EarlyBookingSlider() {
           {currentOffer.banner_image ? (
             <Image
               src={fixImageUrl(currentOffer.banner_image) || ''}
-              alt={currentOffer.title}
+              alt={getField(currentOffer, "title", language)}
               fill
               sizes="100vw"
               className="object-cover"
@@ -262,7 +276,7 @@ export function EarlyBookingSlider() {
                 className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full bg-white/15 backdrop-blur-sm text-white text-xs sm:text-sm font-semibold mb-3 sm:mb-6 border border-white/20"
               >
                 <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
-                {currentOffer.badge_text || t(earlyBookingT, language, 'earlyBirdOffer')}
+                {getField(currentOffer, 'badge_text', language) || t(earlyBookingT, language, 'earlyBirdOffer')}
               </motion.div>
 
               {/* Title */}
@@ -272,7 +286,7 @@ export function EarlyBookingSlider() {
                 transition={{ delay: 0.3 }}
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-bold text-white mb-2 sm:mb-4"
               >
-                {currentOffer.title}
+                {getField(currentOffer, "title", language)}
               </motion.h2>
 
               {/* Discount */}
@@ -294,7 +308,7 @@ export function EarlyBookingSlider() {
                 transition={{ delay: 0.5 }}
                 className="text-sm sm:text-base md:text-lg lg:text-xl text-white/80 mb-4 sm:mb-8 max-w-2xl mx-auto"
               >
-                {currentOffer.subtitle || currentOffer.description}
+                {getField(currentOffer, "subtitle", language) || getField(currentOffer, "description", language)}
               </motion.p>
 
               {/* Countdown */}

@@ -358,8 +358,12 @@ class EarlyBookingOfferListSerializer(serializers.ModelSerializer):
     class Meta:
         model = EarlyBookingOffer
         fields = [
-            'id', 'title', 'subtitle', 'discount_percentage',
-            'offer_end_date', 'badge_text', 'banner_image', 'background_color',
+            'id', 'title', 'title_es', 'title_pt',
+            'subtitle', 'subtitle_es', 'subtitle_pt',
+            'discount_percentage',
+            'offer_end_date',
+            'badge_text', 'badge_text_es', 'badge_text_pt',
+            'banner_image', 'background_color',
             'is_currently_active', 'is_featured', 'days_remaining', 'tour_count'
         ]
 

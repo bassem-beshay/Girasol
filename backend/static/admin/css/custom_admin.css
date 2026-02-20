@@ -2158,3 +2158,47 @@ tr.add-row a {
     padding: 0 !important;
     font-size: 12px !important;
 }
+
+
+/* ============================================
+   SIDEBAR LOGOUT BUTTON
+   ============================================ */
+.sidebar-logout-item {
+    margin-top: 20px !important;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 10px !important;
+}
+
+.sidebar-logout-link {
+    color: #e74c3c !important;
+    transition: all 0.2s ease;
+}
+
+.sidebar-logout-link:hover {
+    background: rgba(231, 76, 60, 0.15) !important;
+    color: #ff6b6b !important;
+}
+
+.sidebar-logout-link i {
+    color: #e74c3c !important;
+}
+
+.sidebar-logout-link:hover i {
+    color: #ff6b6b !important;
+}
+
+/* Login page logo */
+.jazzmin-login-page .login-logo img {
+  max-width: 350px !important;
+  height: auto !important;
+}
+
+.jazzmin-login-page .login-logo {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.jazzmin-login-page .login-logo h1 {
+  margin: 0;
+  line-height: 1;
+}

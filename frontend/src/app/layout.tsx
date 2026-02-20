@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Cairo } from 'next/font/google';
-import Script from 'next/script';
 import '@/styles/globals.css';
 import { Providers } from './providers';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import RecaptchaScript from "@/components/RecaptchaScript";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -108,10 +108,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${cairo.variable}`}>
       <body className="font-sans antialiased">
         {/* Google reCAPTCHA v3 - loaded after page interaction */}
-        <Script
-          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-          strategy="lazyOnload"
-        />
+        <RecaptchaScript />
         <Providers>
           <div className="flex min-h-screen flex-col">
             <Header />

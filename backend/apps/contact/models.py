@@ -32,7 +32,7 @@ class Inquiry(TimeStampedModel):
     # Contact info
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    phone = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(max_length=50, blank=True)
     country = models.CharField(max_length=100, blank=True)
 
     # Inquiry details

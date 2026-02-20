@@ -32,11 +32,11 @@ class InquiryCreateView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         # Verify reCAPTCHA (if configured)
-        recaptcha_token = request.data.get('recaptcha_token', '')
         if getattr(settings, 'RECAPTCHA_SECRET_KEY', None):
+            recaptcha_token = request.data.get('recaptcha_token', '')
             recaptcha_result = verify_recaptcha(
                 token=recaptcha_token,
-                action='contact_form',
+                action='contact_inquiry',
                 min_score=0.5
             )
             if not recaptcha_result['success']:
@@ -45,6 +45,7 @@ class InquiryCreateView(generics.CreateAPIView):
                     {'error': 'Security verification failed. Please try again.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
+            logger.info(f"reCAPTCHA passed for inquiry with score {recaptcha_result['score']}")
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -107,9 +107,9 @@ export function Footer() {
               <Phone className="w-4 h-4" />
               +20 2 3771 5511
             </a>
-            <a href="mailto:info@girasoltours.com" className="flex items-center gap-2">
-              <Mail className="w-4 h-4" />
-              info@girasoltours.com
+            <a href="tel:+201227011900" className="flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              +20 1227 011 900
             </a>
           </div>
 
@@ -217,10 +217,10 @@ export function Footer() {
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                    <Mail className="w-4 h-4 text-orange-300" />
+                    <Phone className="w-4 h-4 text-orange-300" />
                   </div>
-                  <a href="mailto:info@girasoltours.com" className="text-white/80 hover:text-white transition-colors text-base">
-                    info@girasoltours.com
+                  <a href="tel:+201227011900" className="text-white/80 hover:text-white transition-colors text-base">
+                    +20 1227 011 900
                   </a>
                 </li>
               </ul>

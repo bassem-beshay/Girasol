@@ -174,6 +174,22 @@ class NewsletterCampaignAdmin(admin.ModelAdmin):
         }),
     )
 
+    actions = ['reset_to_draft']
+
+    @admin.action(description='Reset selected campaigns to draft (for retry)')
+    def reset_to_draft(self, request, queryset):
+        count = 0
+        for campaign in queryset:
+            if campaign.status in ('sent', 'sending'):
+                campaign.status = 'draft'
+                campaign.sent_at = None
+                campaign.failed_count = 0
+                campaign.sent_count = 0
+                campaign.recipients_count = 0
+                campaign.save()
+                count += 1
+        self.message_user(request, '{} campaign(s) reset to draft. You can now resend them.'.format(count))
+
     def recipients_display(self, obj):
         count = Newsletter.objects.filter(is_active=True, is_confirmed=True).count()
         return f"{count} subscribers"
@@ -185,6 +201,8 @@ class NewsletterCampaignAdmin(admin.ModelAdmin):
                 '<span style="color: green;">{} sent</span> / <span style="color: red;">{} failed</span>',
                 obj.sent_count, obj.failed_count
             )
+        if obj.status == 'sent' and obj.sent_count == 0:
+            return format_html('<span style=\"color: red;\">Failed (0 sent)</span>')
         return '-'
     sent_display.short_description = 'Sent/Failed'
 
@@ -195,8 +213,14 @@ class NewsletterCampaignAdmin(admin.ModelAdmin):
                 '<a class="button" href="{}" style="background-color: #ea580c; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;">Send Now</a>',
                 url
             )
+        elif obj.status == 'sent' and obj.sent_count == 0:
+            url = reverse('admin:contact_newslettercampaign_reset', args=[obj.pk])
+            return format_html(
+                '<a class=\"button\" href=\"{}\" style=\"background-color: #dc2626; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;\">Retry</a>',
+                url
+            )
         elif obj.status == 'sent':
-            return format_html('<span style="color: green;">✓ Sent</span>')
+            return format_html('<span style=\"color: green;\">Sent</span>')
         elif obj.status == 'sending':
             return format_html('<span style="color: orange;">⏳ Sending...</span>')
         return '-'
@@ -206,8 +230,22 @@ class NewsletterCampaignAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             path('<int:campaign_id>/send/', self.admin_site.admin_view(self.send_campaign), name='contact_newslettercampaign_send'),
+            path('<int:campaign_id>/reset/', self.admin_site.admin_view(self.reset_campaign), name='contact_newslettercampaign_reset'),
         ]
         return custom_urls + urls
+
+    def reset_campaign(self, request, campaign_id):
+        campaign = NewsletterCampaign.objects.get(pk=campaign_id)
+        if campaign.status == 'sent' and campaign.sent_count == 0:
+            campaign.status = 'draft'
+            campaign.sent_at = None
+            campaign.failed_count = 0
+            campaign.recipients_count = 0
+            campaign.save()
+            messages.success(request, 'Campaign reset to draft. You can now resend it.')
+        else:
+            messages.error(request, 'This campaign cannot be reset. Only fully failed campaigns (0 sent) can be retried.')
+        return redirect('admin:contact_newslettercampaign_changelist')
 
     def send_campaign(self, request, campaign_id):
         from django.core.mail import send_mail
@@ -266,7 +304,12 @@ class NewsletterCampaignAdmin(admin.ModelAdmin):
         # Update campaign stats
         campaign.sent_count = sent_count
         campaign.failed_count = failed_count
-        campaign.status = 'sent'
+        if sent_count > 0:
+            campaign.status = 'sent'
+        elif failed_count > 0:
+            campaign.status = 'failed'
+        else:
+            campaign.status = 'sent'
         campaign.sent_at = timezone.now()
         campaign.save()
 

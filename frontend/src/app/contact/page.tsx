@@ -28,6 +28,17 @@ import { contactT, inquiryFormT, t } from '@/lib/translations';
 import { useUserStore } from '@/store/userStore';
 import { nationalityPhoneCode } from '@/lib/countryCodeMap';
 
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (cb: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
+
 const contactSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
@@ -103,6 +114,17 @@ export default function ContactPage() {
   // Contact form submission mutation
   const contactMutation = useMutation({
     mutationFn: async (data: ContactFormData) => {
+      // Generate reCAPTCHA token (gracefully handle failure)
+      let recaptchaToken = '';
+      try {
+        if (window.grecaptcha && RECAPTCHA_SITE_KEY) {
+          await new Promise<void>((resolve) => window.grecaptcha.ready(resolve));
+          recaptchaToken = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact_inquiry' });
+        }
+      } catch {
+        // Continue without recaptcha if it fails
+      }
+
       const response = await contactApi.sendMessage({
         name: `${data.firstName} ${data.lastName}`,
         email: data.email,
@@ -110,13 +132,16 @@ export default function ContactPage() {
         subject: data.subject,
         message: data.message,
         tour_interest: data.tourInterest || '',
+        recaptcha_token: recaptchaToken,
       });
       return response.data;
     },
     onSuccess: () => {
       setIsSubmitted(true);
       toast.success('Your message has been sent successfully!');
-      reset();
+      setValue('subject', '');
+      setValue('message', '');
+      setValue('tourInterest', '');
     },
     onError: () => {
       toast.error('Something went wrong. Please try again.');

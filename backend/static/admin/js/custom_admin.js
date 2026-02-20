@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
             headerLi.style.display = (!query || hasVisible) ? '' : 'none';
         });
 
-        // Also handle nav items that are not preceded by headers (like Dashboard)
         var allItems = document.querySelectorAll('.nav-sidebar > .nav-item');
         allItems.forEach(function(item) {
             if (!item.querySelector('.nav-header') && item.style.display !== 'none') {
@@ -54,6 +53,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Add Logout button at the bottom of the sidebar
+    var navSidebar = sidebar.querySelector('.nav-sidebar');
+    if (navSidebar) {
+        var logoutLi = document.createElement('li');
+        logoutLi.className = 'nav-item sidebar-logout-item';
+        logoutLi.innerHTML = '<a href="/admin/logout/" class="nav-link sidebar-logout-link">' +
+            '<i class="nav-icon fas fa-sign-out-alt"></i> <p>Log out</p></a>';
+        navSidebar.appendChild(logoutLi);
+    }
 
     // Mobile sidebar toggle (since navbar is hidden)
     if (window.innerWidth <= 991) {

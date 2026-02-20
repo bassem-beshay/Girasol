@@ -257,8 +257,8 @@ JAZZMIN_SETTINGS = {
     'site_logo': 'admin/img/logo.png',
     'site_logo_classes': 'img-fluid',
     'site_icon': 'admin/img/favicon.png',
-    'login_logo': 'admin/img/logo.png',
-    'login_logo_dark': 'admin/img/logo.png',
+    'login_logo': 'admin/img/login-logo.jpeg',
+    'login_logo_dark': 'admin/img/login-logo.jpeg',
     'welcome_sign': 'Welcome to Girasol Tours Dashboard',
     'copyright': 'Girasol Egypt Travel and Tours',
 
