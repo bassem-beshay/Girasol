@@ -80,33 +80,10 @@ const reviews: Review[] = [
     imageUrl: 'https://user-images.trustpilot.com/683c00184e662d13812cb71c/73x73.png',
   },
   {
-    name: 'Neusa Ab',
-    rating: 1,
-    title: 'Treinamento e Respeito',
-    text: 'Ao decidir uma viagem para o Egito, esperei encontrar l\u00e1, dos respons\u00e1veis pelo pacote, profissionais treinados, simp\u00e1ticos, n\u00e3o foi isso que aconteceu. Ofereceram guia repetitivo, \u00e0s vezes quando explicava, tinha atitudes inadequadas. Ficava a todo tempo nos importunando com rela\u00e7\u00e3o \u00e0s gorjetas.',
-    date: 'May 2025',
-    imageUrl: 'https://user-images.trustpilot.com/683718a32f2478bab004933b/73x73.png',
-  },
-  {
     name: 'Angela Petralia',
     rating: 5,
     title: 'Un viaggio speciale',
     text: "Un viaggio speciale organizzato da Tarek Khalifa e l'agenzia Girasol Travel. Dal Cairo in fuoristrada alle Oasi del Deserto Occidentale Egiziano sino a Luxor per rientrare in aeroporto al Cairo. Dieci giorni magnifici dall'ambiente desertico delle magnifiche oasi all'Egitto dei Faraoni. Due viaggi in uno. Ottima guida Mohamed sempre con noi. Le sistemazioni tutte di ottimo livello. Siamo partiti in otto amici e tutti molto soddisfatti con il desiderio di ritornare. Grazie Tarek!",
-    date: 'May 2025',
-  },
-  {
-    name: 'Andri Secaf',
-    rating: 2,
-    title: 'Cautela em suas escolhas',
-    text: 'Amei a viagem, um pa\u00eds de cultura infind\u00e1vel, hoteis \u00f3timos, mas confesso que fiquei um pouco frustrada com alguns acontecimentos no decorrer do passeio. Nosso grupo escolheu a girassol justamente pelas \u00f3timas avalia\u00e7\u00f5es mas creio que n\u00e3o tivemos a boa experi\u00eancia pelo fato de n\u00e3o termos contratado todos os passeios pela mesma empresa.',
-    date: 'May 2025',
-    imageUrl: 'https://user-images.trustpilot.com/68347a348a5375880150cba7/73x73.png',
-  },
-  {
-    name: 'Fernando M. H. Moreira',
-    rating: 1,
-    title: 'Look for another agency to travel to Egypt',
-    text: 'In May 2025 we took a group trip to Egypt and hired this agency to organise part of the trip, especially the reception, internal air travel, hotels and morning tours on the days of our stay. We chose not to buy the optional tours that this agency offered us, as their prices were absurdly more expensive than those offered by competing agencies on TripAdvisor, Viator and GetYourGuide.',
     date: 'May 2025',
   },
   {
