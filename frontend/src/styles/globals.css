@@ -326,3 +326,10 @@
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
+/* Hide reCAPTCHA badge on mobile */
+@media (max-width: 768px) {
+  .grecaptcha-badge {
+    display: none !important;
+  }
+}
+
