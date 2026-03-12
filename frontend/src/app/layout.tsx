@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://girasolegypt.com'),
+  metadataBase: new URL('https://girasoltours.com'),
   icons: {
     icon: [
       { url: '/favicon.png', type: 'image/png' },
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Girasol Egypt - Travel and Tours',
     description: 'Tailor-made tours, Nile cruises & unforgettable experiences in Egypt',
-    url: 'https://girasolegypt.com',
+    url: 'https://girasoltours.com',
     siteName: 'Girasol Egypt',
     images: [
       {

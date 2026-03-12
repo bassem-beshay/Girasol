@@ -193,8 +193,9 @@ const reviews: Review[] = [
   },
 ];
 
-const totalReviews = reviews.length;
-const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1);
+// Real Trustpilot stats (not calculated from filtered array)
+const totalReviews = 27;
+const avgRating = '4.3';
 
 function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'lg' }) {
   const sizeClass = size === 'lg' ? 'w-5 h-5' : 'w-4 h-4';
@@ -411,7 +412,7 @@ export function TrustpilotReviews() {
           {/* Overall Rating */}
           <div className="flex flex-wrap items-center justify-center gap-3">
             <div className="flex items-center gap-2">
-              <StarRating rating={5} size="lg" />
+              <StarRating rating={4} size="lg" />
               <span className="text-2xl font-bold text-gray-900">{avgRating}</span>
             </div>
             <span className="text-gray-500 text-sm">
