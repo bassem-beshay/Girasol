@@ -2,6 +2,7 @@
 Destination models for Girasol Tours.
 """
 from django.db import models
+from django_ckeditor_5.fields import CKEditor5Field
 from apps.core.models import TimeStampedModel, SluggedModel, SEOModel, SortableModel
 
 
@@ -14,9 +15,9 @@ class Destination(TimeStampedModel, SluggedModel, SEOModel, SortableModel):
     tagline = models.CharField(max_length=200, blank=True)
     tagline_es = models.CharField('Tagline (Spanish)', max_length=200, blank=True)
     tagline_pt = models.CharField('Tagline (Portuguese)', max_length=200, blank=True)
-    description = models.TextField()
-    description_es = models.TextField('Description (Spanish)', blank=True)
-    description_pt = models.TextField('Description (Portuguese)', blank=True)
+    description = CKEditor5Field(config_name='extends')
+    description_es = CKEditor5Field('Description (Spanish)', config_name='extends', blank=True)
+    description_pt = CKEditor5Field('Description (Portuguese)', config_name='extends', blank=True)
 
     # Media
     featured_image = models.ImageField(upload_to='destinations/')

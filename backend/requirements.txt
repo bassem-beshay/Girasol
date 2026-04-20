@@ -26,6 +26,7 @@ django-extensions==3.2.3
 
 # Admin Enhancement
 django-jazzmin==2.6.0
+django-ckeditor-5==0.2.13
 
 # Security
 django-ratelimit==4.1.0

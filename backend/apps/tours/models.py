@@ -3,6 +3,7 @@ Tour models for Girasol Tours.
 """
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django_ckeditor_5.fields import CKEditor5Field
 from apps.core.models import TimeStampedModel, SluggedModel, SEOModel, SortableModel, PublishableModel
 
 
@@ -65,9 +66,9 @@ class Tour(TimeStampedModel, SluggedModel, SEOModel, PublishableModel):
     short_description = models.CharField(max_length=300)
     short_description_es = models.CharField('Short Description (Spanish)', max_length=300, blank=True)
     short_description_pt = models.CharField('Short Description (Portuguese)', max_length=300, blank=True)
-    description = models.TextField()
-    description_es = models.TextField('Description (Spanish)', blank=True)
-    description_pt = models.TextField('Description (Portuguese)', blank=True)
+    description = CKEditor5Field(config_name='extends')
+    description_es = CKEditor5Field('Description (Spanish)', config_name='extends', blank=True)
+    description_pt = CKEditor5Field('Description (Portuguese)', config_name='extends', blank=True)
 
     # Classification
     category = models.ForeignKey(
@@ -196,9 +197,9 @@ class TourHighlight(TimeStampedModel, SortableModel):
     title = models.CharField(max_length=200)
     title_es = models.CharField('Title (Spanish)', max_length=200, blank=True)
     title_pt = models.CharField('Title (Portuguese)', max_length=200, blank=True)
-    description = models.TextField(blank=True)
-    description_es = models.TextField('Description (Spanish)', blank=True)
-    description_pt = models.TextField('Description (Portuguese)', blank=True)
+    description = CKEditor5Field(config_name='default', blank=True)
+    description_es = CKEditor5Field('Description (Spanish)', config_name='default', blank=True)
+    description_pt = CKEditor5Field('Description (Portuguese)', config_name='default', blank=True)
     icon = models.CharField(max_length=50, blank=True)
 
     class Meta:
@@ -218,9 +219,9 @@ class TourItinerary(TimeStampedModel, SortableModel):
     title = models.CharField(max_length=200)
     title_es = models.CharField('Title (Spanish)', max_length=200, blank=True)
     title_pt = models.CharField('Title (Portuguese)', max_length=200, blank=True)
-    description = models.TextField()
-    description_es = models.TextField('Description (Spanish)', blank=True)
-    description_pt = models.TextField('Description (Portuguese)', blank=True)
+    description = CKEditor5Field(config_name='extends')
+    description_es = CKEditor5Field('Description (Spanish)', config_name='extends', blank=True)
+    description_pt = CKEditor5Field('Description (Portuguese)', config_name='extends', blank=True)
     locations = models.CharField(max_length=300, blank=True)
     locations_es = models.CharField('Locations (Spanish)', max_length=300, blank=True)
     locations_pt = models.CharField('Locations (Portuguese)', max_length=300, blank=True)

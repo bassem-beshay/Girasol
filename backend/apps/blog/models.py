@@ -3,6 +3,7 @@ Blog models for Girasol Tours.
 """
 from django.db import models
 from django.conf import settings
+from django_ckeditor_5.fields import CKEditor5Field
 from apps.core.models import TimeStampedModel, SluggedModel, SEOModel, PublishableModel
 
 
@@ -63,9 +64,9 @@ class Post(TimeStampedModel, SluggedModel, SEOModel, PublishableModel):
     excerpt = models.TextField(max_length=300)
     excerpt_es = models.TextField('Excerpt (Spanish)', max_length=300, blank=True)
     excerpt_pt = models.TextField('Excerpt (Portuguese)', max_length=300, blank=True)
-    content = models.TextField()
-    content_es = models.TextField('Content (Spanish)', blank=True)
-    content_pt = models.TextField('Content (Portuguese)', blank=True)
+    content = CKEditor5Field(config_name='extends')
+    content_es = CKEditor5Field('Content (Spanish)', config_name='extends', blank=True)
+    content_pt = CKEditor5Field('Content (Portuguese)', config_name='extends', blank=True)
 
     # Media
     featured_image = models.ImageField(upload_to='blog/posts/')
