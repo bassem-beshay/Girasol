@@ -17,6 +17,9 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
+# Allow same-origin iframes so Jazzmin related-object popups render in admin.
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 # Frontend URL for email links
 FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
 
