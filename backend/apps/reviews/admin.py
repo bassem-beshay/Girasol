@@ -14,9 +14,6 @@ class ReviewAdmin(admin.ModelAdmin):
         'reviewer_name', 'tour', 'rating', 'is_verified',
         'is_approved', 'is_featured', 'created_at'
     ]
-
-    def get_model_perms(self, request):
-        return {}
     list_filter = ['rating', 'is_verified', 'is_approved', 'is_featured', 'created_at']
     search_fields = ['reviewer_name', 'content', 'tour__name']
     list_editable = ['is_approved', 'is_featured']
@@ -44,9 +41,6 @@ class ReviewAdmin(admin.ModelAdmin):
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
     list_display = ['name', 'country', 'rating', 'tour', 'is_active', 'sort_order']
-
-    def get_model_perms(self, request):
-        return {}
     list_filter = ['is_active', 'rating']
     search_fields = ['name', 'quote']
     list_editable = ['is_active', 'sort_order']

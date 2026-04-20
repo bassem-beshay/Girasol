@@ -277,7 +277,7 @@ JAZZMIN_SETTINGS = {
     'show_sidebar': True,
     'navigation_expanded': True,
     'hide_apps': ['auth', 'sites', 'authtoken', 'account', 'socialaccount', 'reviews'],
-    'hide_models': [],
+    'hide_models': ['tours.TourCategory', 'blog.Comment'],
 
     # App Ordering - logical flow
     'order_with_respect_to': [
