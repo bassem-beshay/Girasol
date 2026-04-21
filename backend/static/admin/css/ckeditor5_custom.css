@@ -1,0 +1,94 @@
+/* CKEditor 5 custom styles for Girasol Tours admin.
+   Goal: make justified text line-ends uniform so paragraphs look clean.
+   Applied inside the CKEditor content area (.ck-content) and to any
+   HTML rendered elsewhere that carries the same class. */
+
+.ck-editor__editable,
+.ck-content {
+    min-height: 160px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* Evenly-spaced words for justified blocks; enable hyphenation so
+   long words break instead of leaving huge gaps. */
+.ck-content [style*="text-align:justify"],
+.ck-content [style*="text-align: justify"],
+.ck-content p[style*="justify"],
+.ck-content li[style*="justify"] {
+    text-justify: inter-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    word-spacing: 0.02em;
+    text-align: justify;
+}
+
+/* Do NOT stretch the final (often short) line of a justified paragraph. */
+.ck-content [style*="text-align:justify"],
+.ck-content [style*="text-align: justify"] {
+    text-align-last: start;
+}
+
+/* Default rhythm for any paragraph inside the editor, so admins see an
+   accurate preview of what the site will render. */
+.ck-content p {
+    margin: 0 0 0.9em 0;
+}
+
+.ck-content ul,
+.ck-content ol {
+    padding-left: 1.4em;
+    margin: 0 0 0.9em 0;
+}
+
+.ck-content li + li {
+    margin-top: 0.25em;
+}
+
+.ck-content h1,
+.ck-content h2,
+.ck-content h3,
+.ck-content h4 {
+    line-height: 1.25;
+    margin: 1.2em 0 0.5em 0;
+}
+
+/* Link styling inside editor & rendered HTML */
+.ck-content a {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.ck-content a[target="_blank"]::after {
+    content: ' \2197';
+    font-size: 0.85em;
+    color: #64748b;
+}
+
+.ck-content a[data-internal="true"] {
+    color: #0f766e;
+}
+
+/* Blockquote */
+.ck-content blockquote {
+    border-left: 3px solid #e2e8f0;
+    padding: 0.2em 0 0.2em 1em;
+    color: #334155;
+    margin: 0.8em 0;
+}
+
+/* Admin form: make the editor fit the form column cleanly */
+.aligned .ck-editor {
+    max-width: 100%;
+}
+
+.aligned .ck-editor__editable[role="textbox"] {
+    max-width: 100%;
+}
+
+/* RTL-friendly: when dir="rtl" is set, preserve alignment correctness */
+.ck-content[dir="rtl"] p,
+.ck-content[dir="rtl"] li {
+    text-align: right;
+}
