@@ -4,6 +4,7 @@ Contact models for Girasol Tours.
 import uuid
 import logging
 from django.db import models
+from django_ckeditor_5.fields import CKEditor5Field
 from apps.core.models import TimeStampedModel
 
 logger = logging.getLogger(__name__)
@@ -162,7 +163,7 @@ class NewsletterCampaign(TimeStampedModel):
     preview_text = models.CharField(max_length=200, blank=True, help_text="Preview text shown in inbox")
 
     # Content
-    content = models.TextField(help_text="Email content (HTML supported)")
+    content = CKEditor5Field(config_name='extends', help_text="Email content (HTML supported)")
 
     # Status
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
@@ -201,9 +202,9 @@ class FAQ(TimeStampedModel):
     question = models.CharField(max_length=300)
     question_es = models.CharField('Question (Spanish)', max_length=300, blank=True)
     question_pt = models.CharField('Question (Portuguese)', max_length=300, blank=True)
-    answer = models.TextField()
-    answer_es = models.TextField('Answer (Spanish)', blank=True)
-    answer_pt = models.TextField('Answer (Portuguese)', blank=True)
+    answer = CKEditor5Field(config_name='extends')
+    answer_es = CKEditor5Field('Answer (Spanish)', config_name='extends', blank=True)
+    answer_pt = CKEditor5Field('Answer (Portuguese)', config_name='extends', blank=True)
 
     category = models.CharField(
         max_length=50,

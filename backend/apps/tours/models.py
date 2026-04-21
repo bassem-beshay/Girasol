@@ -13,9 +13,9 @@ class TourCategory(TimeStampedModel, SluggedModel, SortableModel):
     name = models.CharField(max_length=100)
     name_es = models.CharField('Name (Spanish)', max_length=100, blank=True)
     name_pt = models.CharField('Name (Portuguese)', max_length=100, blank=True)
-    description = models.TextField(blank=True)
-    description_es = models.TextField('Description (Spanish)', blank=True)
-    description_pt = models.TextField('Description (Portuguese)', blank=True)
+    description = CKEditor5Field(config_name='default', blank=True)
+    description_es = CKEditor5Field('Description (Spanish)', config_name='default', blank=True)
+    description_pt = CKEditor5Field('Description (Portuguese)', config_name='default', blank=True)
     icon = models.CharField(max_length=50, blank=True, help_text='Icon class name')
     image = models.ImageField(upload_to='tours/categories/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -38,9 +38,9 @@ class TourType(TimeStampedModel, SluggedModel, SortableModel):
     name = models.CharField(max_length=100)
     name_es = models.CharField('Name (Spanish)', max_length=100, blank=True)
     name_pt = models.CharField('Name (Portuguese)', max_length=100, blank=True)
-    description = models.TextField(blank=True)
-    description_es = models.TextField('Description (Spanish)', blank=True)
-    description_pt = models.TextField('Description (Portuguese)', blank=True)
+    description = CKEditor5Field(config_name='default', blank=True)
+    description_es = CKEditor5Field('Description (Spanish)', config_name='default', blank=True)
+    description_pt = CKEditor5Field('Description (Portuguese)', config_name='default', blank=True)
     icon = models.CharField(max_length=50, blank=True, help_text='Icon class name')
     is_active = models.BooleanField(default=True)
 
@@ -327,9 +327,9 @@ class TourFAQ(TimeStampedModel, SortableModel):
     question = models.CharField(max_length=300)
     question_es = models.CharField('Question (Spanish)', max_length=300, blank=True)
     question_pt = models.CharField('Question (Portuguese)', max_length=300, blank=True)
-    answer = models.TextField()
-    answer_es = models.TextField('Answer (Spanish)', blank=True)
-    answer_pt = models.TextField('Answer (Portuguese)', blank=True)
+    answer = CKEditor5Field(config_name='extends')
+    answer_es = CKEditor5Field('Answer (Spanish)', config_name='extends', blank=True)
+    answer_pt = CKEditor5Field('Answer (Portuguese)', config_name='extends', blank=True)
 
     class Meta:
         verbose_name = 'Tour FAQ'
@@ -354,9 +354,9 @@ class EarlyBookingOffer(TimeStampedModel):
     subtitle = models.CharField(max_length=300, blank=True)
     subtitle_es = models.CharField('Subtitle (Spanish)', max_length=300, blank=True)
     subtitle_pt = models.CharField('Subtitle (Portuguese)', max_length=300, blank=True)
-    description = models.TextField(blank=True)
-    description_es = models.TextField('Description (Spanish)', blank=True)
-    description_pt = models.TextField('Description (Portuguese)', blank=True)
+    description = CKEditor5Field(config_name='extends', blank=True)
+    description_es = CKEditor5Field('Description (Spanish)', config_name='extends', blank=True)
+    description_pt = CKEditor5Field('Description (Portuguese)', config_name='extends', blank=True)
 
     # Discount Settings
     discount_percentage = models.PositiveIntegerField(
@@ -402,18 +402,20 @@ class EarlyBookingOffer(TimeStampedModel):
     )
 
     # Terms & Conditions
-    terms_conditions = models.TextField(
+    terms_conditions = CKEditor5Field(
+        config_name='extends',
         blank=True,
         help_text='Terms and conditions for this offer'
     )
-    terms_conditions_es = models.TextField('Terms & Conditions (Spanish)', blank=True)
-    terms_conditions_pt = models.TextField('Terms & Conditions (Portuguese)', blank=True)
-    cancellation_policy = models.TextField(
+    terms_conditions_es = CKEditor5Field('Terms & Conditions (Spanish)', config_name='extends', blank=True)
+    terms_conditions_pt = CKEditor5Field('Terms & Conditions (Portuguese)', config_name='extends', blank=True)
+    cancellation_policy = CKEditor5Field(
+        config_name='extends',
         blank=True,
         help_text='Cancellation policy for early bookings'
     )
-    cancellation_policy_es = models.TextField('Cancellation Policy (Spanish)', blank=True)
-    cancellation_policy_pt = models.TextField('Cancellation Policy (Portuguese)', blank=True)
+    cancellation_policy_es = CKEditor5Field('Cancellation Policy (Spanish)', config_name='extends', blank=True)
+    cancellation_policy_pt = CKEditor5Field('Cancellation Policy (Portuguese)', config_name='extends', blank=True)
 
     # Display Settings
     badge_text = models.CharField(

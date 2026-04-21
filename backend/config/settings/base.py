@@ -360,9 +360,30 @@ CKEDITOR_5_CONFIGS = {
         'toolbar': [
             'heading', '|',
             'bold', 'italic', 'underline', 'link', '|',
+            'alignment', '|',
             'bulletedList', 'numberedList', 'blockQuote', '|',
+            'outdent', 'indent', '|',
             'undo', 'redo',
         ],
+        'alignment': {
+            'options': ['left', 'right', 'center', 'justify'],
+        },
+        'link': {
+            'addTargetToExternalLinks': True,
+            'defaultProtocol': 'https://',
+            'decorators': {
+                'openInNewTab': {
+                    'mode': 'manual',
+                    'label': 'Open in new tab (external)',
+                    'attributes': {'target': '_blank', 'rel': 'noopener noreferrer'},
+                },
+                'isInternal': {
+                    'mode': 'manual',
+                    'label': 'Internal link (same tab)',
+                    'attributes': {'data-internal': 'true'},
+                },
+            },
+        },
     },
     'extends': {
         'blockToolbar': [
@@ -380,6 +401,9 @@ CKEDITOR_5_CONFIGS = {
             'removeFormat', 'sourceEditing', '|',
             'undo', 'redo',
         ],
+        'alignment': {
+            'options': ['left', 'right', 'center', 'justify'],
+        },
         'image': {
             'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
                         'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side'],
@@ -391,8 +415,13 @@ CKEDITOR_5_CONFIGS = {
             'decorators': {
                 'openInNewTab': {
                     'mode': 'manual',
-                    'label': 'Open in new tab',
+                    'label': 'Open in new tab (external)',
                     'attributes': {'target': '_blank', 'rel': 'noopener noreferrer'},
+                },
+                'isInternal': {
+                    'mode': 'manual',
+                    'label': 'Internal link (same tab)',
+                    'attributes': {'data-internal': 'true'},
                 },
             },
         },

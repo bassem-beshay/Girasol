@@ -13,9 +13,9 @@ class Category(TimeStampedModel, SluggedModel):
     name = models.CharField(max_length=100)
     name_es = models.CharField('Name (Spanish)', max_length=100, blank=True)
     name_pt = models.CharField('Name (Portuguese)', max_length=100, blank=True)
-    description = models.TextField(blank=True)
-    description_es = models.TextField('Description (Spanish)', blank=True)
-    description_pt = models.TextField('Description (Portuguese)', blank=True)
+    description = CKEditor5Field(config_name='default', blank=True)
+    description_es = CKEditor5Field('Description (Spanish)', config_name='default', blank=True)
+    description_pt = CKEditor5Field('Description (Portuguese)', config_name='default', blank=True)
     image = models.ImageField(upload_to='blog/categories/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
