@@ -111,29 +111,42 @@ export function HeroSection() {
   ];
 
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
 
-  // Defer the hero video until the browser is idle so it doesn't block
-  // initial paint, but still load it on every device (incl. mobile).
-  // Honor `prefers-reduced-data` for users on data-saver.
+  // Defer the hero video so it doesn't block initial paint.
+  // On mobile we wait long enough for the LCP measurement window to
+  // close (Lighthouse finalises LCP ~5s after the last paint), so the
+  // <video> element doesn't get promoted to LCP candidate -- the H1
+  // text stays as LCP. Desktop is unchanged (idle callback, ~quick).
+  // Honor `prefers-reduced-data` on both.
   useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-data: reduce)').matches
-    ) {
-      return;
-    }
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-data: reduce)').matches) return;
+
+    const mobile = window.matchMedia('(max-width: 767px)').matches;
+    setIsMobileViewport(mobile);
 
     const w = window as Window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
       cancelIdleCallback?: (handle: number) => void;
     };
-    const schedule = w.requestIdleCallback
+    const idle = w.requestIdleCallback
       ? (cb: () => void) => w.requestIdleCallback!(cb, { timeout: 2500 })
       : (cb: () => void) => window.setTimeout(cb, 1200);
-    const cancel = w.cancelIdleCallback || window.clearTimeout;
-    const handle = schedule(() => setShouldLoadVideo(true));
+    const cancelIdle = w.cancelIdleCallback || window.clearTimeout;
+
+    // Mobile: wait 6s before even asking the idle callback to mount it.
+    // Desktop: kick off immediately on idle.
+    let idleHandle: number | undefined;
+    const timerHandle = window.setTimeout(() => {
+      idleHandle = idle(() => setShouldLoadVideo(true));
+    }, mobile ? 6000 : 0);
+
     return () => {
-      try { cancel(handle as number); } catch {}
+      window.clearTimeout(timerHandle);
+      if (idleHandle !== undefined) {
+        try { cancelIdle(idleHandle); } catch {}
+      }
     };
   }, []);
 
@@ -156,7 +169,7 @@ export function HeroSection() {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload={isMobileViewport ? 'none' : 'metadata'}
             className="absolute inset-0 w-full h-full object-cover object-[center_50%]"
           >
             <source src="/videos/hero-video.mp4" type="video/mp4" />
