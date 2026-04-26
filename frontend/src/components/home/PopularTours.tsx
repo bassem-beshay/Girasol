@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { toursApi, fixImageUrl } from '@/lib/api';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, Star, MapPin, Clock, Loader2, Sparkles } from 'lucide-react';
@@ -65,29 +64,14 @@ export function PopularTours() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
           <div>
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-primary-600 font-medium mb-2 block"
-            >
+            <span className="text-primary-600 font-medium mb-2 block">
               {t(popularToursT, language, 'popularTours')}
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="heading-2 text-gray-900"
-            >
+            </span>
+            <h2 className="heading-2 text-gray-900">
               {t(popularToursT, language, 'mostLoved')}
-            </motion.h2>
+            </h2>
           </div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
+          <div>
             <Link
               href="/tours"
               className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700"
@@ -95,7 +79,7 @@ export function PopularTours() {
               {t(popularToursT, language, 'viewAllTours')}
               <ChevronRight className="w-5 h-5 ml-1" />
             </Link>
-          </motion.div>
+          </div>
         </div>
 
         {/* Loading state */}
@@ -116,15 +100,8 @@ export function PopularTours() {
         {/* Tours grid */}
         {!isLoading && !error && tours.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {tours.map((tour, index) => (
-              <motion.div
-                key={tour.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="h-full"
-              >
+            {tours.map((tour) => (
+              <div key={tour.id} className="h-full">
                 <Link href={`/tours/${tour.slug}`} className="card card-hover block group h-full flex flex-col">
                   {/* Image */}
                   <div className="relative aspect-tour-card overflow-hidden flex-shrink-0">
@@ -219,7 +196,7 @@ export function PopularTours() {
                     </div>
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
