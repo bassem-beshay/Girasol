@@ -110,29 +110,50 @@ export function HeroSection() {
     { icon: Clock, label: t(heroT, language, 'support247') },
   ];
 
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  // Defer the 10MB hero video until the browser is idle so it doesn't
+  // block the initial payload / TTI on slow networks.
   useEffect(() => {
-    if (videoRef.current) {
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    const schedule = w.requestIdleCallback
+      ? (cb: () => void) => w.requestIdleCallback!(cb, { timeout: 2500 })
+      : (cb: () => void) => window.setTimeout(cb, 1200);
+    const cancel = w.cancelIdleCallback || window.clearTimeout;
+    const handle = schedule(() => setShouldLoadVideo(true));
+    return () => {
+      try { cancel(handle as number); } catch {}
+    };
+  }, []);
+
+  useEffect(() => {
+    if (shouldLoadVideo && videoRef.current) {
       videoRef.current.play().catch(() => {
         // Autoplay might be blocked by browser
       });
     }
-  }, []);
+  }, [shouldLoadVideo]);
 
   return (
     <section className="relative h-[70vh] sm:h-[80vh] md:h-screen min-h-[400px] sm:min-h-[500px] md:min-h-[600px] max-h-[900px] overflow-hidden">
-      {/* Background Video - Optimized for performance */}
-      <div className="absolute inset-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover object-[center_50%]"
-        >
-          <source src="/videos/hero-video.mp4" type="video/mp4" />
-        </video>
+      {/* Background — gradient placeholder paints instantly; video mounts on idle */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
+        {shouldLoadVideo && (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover object-[center_50%]"
+          >
+            <source src="/videos/hero-video.mp4" type="video/mp4" />
+          </video>
+        )}
       </div>
 
       {/* Overlay */}

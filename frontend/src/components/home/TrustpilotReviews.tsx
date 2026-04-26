@@ -9,6 +9,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import { useLanguageStore } from '@/store/languageStore';
 import { trustpilotT, t } from '@/lib/translations';
+import { useInView } from '@/hooks/useInView';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -380,6 +381,7 @@ export function TrustpilotReviews() {
   const { language } = useLanguageStore();
   const swiperRef = useRef<SwiperType | null>(null);
   const [modalReview, setModalReview] = useState<{ review: Review; index: number } | null>(null);
+  const [sectionRef, isInView] = useInView<HTMLElement>({ rootMargin: '300px' });
 
   const handleReadMore = useCallback((review: Review, index: number) => {
     setModalReview({ review, index });
@@ -393,7 +395,7 @@ export function TrustpilotReviews() {
   }, []);
 
   return (
-    <section className="section-padding bg-gray-50">
+    <section ref={sectionRef} className="section-padding bg-gray-50 min-h-[600px]">
       <div className="container-custom">
         {/* Section Header */}
         <motion.div
@@ -453,26 +455,30 @@ export function TrustpilotReviews() {
             <ChevronRight className="w-5 h-5 text-gray-700" />
           </button>
 
-          <Swiper
-            modules={[Autoplay, Navigation]}
-            onSwiper={(swiper) => { swiperRef.current = swiper; }}
-            spaceBetween={24}
-            slidesPerView={1}
-            loop={true}
-            grabCursor={true}
-            autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-            }}
-            className="pb-4 [&_.swiper-slide]:!h-auto"
-          >
-            {reviews.map((review, index) => (
-              <SwiperSlide key={index}>
-                <ReviewCard review={review} index={index} onReadMore={handleReadMore} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {isInView ? (
+            <Swiper
+              modules={[Autoplay, Navigation]}
+              onSwiper={(swiper) => { swiperRef.current = swiper; }}
+              spaceBetween={24}
+              slidesPerView={1}
+              loop={true}
+              grabCursor={true}
+              autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+              className="pb-4 [&_.swiper-slide]:!h-auto"
+            >
+              {reviews.map((review, index) => (
+                <SwiperSlide key={index}>
+                  <ReviewCard review={review} index={index} onReadMore={handleReadMore} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <div className="h-[420px]" aria-hidden="true" />
+          )}
         </motion.div>
 
       </div>
