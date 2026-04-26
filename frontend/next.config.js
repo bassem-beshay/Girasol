@@ -11,6 +11,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'www.girasoltours.com',
+        pathname: '/media/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'api.girasoltours.com',
         pathname: '/media/**',
       },
