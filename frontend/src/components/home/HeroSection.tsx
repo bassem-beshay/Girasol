@@ -114,17 +114,24 @@ export function HeroSection() {
   const [isMobileViewport, setIsMobileViewport] = useState(false);
 
   // Defer the hero video so it doesn't block initial paint.
-  // On mobile we wait long enough for the LCP measurement window to
-  // close (Lighthouse finalises LCP ~5s after the last paint), so the
-  // <video> element doesn't get promoted to LCP candidate -- the H1
-  // text stays as LCP. Desktop is unchanged (idle callback, ~quick).
-  // Honor `prefers-reduced-data` on both.
+  // - Desktop: mount immediately on idle (fast).
+  // - Mobile FIRST visit: 1.5s delay so the <video> doesn't get promoted
+  //   over the H1 as LCP candidate. After first visit we set a localStorage
+  //   flag, and on REPEAT visits we mount immediately because the video
+  //   is already in the browser's HTTP cache (Cache-Control: 1 year,
+  //   immutable -- range requests supported, full file cached).
+  // - Honor `prefers-reduced-data` on both.
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (window.matchMedia('(prefers-reduced-data: reduce)').matches) return;
 
     const mobile = window.matchMedia('(max-width: 767px)').matches;
     setIsMobileViewport(mobile);
+
+    let videoCached = false;
+    try {
+      videoCached = window.localStorage.getItem('hero_video_seen') === '1';
+    } catch {}
 
     const w = window as Window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
@@ -135,12 +142,14 @@ export function HeroSection() {
       : (cb: () => void) => window.setTimeout(cb, 1200);
     const cancelIdle = w.cancelIdleCallback || window.clearTimeout;
 
-    // Mobile: wait 6s before even asking the idle callback to mount it.
-    // Desktop: kick off immediately on idle.
+    // Mobile first visit: 1.5s delay. Mobile repeat (cached): no delay.
+    // Desktop: no delay.
+    const baseDelay = mobile && !videoCached ? 1500 : 0;
+
     let idleHandle: number | undefined;
     const timerHandle = window.setTimeout(() => {
       idleHandle = idle(() => setShouldLoadVideo(true));
-    }, mobile ? 6000 : 0);
+    }, baseDelay);
 
     return () => {
       window.clearTimeout(timerHandle);
@@ -149,6 +158,18 @@ export function HeroSection() {
       }
     };
   }, []);
+
+  // Mark video as cached once it's actually been able to play, so the
+  // next visit can mount instantly without the first-visit delay.
+  useEffect(() => {
+    if (!shouldLoadVideo || !videoRef.current) return;
+    const v = videoRef.current;
+    const markCached = () => {
+      try { window.localStorage.setItem('hero_video_seen', '1'); } catch {}
+    };
+    v.addEventListener('canplay', markCached, { once: true });
+    return () => v.removeEventListener('canplay', markCached);
+  }, [shouldLoadVideo]);
 
   useEffect(() => {
     if (shouldLoadVideo && videoRef.current) {
