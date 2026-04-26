@@ -112,9 +112,16 @@ export function HeroSection() {
 
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
-  // Defer the 10MB hero video until the browser is idle so it doesn't
-  // block the initial payload / TTI on slow networks.
+  // Skip video entirely on mobile (saves ~10MB and prevents the <video>
+  // from being promoted as the LCP element). On desktop, defer mount to
+  // idle so the video doesn't block initial paint.
   useEffect(() => {
+    const isDesktop =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(min-width: 768px)').matches &&
+      !window.matchMedia('(prefers-reduced-data: reduce)').matches;
+    if (!isDesktop) return;
+
     const w = window as Window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
       cancelIdleCallback?: (handle: number) => void;

@@ -106,6 +106,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${cairo.variable}`}>
+      <head>
+        {/* Establish connections early for deferred third parties so the first
+            request to them doesn't pay TLS + DNS cost. */}
+        <link rel="preconnect" href="https://www.google.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://user-images.trustpilot.com" />
+      </head>
       <body className="font-sans antialiased">
         {/* Google reCAPTCHA v3 - loaded after page interaction */}
         <RecaptchaScript />
