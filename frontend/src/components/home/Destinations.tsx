@@ -9,6 +9,7 @@ import { ChevronRight, MapPin, Loader2 } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 import { useLanguageStore } from '@/store/languageStore';
 import { destinationsHomeT, t } from '@/lib/translations';
+import { RichText } from '@/components/ui/RichText';
 
 interface Destination {
   id: number;
@@ -122,9 +123,17 @@ export function Destinations() {
 
                   {/* Content */}
                   <div className="absolute inset-x-0 bottom-0 p-6">
-                    <span className="text-primary-400 text-sm font-medium mb-1 block">
-                      {destination.tagline || t(destinationsHomeT, language, 'discover')}
-                    </span>
+                    {destination.tagline ? (
+                      <RichText
+                        html={destination.tagline}
+                        as="span"
+                        className="rich-text-compact text-primary-400 text-sm font-medium mb-1 block"
+                      />
+                    ) : (
+                      <span className="text-primary-400 text-sm font-medium mb-1 block">
+                        {t(destinationsHomeT, language, 'discover')}
+                      </span>
+                    )}
                     <h3 className="text-2xl font-display font-bold text-white mb-2">
                       {destination.name}
                     </h3>

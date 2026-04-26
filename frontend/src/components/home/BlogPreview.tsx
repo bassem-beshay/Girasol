@@ -10,6 +10,7 @@ import { formatDate } from '@/lib/utils';
 import { useInView } from '@/hooks/useInView';
 import { useLanguageStore } from '@/store/languageStore';
 import { blogPreviewT, t } from '@/lib/translations';
+import { RichText } from '@/components/ui/RichText';
 
 interface BlogCategory {
   id: number;
@@ -160,9 +161,10 @@ export function BlogPreview() {
                     </h3>
 
                     {/* Excerpt - Fixed 2 lines */}
-                    <p className="text-gray-600 text-sm line-clamp-2 min-h-[2.5rem]">
-                      {post.excerpt}
-                    </p>
+                    <RichText
+                      html={post.excerpt}
+                      className="rich-text-compact text-gray-600 text-sm line-clamp-2 min-h-[2.5rem]"
+                    />
 
                     {/* Read more - Always at bottom */}
                     <span className="inline-flex items-center text-primary-600 font-medium mt-auto pt-4 group-hover:translate-x-1 transition-transform">

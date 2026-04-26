@@ -35,6 +35,7 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { InquiryForm } from '@/components/tours/InquiryForm';
+import { RichText } from '@/components/ui/RichText';
 import { useLanguageStore } from '@/store/languageStore';
 import { tourDetailT, t } from '@/lib/translations';
 
@@ -164,8 +165,8 @@ function FAQItem({ question, answer, isOpen, onClick }: {
         transition={{ duration: 0.2 }}
         className="overflow-hidden"
       >
-        <div className="p-5 pt-0 text-gray-600 leading-relaxed">
-          {answer}
+        <div className="p-5 pt-0">
+          <RichText html={answer} className="text-gray-600" />
         </div>
       </motion.div>
     </div>
@@ -468,7 +469,7 @@ export default function TourDetailPage() {
                   className="overflow-hidden"
                 >
                   <div className="px-6 pb-6">
-                    <p className="text-gray-600 leading-relaxed">{tour.description}</p>
+                    <RichText html={tour.description} className="text-gray-600" />
 
                     {/* Quick Info */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t">
@@ -580,7 +581,7 @@ export default function TourDetailPage() {
                             </div>
                             <div>
                               <h3 className="font-semibold text-gray-900">{highlight.title}</h3>
-                              <p className="text-sm text-gray-600">{highlight.description}</p>
+                              <RichText html={highlight.description} className="text-sm text-gray-600" />
                             </div>
                           </div>
                         ))}
@@ -616,7 +617,7 @@ export default function TourDetailPage() {
                               </span>
                               <h3 className="text-lg font-semibold text-gray-900">{day.title}</h3>
                             </div>
-                            <p className="text-gray-600 mb-4 text-justify">{day.description}</p>
+                            <RichText html={day.description} className="text-gray-600 mb-4" />
                             <div className="flex flex-wrap gap-3 text-sm">
                               {day.locations && (
                                 <div className="flex items-center gap-2 text-gray-500">

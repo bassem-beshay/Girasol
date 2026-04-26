@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { useLanguageStore } from '@/store/languageStore';
 import { blogDetailT, t } from '@/lib/translations';
+import { RichText } from '@/components/ui/RichText';
 
 interface BlogCategory {
   id: number;
@@ -228,9 +229,10 @@ export default function BlogPostPage() {
             <article className="lg:col-span-3">
               <div className="bg-white rounded-2xl p-8 shadow-md">
                 {/* Excerpt */}
-                <p className="text-xl text-gray-600 leading-relaxed mb-8 pb-8 border-b">
-                  {post.excerpt}
-                </p>
+                <RichText
+                  html={post.excerpt}
+                  className="text-xl text-gray-600 mb-8 pb-8 border-b"
+                />
 
                 {/* Content - Sanitized to prevent XSS */}
                 <div

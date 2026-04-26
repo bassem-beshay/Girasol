@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useLanguageStore } from '@/store/languageStore';
 import { destinationsPageT, t } from '@/lib/translations';
+import { RichText } from '@/components/ui/RichText';
 
 interface Destination {
   id: number;
@@ -146,9 +147,11 @@ export default function DestinationsPage() {
 
                     {/* Content */}
                     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 md:p-6">
-                      <span className="text-primary-400 text-xs sm:text-sm font-medium mb-1 block">
-                        {destination.tagline}
-                      </span>
+                      <RichText
+                        html={destination.tagline}
+                        as="span"
+                        className="rich-text-compact text-primary-400 text-xs sm:text-sm font-medium mb-1 block"
+                      />
                       <h3 className="text-lg sm:text-xl md:text-2xl font-display font-bold text-white mb-1 sm:mb-2">
                         {destination.name}
                       </h3>
@@ -226,9 +229,10 @@ export default function DestinationsPage() {
                       <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-1.5 sm:mb-2 group-hover:text-primary-600 transition-colors">
                         {destination.name}
                       </h3>
-                      <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
-                        {destination.tagline}
-                      </p>
+                      <RichText
+                        html={destination.tagline}
+                        className="rich-text-compact text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2"
+                      />
                       <div className="flex items-center justify-between pt-3 sm:pt-4 border-t">
                         <span className="text-primary-600 font-medium text-sm sm:text-base">
                           {t(destinationsPageT, language, 'tours').replace('{count}', String(destination.tour_count))}

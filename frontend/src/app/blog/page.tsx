@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useLanguageStore } from '@/store/languageStore';
 import { blogPageT, t } from '@/lib/translations';
+import { RichText } from '@/components/ui/RichText';
 
 interface BlogCategory {
   id: number;
@@ -211,7 +212,7 @@ export default function BlogPage() {
                     <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
                       <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{post.excerpt}</p>
+                    <RichText html={post.excerpt} className="rich-text-compact text-gray-600 mb-4 line-clamp-2" />
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <User className="w-4 h-4" />
@@ -397,7 +398,7 @@ export default function BlogPage() {
                           <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
                             <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                           </h3>
-                          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                          <RichText html={post.excerpt} className="rich-text-compact text-gray-600 text-sm mb-4 line-clamp-2" />
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 text-sm text-gray-500">
                               <User className="w-4 h-4" />

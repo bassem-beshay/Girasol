@@ -23,6 +23,7 @@ import {
 import { useState } from 'react';
 import { useLanguageStore } from '@/store/languageStore';
 import { destinationDetailT, t } from '@/lib/translations';
+import { RichText } from '@/components/ui/RichText';
 
 interface Activity {
   id: number;
@@ -159,9 +160,11 @@ export default function DestinationDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-primary-400 text-sm sm:text-base md:text-lg font-medium mb-1 sm:mb-2 block">
-                {destination.tagline}
-              </span>
+              <RichText
+                html={destination.tagline}
+                as="span"
+                className="rich-text-compact text-primary-400 text-sm sm:text-base md:text-lg font-medium mb-1 sm:mb-2 block"
+              />
               <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-2 sm:mb-4">
                 {destination.name}
               </h1>
@@ -189,9 +192,7 @@ export default function DestinationDetailPage() {
               {/* About */}
               <div className="bg-white rounded-2xl p-6 shadow-md">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">{t(destinationDetailT, language, 'about').replace('{name}', destination.name)}</h2>
-                <p className="text-gray-600 leading-relaxed whitespace-pre-line">
-                  {destination.description}
-                </p>
+                <RichText html={destination.description} className="text-gray-600" />
               </div>
 
               {/* Travel Info Section */}
@@ -207,9 +208,7 @@ export default function DestinationDetailPage() {
                           </div>
                           <h3 className="font-semibold text-gray-900">{t(destinationDetailT, language, 'bestTimeToVisit')}</h3>
                         </div>
-                        <p className="text-gray-600 text-sm leading-relaxed">
-                          {destination.best_time_to_visit}
-                        </p>
+                        <RichText html={destination.best_time_to_visit} className="text-gray-600 text-sm" />
                       </div>
                     )}
                     {destination.getting_there && (
@@ -220,9 +219,7 @@ export default function DestinationDetailPage() {
                           </div>
                           <h3 className="font-semibold text-gray-900">{t(destinationDetailT, language, 'gettingThere')}</h3>
                         </div>
-                        <p className="text-gray-600 text-sm leading-relaxed">
-                          {destination.getting_there}
-                        </p>
+                        <RichText html={destination.getting_there} className="text-gray-600 text-sm" />
                       </div>
                     )}
                     {destination.climate_info && (
@@ -233,9 +230,7 @@ export default function DestinationDetailPage() {
                           </div>
                           <h3 className="font-semibold text-gray-900">{t(destinationDetailT, language, 'climate')}</h3>
                         </div>
-                        <p className="text-gray-600 text-sm leading-relaxed">
-                          {destination.climate_info}
-                        </p>
+                        <RichText html={destination.climate_info} className="text-gray-600 text-sm" />
                       </div>
                     )}
                   </div>
@@ -295,7 +290,7 @@ export default function DestinationDetailPage() {
                         className="p-4 border rounded-xl hover:border-primary-500 transition-colors"
                       >
                         <h3 className="font-semibold text-gray-900 mb-2">{activity.name}</h3>
-                        <p className="text-sm text-gray-600 mb-3">{activity.description}</p>
+                        <RichText html={activity.description} className="text-sm text-gray-600 mb-3" />
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-primary-600 font-medium">
                             {t(destinationDetailT, language, 'fromPrice').replace('{price}', parseFloat(activity.price_from).toFixed(0))}

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { HelpCircle, ChevronDown, Search, Loader2, MessageCircle } from 'lucide-react';
 import { useLanguageStore } from '@/store/languageStore';
 import { faqT, t } from '@/lib/translations';
+import { RichText } from '@/components/ui/RichText';
 
 interface FAQ {
   id: number;
@@ -40,7 +41,7 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: FAQ; isOpen: boolean; onToggl
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <p className="pb-6 text-gray-600 leading-relaxed">{faq.answer}</p>
+            <RichText html={faq.answer} className="pb-6 text-gray-600" />
           </motion.div>
         )}
       </AnimatePresence>
