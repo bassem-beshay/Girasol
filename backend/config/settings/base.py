@@ -405,9 +405,11 @@ CKEDITOR_5_CONFIGS = {
             'options': ['left', 'right', 'center', 'justify'],
         },
         'image': {
-            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
-                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side'],
-            'styles': ['full', 'side', 'alignLeft', 'alignRight', 'alignCenter'],
+            'toolbar': [
+                'imageTextAlternative', 'toggleImageCaption', '|',
+                'imageStyle:alignLeft', 'imageStyle:alignRight', '|',
+                'imageStyle:block', 'imageStyle:wrapText', 'imageStyle:breakText',
+            ],
         },
         'link': {
             'addTargetToExternalLinks': True,

@@ -37,7 +37,7 @@ class TourImageInline(admin.TabularInline):
 
 class TourHighlightInline(admin.StackedInline):
     model = TourHighlight
-    extra = 1
+    extra = 0
     fieldsets = (
         (None, {'fields': ('icon', 'sort_order')}),
         ('Title', {'fields': ('title', 'title_es', 'title_pt')}),
@@ -47,7 +47,7 @@ class TourHighlightInline(admin.StackedInline):
 
 class TourItineraryInline(admin.StackedInline):
     model = TourItinerary
-    extra = 1
+    extra = 0
     fieldsets = (
         ('Day', {'fields': ('day_number', 'image')}),
         ('Title', {'fields': ('title', 'title_es', 'title_pt')}),
