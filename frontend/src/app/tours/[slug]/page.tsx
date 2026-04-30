@@ -47,6 +47,8 @@ interface TourDetail {
   short_description: string;
   description: string;
   featured_image: string | null;
+  image_alt?: string;
+  image_title?: string;
   gallery_images: string[];
   category: {
     id: number;
@@ -127,6 +129,8 @@ interface TourDetail {
     image: string;
     caption: string;
     alt_text: string;
+    title?: string;
+    description?: string;
   }>;
   // Early Booking fields
   is_early_booking: boolean;
@@ -345,7 +349,8 @@ export default function TourDetailPage() {
         {tour.featured_image ? (
           <Image
             src={tour.featured_image}
-            alt={tour.name}
+            alt={tour.image_alt || tour.name}
+            title={tour.image_title || undefined}
             fill
             sizes="100vw"
             className="object-cover"
@@ -536,6 +541,7 @@ export default function TourDetailPage() {
                             <Image
                               src={image.image}
                               alt={image.alt_text || image.caption || `Tour photo ${index + 1}`}
+                              title={image.title || undefined}
                               fill
                               sizes="(max-width: 768px) 50vw, 33vw"
                               className="object-cover transition-transform duration-300 group-hover:scale-110"
@@ -1147,6 +1153,7 @@ export default function TourDetailPage() {
             <Image
               src={tour.images[currentImageIndex].image}
               alt={tour.images[currentImageIndex].alt_text || tour.images[currentImageIndex].caption || ''}
+              title={tour.images[currentImageIndex].title || undefined}
               fill
               sizes="100vw"
               className="object-contain"

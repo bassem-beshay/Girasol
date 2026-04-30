@@ -7,11 +7,16 @@ from .models import Review, ReviewImage, Testimonial
 
 
 class ReviewImageSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
-    TRANSLATABLE_FIELDS = ['caption']
+    TRANSLATABLE_FIELDS = ['caption', 'alt_text', 'title', 'description']
 
     class Meta:
         model = ReviewImage
-        fields = ['id', 'image', 'caption', 'caption_es', 'caption_pt']
+        fields = [
+            'id', 'image', 'caption', 'caption_es', 'caption_pt',
+            'alt_text', 'alt_text_es', 'alt_text_pt',
+            'title', 'title_es', 'title_pt',
+            'description', 'description_es', 'description_pt',
+        ]
 
 
 class ReviewSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):

@@ -18,6 +18,18 @@ class TourCategory(TimeStampedModel, SluggedModel, SortableModel):
     description_pt = CKEditor5Field('Description (Portuguese)', config_name='default', blank=True)
     icon = models.CharField(max_length=50, blank=True, help_text='Icon class name')
     image = models.ImageField(upload_to='tours/categories/', null=True, blank=True)
+    image_alt = models.CharField('Image Alt Text', max_length=255, blank=True)
+    image_alt_es = models.CharField('Image Alt Text (Spanish)', max_length=255, blank=True)
+    image_alt_pt = models.CharField('Image Alt Text (Portuguese)', max_length=255, blank=True)
+    image_title = models.CharField('Image Title', max_length=255, blank=True)
+    image_title_es = models.CharField('Image Title (Spanish)', max_length=255, blank=True)
+    image_title_pt = models.CharField('Image Title (Portuguese)', max_length=255, blank=True)
+    image_caption = models.CharField('Image Caption', max_length=255, blank=True)
+    image_caption_es = models.CharField('Image Caption (Spanish)', max_length=255, blank=True)
+    image_caption_pt = models.CharField('Image Caption (Portuguese)', max_length=255, blank=True)
+    image_description = models.TextField('Image Description', blank=True)
+    image_description_es = models.TextField('Image Description (Spanish)', blank=True)
+    image_description_pt = models.TextField('Image Description (Portuguese)', blank=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -99,6 +111,18 @@ class Tour(TimeStampedModel, SluggedModel, SEOModel, PublishableModel):
 
     # Media
     featured_image = models.ImageField(upload_to='tours/')
+    image_alt = models.CharField('Image Alt Text', max_length=255, blank=True)
+    image_alt_es = models.CharField('Image Alt Text (Spanish)', max_length=255, blank=True)
+    image_alt_pt = models.CharField('Image Alt Text (Portuguese)', max_length=255, blank=True)
+    image_title = models.CharField('Image Title', max_length=255, blank=True)
+    image_title_es = models.CharField('Image Title (Spanish)', max_length=255, blank=True)
+    image_title_pt = models.CharField('Image Title (Portuguese)', max_length=255, blank=True)
+    image_caption = models.CharField('Image Caption', max_length=255, blank=True)
+    image_caption_es = models.CharField('Image Caption (Spanish)', max_length=255, blank=True)
+    image_caption_pt = models.CharField('Image Caption (Portuguese)', max_length=255, blank=True)
+    image_description = models.TextField('Image Description', blank=True)
+    image_description_es = models.TextField('Image Description (Spanish)', blank=True)
+    image_description_pt = models.TextField('Image Description (Portuguese)', blank=True)
     video_url = models.URLField(blank=True)
 
     # Features
@@ -180,6 +204,12 @@ class TourImage(TimeStampedModel, SortableModel):
     alt_text = models.CharField(max_length=200, blank=True)
     alt_text_es = models.CharField('Alt Text (Spanish)', max_length=200, blank=True)
     alt_text_pt = models.CharField('Alt Text (Portuguese)', max_length=200, blank=True)
+    title = models.CharField('Image Title', max_length=255, blank=True)
+    title_es = models.CharField('Image Title (Spanish)', max_length=255, blank=True)
+    title_pt = models.CharField('Image Title (Portuguese)', max_length=255, blank=True)
+    description = models.TextField('Image Description', blank=True)
+    description_es = models.TextField('Image Description (Spanish)', blank=True)
+    description_pt = models.TextField('Image Description (Portuguese)', blank=True)
 
     class Meta:
         verbose_name = 'Tour Image'
@@ -235,6 +265,18 @@ class TourItinerary(TimeStampedModel, SortableModel):
     accommodation_es = models.CharField('Accommodation (Spanish)', max_length=200, blank=True)
     accommodation_pt = models.CharField('Accommodation (Portuguese)', max_length=200, blank=True)
     image = models.ImageField(upload_to='tours/itinerary/', null=True, blank=True)
+    image_alt = models.CharField('Image Alt Text', max_length=255, blank=True)
+    image_alt_es = models.CharField('Image Alt Text (Spanish)', max_length=255, blank=True)
+    image_alt_pt = models.CharField('Image Alt Text (Portuguese)', max_length=255, blank=True)
+    image_title = models.CharField('Image Title', max_length=255, blank=True)
+    image_title_es = models.CharField('Image Title (Spanish)', max_length=255, blank=True)
+    image_title_pt = models.CharField('Image Title (Portuguese)', max_length=255, blank=True)
+    image_caption = models.CharField('Image Caption', max_length=255, blank=True)
+    image_caption_es = models.CharField('Image Caption (Spanish)', max_length=255, blank=True)
+    image_caption_pt = models.CharField('Image Caption (Portuguese)', max_length=255, blank=True)
+    image_description = models.TextField('Image Description', blank=True)
+    image_description_es = models.TextField('Image Description (Spanish)', blank=True)
+    image_description_pt = models.TextField('Image Description (Portuguese)', blank=True)
 
     class Meta:
         verbose_name = 'Tour Itinerary'
@@ -430,6 +472,18 @@ class EarlyBookingOffer(TimeStampedModel):
         null=True,
         blank=True
     )
+    banner_image_alt = models.CharField('Banner Alt Text', max_length=255, blank=True)
+    banner_image_alt_es = models.CharField('Banner Alt Text (Spanish)', max_length=255, blank=True)
+    banner_image_alt_pt = models.CharField('Banner Alt Text (Portuguese)', max_length=255, blank=True)
+    banner_image_title = models.CharField('Banner Title', max_length=255, blank=True)
+    banner_image_title_es = models.CharField('Banner Title (Spanish)', max_length=255, blank=True)
+    banner_image_title_pt = models.CharField('Banner Title (Portuguese)', max_length=255, blank=True)
+    banner_image_caption = models.CharField('Banner Caption', max_length=255, blank=True)
+    banner_image_caption_es = models.CharField('Banner Caption (Spanish)', max_length=255, blank=True)
+    banner_image_caption_pt = models.CharField('Banner Caption (Portuguese)', max_length=255, blank=True)
+    banner_image_description = models.TextField('Banner Description', blank=True)
+    banner_image_description_es = models.TextField('Banner Description (Spanish)', blank=True)
+    banner_image_description_pt = models.TextField('Banner Description (Portuguese)', blank=True)
     background_color = models.CharField(
         max_length=7,
         default='#2563eb',

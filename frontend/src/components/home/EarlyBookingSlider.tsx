@@ -51,6 +51,8 @@ interface EarlyBookingOffer {
   badge_text_es?: string;
   badge_text_pt?: string;
   banner_image: string | null;
+  banner_image_alt?: string;
+  banner_image_title?: string;
   background_color: string;
   is_currently_active: boolean;
   is_featured: boolean;
@@ -242,7 +244,8 @@ export function EarlyBookingSlider() {
           {currentOffer.banner_image ? (
             <Image
               src={fixImageUrl(currentOffer.banner_image) || ''}
-              alt={getField(currentOffer, "title", language)}
+              alt={currentOffer.banner_image_alt || getField(currentOffer, "title", language)}
+              title={currentOffer.banner_image_title || undefined}
               fill
               sizes="100vw"
               className="object-cover"

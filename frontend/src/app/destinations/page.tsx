@@ -18,6 +18,8 @@ interface Destination {
   tagline: string;
   description: string;
   featured_image: string | null;
+  image_alt?: string;
+  image_title?: string;
   country: string;
   region: string;
   tour_count: number;
@@ -126,7 +128,8 @@ export default function DestinationsPage() {
                     {destination.featured_image ? (
                       <Image
                         src={fixImageUrl(destination.featured_image) || ''}
-                        alt={destination.name}
+                        alt={destination.image_alt || destination.name}
+                        title={destination.image_title || undefined}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -210,7 +213,8 @@ export default function DestinationsPage() {
                       {destination.featured_image ? (
                         <Image
                           src={fixImageUrl(destination.featured_image) || ''}
-                          alt={destination.name}
+                          alt={destination.image_alt || destination.name}
+                        title={destination.image_title || undefined}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           loading="lazy"

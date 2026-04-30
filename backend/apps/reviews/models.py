@@ -82,6 +82,15 @@ class ReviewImage(TimeStampedModel):
     caption = models.CharField(max_length=200, blank=True)
     caption_es = models.CharField('Caption (Spanish)', max_length=200, blank=True)
     caption_pt = models.CharField('Caption (Portuguese)', max_length=200, blank=True)
+    alt_text = models.CharField('Alt Text', max_length=255, blank=True)
+    alt_text_es = models.CharField('Alt Text (Spanish)', max_length=255, blank=True)
+    alt_text_pt = models.CharField('Alt Text (Portuguese)', max_length=255, blank=True)
+    title = models.CharField('Image Title', max_length=255, blank=True)
+    title_es = models.CharField('Image Title (Spanish)', max_length=255, blank=True)
+    title_pt = models.CharField('Image Title (Portuguese)', max_length=255, blank=True)
+    description = models.TextField('Image Description', blank=True)
+    description_es = models.TextField('Image Description (Spanish)', blank=True)
+    description_pt = models.TextField('Image Description (Portuguese)', blank=True)
 
     class Meta:
         verbose_name = 'Review Image'

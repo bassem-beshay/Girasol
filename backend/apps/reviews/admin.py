@@ -5,7 +5,12 @@ from .models import Review, ReviewImage, Testimonial
 class ReviewImageInline(admin.TabularInline):
     model = ReviewImage
     extra = 1
-    fields = ['image', 'caption', 'caption_es', 'caption_pt']
+    fields = [
+        'image', 'caption', 'caption_es', 'caption_pt',
+        'alt_text', 'alt_text_es', 'alt_text_pt',
+        'title', 'title_es', 'title_pt',
+        'description', 'description_es', 'description_pt',
+    ]
 
 
 @admin.register(Review)

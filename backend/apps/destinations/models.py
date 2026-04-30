@@ -21,6 +21,18 @@ class Destination(TimeStampedModel, SluggedModel, SEOModel, SortableModel):
 
     # Media
     featured_image = models.ImageField(upload_to='destinations/')
+    image_alt = models.CharField('Image Alt Text', max_length=255, blank=True)
+    image_alt_es = models.CharField('Image Alt Text (Spanish)', max_length=255, blank=True)
+    image_alt_pt = models.CharField('Image Alt Text (Portuguese)', max_length=255, blank=True)
+    image_title = models.CharField('Image Title', max_length=255, blank=True)
+    image_title_es = models.CharField('Image Title (Spanish)', max_length=255, blank=True)
+    image_title_pt = models.CharField('Image Title (Portuguese)', max_length=255, blank=True)
+    image_caption = models.CharField('Image Caption', max_length=255, blank=True)
+    image_caption_es = models.CharField('Image Caption (Spanish)', max_length=255, blank=True)
+    image_caption_pt = models.CharField('Image Caption (Portuguese)', max_length=255, blank=True)
+    image_description = models.TextField('Image Description', blank=True)
+    image_description_es = models.TextField('Image Description (Spanish)', blank=True)
+    image_description_pt = models.TextField('Image Description (Portuguese)', blank=True)
 
     # Location
     country = models.CharField(max_length=100, default='Egypt')
@@ -72,6 +84,12 @@ class DestinationImage(TimeStampedModel, SortableModel):
     alt_text = models.CharField(max_length=200, blank=True)
     alt_text_es = models.CharField('Alt Text (Spanish)', max_length=200, blank=True)
     alt_text_pt = models.CharField('Alt Text (Portuguese)', max_length=200, blank=True)
+    title = models.CharField('Image Title', max_length=255, blank=True)
+    title_es = models.CharField('Image Title (Spanish)', max_length=255, blank=True)
+    title_pt = models.CharField('Image Title (Portuguese)', max_length=255, blank=True)
+    description = models.TextField('Image Description', blank=True)
+    description_es = models.TextField('Image Description (Spanish)', blank=True)
+    description_pt = models.TextField('Image Description (Portuguese)', blank=True)
 
     class Meta:
         verbose_name = 'Destination Image'
@@ -95,6 +113,18 @@ class Activity(TimeStampedModel, SortableModel):
     description_es = CKEditor5Field('Description (Spanish)', config_name='default', blank=True)
     description_pt = CKEditor5Field('Description (Portuguese)', config_name='default', blank=True)
     image = models.ImageField(upload_to='destinations/activities/', null=True, blank=True)
+    image_alt = models.CharField('Image Alt Text', max_length=255, blank=True)
+    image_alt_es = models.CharField('Image Alt Text (Spanish)', max_length=255, blank=True)
+    image_alt_pt = models.CharField('Image Alt Text (Portuguese)', max_length=255, blank=True)
+    image_title = models.CharField('Image Title', max_length=255, blank=True)
+    image_title_es = models.CharField('Image Title (Spanish)', max_length=255, blank=True)
+    image_title_pt = models.CharField('Image Title (Portuguese)', max_length=255, blank=True)
+    image_caption = models.CharField('Image Caption', max_length=255, blank=True)
+    image_caption_es = models.CharField('Image Caption (Spanish)', max_length=255, blank=True)
+    image_caption_pt = models.CharField('Image Caption (Portuguese)', max_length=255, blank=True)
+    image_description = models.TextField('Image Description', blank=True)
+    image_description_es = models.TextField('Image Description (Spanish)', blank=True)
+    image_description_pt = models.TextField('Image Description (Portuguese)', blank=True)
     price_from = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     price_to = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     duration = models.CharField(max_length=50, blank=True, help_text='e.g., 2 hours, Full day')

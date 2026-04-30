@@ -38,6 +38,8 @@ interface DestinationImage {
   image: string;
   caption: string;
   alt_text: string;
+  title?: string;
+  description?: string;
 }
 
 interface DestinationDetail {
@@ -49,6 +51,8 @@ interface DestinationDetail {
   description: string;
   description_ar: string;
   featured_image: string | null;
+  image_alt?: string;
+  image_title?: string;
   images: DestinationImage[];
   country: string;
   region: string;
@@ -68,6 +72,8 @@ interface Tour {
   slug: string;
   short_description: string;
   featured_image: string | null;
+  image_alt?: string;
+  image_title?: string;
   days: number;
   nights: number;
   duration_display: string;
@@ -144,7 +150,8 @@ export default function DestinationDetailPage() {
         {destination.featured_image ? (
           <Image
             src={destination.featured_image}
-            alt={destination.name}
+            alt={destination.image_alt || destination.name}
+            title={destination.image_title || undefined}
             fill
             className="object-cover"
             priority
@@ -262,6 +269,7 @@ export default function DestinationDetailPage() {
                         <Image
                           src={img.image}
                           alt={img.alt_text || `${destination.name} photo ${index + 1}`}
+                          title={img.title || undefined}
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-110"
                         />
@@ -331,7 +339,8 @@ export default function DestinationDetailPage() {
                           {tour.featured_image ? (
                             <Image
                               src={tour.featured_image}
-                              alt={tour.name}
+                              alt={tour.image_alt || tour.name}
+                              title={tour.image_title || undefined}
                               fill
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
                             />
@@ -494,6 +503,7 @@ export default function DestinationDetailPage() {
             <Image
               src={destination.images[currentImageIndex].image}
               alt={destination.images[currentImageIndex].alt_text || `${destination.name} photo ${currentImageIndex + 1}`}
+              title={destination.images[currentImageIndex].title || undefined}
               fill
               className="object-contain"
             />

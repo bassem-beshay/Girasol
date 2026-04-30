@@ -11,7 +11,7 @@ from apps.destinations.serializers import DestinationListSerializer
 
 
 class TourCategorySerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
-    TRANSLATABLE_FIELDS = ['name', 'description']
+    TRANSLATABLE_FIELDS = ['name', 'description', 'image_alt', 'image_title', 'image_caption', 'image_description']
     tour_count = serializers.SerializerMethodField()
 
     class Meta:
@@ -19,7 +19,11 @@ class TourCategorySerializer(MultiLanguageSerializerMixin, serializers.ModelSeri
         fields = [
             'id', 'name', 'name_es', 'name_pt', 'slug',
             'description', 'description_es', 'description_pt',
-            'icon', 'image', 'tour_count'
+            'icon', 'image', 'tour_count',
+            'image_alt', 'image_alt_es', 'image_alt_pt',
+            'image_title', 'image_title_es', 'image_title_pt',
+            'image_caption', 'image_caption_es', 'image_caption_pt',
+            'image_description', 'image_description_es', 'image_description_pt',
         ]
 
     def get_tour_count(self, obj):
@@ -43,11 +47,16 @@ class TourTypeSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializ
 
 
 class TourImageSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
-    TRANSLATABLE_FIELDS = ['caption', 'alt_text']
+    TRANSLATABLE_FIELDS = ['caption', 'alt_text', 'title', 'description']
 
     class Meta:
         model = TourImage
-        fields = ['id', 'image', 'caption', 'caption_es', 'caption_pt', 'alt_text', 'alt_text_es', 'alt_text_pt']
+        fields = [
+            'id', 'image', 'caption', 'caption_es', 'caption_pt',
+            'alt_text', 'alt_text_es', 'alt_text_pt',
+            'title', 'title_es', 'title_pt',
+            'description', 'description_es', 'description_pt',
+        ]
 
 
 class TourHighlightSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
@@ -59,7 +68,10 @@ class TourHighlightSerializer(MultiLanguageSerializerMixin, serializers.ModelSer
 
 
 class TourItinerarySerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
-    TRANSLATABLE_FIELDS = ['title', 'description', 'locations', 'meals_included', 'accommodation']
+    TRANSLATABLE_FIELDS = [
+        'title', 'description', 'locations', 'meals_included', 'accommodation',
+        'image_alt', 'image_title', 'image_caption', 'image_description',
+    ]
 
     class Meta:
         model = TourItinerary
@@ -70,7 +82,11 @@ class TourItinerarySerializer(MultiLanguageSerializerMixin, serializers.ModelSer
             'locations', 'locations_es', 'locations_pt',
             'meals_included', 'meals_included_es', 'meals_included_pt',
             'accommodation', 'accommodation_es', 'accommodation_pt',
-            'image'
+            'image',
+            'image_alt', 'image_alt_es', 'image_alt_pt',
+            'image_title', 'image_title_es', 'image_title_pt',
+            'image_caption', 'image_caption_es', 'image_caption_pt',
+            'image_description', 'image_description_es', 'image_description_pt',
         ]
 
 
@@ -109,7 +125,10 @@ class TourFAQSerializer(MultiLanguageSerializerMixin, serializers.ModelSerialize
 
 class TourListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
     """Serializer for tour listing (minimal data)."""
-    TRANSLATABLE_FIELDS = ['name', 'short_description']
+    TRANSLATABLE_FIELDS = [
+        'name', 'short_description',
+        'image_alt', 'image_title', 'image_caption', 'image_description',
+    ]
     category = TourCategorySerializer(read_only=True)
     tour_type = TourTypeSerializer(read_only=True)
     duration_display = serializers.CharField(read_only=True)
@@ -128,7 +147,12 @@ class TourListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializ
         fields = [
             'id', 'name', 'name_es', 'name_pt', 'slug',
             'short_description', 'short_description_es', 'short_description_pt',
-            'featured_image', 'category', 'tour_type', 'days', 'nights', 'duration_display',
+            'featured_image',
+            'image_alt', 'image_alt_es', 'image_alt_pt',
+            'image_title', 'image_title_es', 'image_title_pt',
+            'image_caption', 'image_caption_es', 'image_caption_pt',
+            'image_description', 'image_description_es', 'image_description_pt',
+            'category', 'tour_type', 'days', 'nights', 'duration_display',
             'price', 'discounted_price', 'currency', 'has_discount', 'discount_percentage',
             'discount_start_date', 'discount_end_date',
             'is_featured', 'is_best_seller', 'is_new', 'is_multi_destination',
@@ -178,7 +202,10 @@ class TourListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializ
 
 class TourDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
     """Serializer for full tour details."""
-    TRANSLATABLE_FIELDS = ['name', 'short_description', 'description']
+    TRANSLATABLE_FIELDS = [
+        'name', 'short_description', 'description',
+        'image_alt', 'image_title', 'image_caption', 'image_description',
+    ]
     category = TourCategorySerializer(read_only=True)
     tour_type = TourTypeSerializer(read_only=True)
     destinations = DestinationListSerializer(many=True, read_only=True)
@@ -206,7 +233,12 @@ class TourDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerial
             'id', 'name', 'name_es', 'name_pt', 'slug',
             'short_description', 'short_description_es', 'short_description_pt',
             'description', 'description_es', 'description_pt',
-            'featured_image', 'video_url',
+            'featured_image',
+            'image_alt', 'image_alt_es', 'image_alt_pt',
+            'image_title', 'image_title_es', 'image_title_pt',
+            'image_caption', 'image_caption_es', 'image_caption_pt',
+            'image_description', 'image_description_es', 'image_description_pt',
+            'video_url',
             'category', 'tour_type', 'destinations', 'destination_names',
             'days', 'nights', 'duration_display', 'departure_city',
             'price', 'price_single_supplement', 'child_price', 'currency',
@@ -277,8 +309,9 @@ class TourSearchSerializer(serializers.Serializer):
     search = serializers.CharField(required=False)
 
 
-class EarlyBookingTourSerializer(serializers.ModelSerializer):
+class EarlyBookingTourSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
     """Minimal tour info for Early Booking offers."""
+    TRANSLATABLE_FIELDS = ['name', 'image_alt', 'image_title']
     duration_display = serializers.CharField(read_only=True)
     discounted_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
@@ -286,17 +319,23 @@ class EarlyBookingTourSerializer(serializers.ModelSerializer):
         model = Tour
         fields = [
             'id', 'name', 'slug', 'featured_image',
+            'image_alt', 'image_title',
             'days', 'nights', 'duration_display',
             'price', 'discounted_price', 'currency',
             'average_rating', 'review_count'
         ]
 
 
-class EarlyBookingOfferSerializer(serializers.ModelSerializer):
+class EarlyBookingOfferSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
     """
     Serializer for Early Booking Offers.
     الحجز المبكر - عروض خاصة للحجز المسبق
     """
+    TRANSLATABLE_FIELDS = [
+        'title', 'subtitle', 'description',
+        'terms_conditions', 'cancellation_policy', 'badge_text',
+        'banner_image_alt', 'banner_image_title', 'banner_image_caption', 'banner_image_description',
+    ]
     tours = EarlyBookingTourSerializer(many=True, read_only=True)
     is_currently_active = serializers.BooleanField(read_only=True)
     days_remaining = serializers.IntegerField(read_only=True)
@@ -322,6 +361,10 @@ class EarlyBookingOfferSerializer(serializers.ModelSerializer):
             'cancellation_policy', 'cancellation_policy_es', 'cancellation_policy_pt',
             'badge_text', 'badge_text_es', 'badge_text_pt',
             'banner_image', 'background_color',
+            'banner_image_alt', 'banner_image_alt_es', 'banner_image_alt_pt',
+            'banner_image_title', 'banner_image_title_es', 'banner_image_title_pt',
+            'banner_image_caption', 'banner_image_caption_es', 'banner_image_caption_pt',
+            'banner_image_description', 'banner_image_description_es', 'banner_image_description_pt',
             'is_currently_active', 'is_featured',
             'days_remaining', 'hours_remaining', 'minutes_remaining', 'seconds_remaining'
         ]
@@ -349,8 +392,12 @@ class EarlyBookingOfferSerializer(serializers.ModelSerializer):
         return tours_data
 
 
-class EarlyBookingOfferListSerializer(serializers.ModelSerializer):
+class EarlyBookingOfferListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
     """Simplified serializer for listing early booking offers."""
+    TRANSLATABLE_FIELDS = [
+        'title', 'subtitle', 'badge_text',
+        'banner_image_alt', 'banner_image_title', 'banner_image_caption', 'banner_image_description',
+    ]
     is_currently_active = serializers.BooleanField(read_only=True)
     days_remaining = serializers.IntegerField(read_only=True)
     tour_count = serializers.SerializerMethodField()
@@ -364,6 +411,10 @@ class EarlyBookingOfferListSerializer(serializers.ModelSerializer):
             'offer_end_date',
             'badge_text', 'badge_text_es', 'badge_text_pt',
             'banner_image', 'background_color',
+            'banner_image_alt', 'banner_image_alt_es', 'banner_image_alt_pt',
+            'banner_image_title', 'banner_image_title_es', 'banner_image_title_pt',
+            'banner_image_caption', 'banner_image_caption_es', 'banner_image_caption_pt',
+            'banner_image_description', 'banner_image_description_es', 'banner_image_description_pt',
             'is_currently_active', 'is_featured', 'days_remaining', 'tour_count'
         ]
 

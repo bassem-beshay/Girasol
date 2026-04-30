@@ -34,6 +34,8 @@ interface BlogPost {
   excerpt: string;
   content: string;
   featured_image: string | null;
+  featured_image_alt?: string;
+  featured_image_title?: string;
   category: BlogCategory | null;
   author_name: string;
   published_date: string;
@@ -180,7 +182,8 @@ export default function BlogPage() {
                     {post.featured_image ? (
                       <Image
                         src={post.featured_image}
-                        alt={post.title}
+                        alt={post.featured_image_alt || post.title}
+                        title={post.featured_image_title || undefined}
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover"
@@ -311,7 +314,8 @@ export default function BlogPage() {
                           {post.featured_image ? (
                             <Image
                               src={post.featured_image}
-                              alt={post.title}
+                              alt={post.featured_image_alt || post.title}
+                        title={post.featured_image_title || undefined}
                               width={80}
                               height={80}
                               className="w-full h-full object-cover"
@@ -366,7 +370,8 @@ export default function BlogPage() {
                           {post.featured_image ? (
                             <Image
                               src={post.featured_image}
-                              alt={post.title}
+                              alt={post.featured_image_alt || post.title}
+                        title={post.featured_image_title || undefined}
                               fill
                               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                               className="object-cover group-hover:scale-105 transition-transform duration-300"

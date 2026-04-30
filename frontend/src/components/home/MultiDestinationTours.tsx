@@ -17,6 +17,8 @@ interface Tour {
   slug: string;
   short_description: string;
   featured_image: string | null;
+  image_alt?: string;
+  image_title?: string;
   destination_names: string[];
   days: number;
   nights: number;
@@ -141,7 +143,8 @@ export function MultiDestinationTours() {
                     {tour.featured_image ? (
                       <Image
                         src={fixImageUrl(tour.featured_image) || ''}
-                        alt={tour.name}
+                        alt={tour.image_alt || tour.name}
+                        title={tour.image_title || undefined}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-110"

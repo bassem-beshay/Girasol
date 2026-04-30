@@ -14,6 +14,15 @@ class TourCategoryAdmin(admin.ModelAdmin):
         ('Basic', {'fields': ('name', 'slug', 'icon', 'image', 'is_active', 'sort_order')}),
         ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
         ('Translations', {'fields': ('name_es', 'name_pt'), 'classes': ('collapse',)}),
+        ('Image SEO', {
+            'fields': (
+                'image_alt', 'image_alt_es', 'image_alt_pt',
+                'image_title', 'image_title_es', 'image_title_pt',
+                'image_caption', 'image_caption_es', 'image_caption_pt',
+                'image_description', 'image_description_es', 'image_description_pt',
+            ),
+            'classes': ('collapse',)
+        }),
     )
 
 
@@ -32,7 +41,13 @@ class TourTypeAdmin(admin.ModelAdmin):
 class TourImageInline(admin.TabularInline):
     model = TourImage
     extra = 1
-    fields = ['image', 'caption', 'caption_es', 'caption_pt', 'alt_text', 'alt_text_es', 'alt_text_pt', 'sort_order']
+    fields = [
+        'image', 'caption', 'caption_es', 'caption_pt',
+        'alt_text', 'alt_text_es', 'alt_text_pt',
+        'title', 'title_es', 'title_pt',
+        'description', 'description_es', 'description_pt',
+        'sort_order'
+    ]
 
 
 class TourHighlightInline(admin.StackedInline):
@@ -55,6 +70,15 @@ class TourItineraryInline(admin.StackedInline):
         ('Locations', {'fields': ('locations', 'locations_es', 'locations_pt')}),
         ('Meals', {'fields': ('meals_included', 'meals_included_es', 'meals_included_pt')}),
         ('Accommodation', {'fields': ('accommodation', 'accommodation_es', 'accommodation_pt')}),
+        ('Image SEO', {
+            'fields': (
+                'image_alt', 'image_alt_es', 'image_alt_pt',
+                'image_title', 'image_title_es', 'image_title_pt',
+                'image_caption', 'image_caption_es', 'image_caption_pt',
+                'image_description', 'image_description_es', 'image_description_pt',
+            ),
+            'classes': ('collapse',)
+        }),
     )
 
 
@@ -119,6 +143,15 @@ class TourAdmin(admin.ModelAdmin):
         }),
         ('Media', {
             'fields': ('featured_image', 'video_url')
+        }),
+        ('Image SEO', {
+            'fields': (
+                'image_alt', 'image_alt_es', 'image_alt_pt',
+                'image_title', 'image_title_es', 'image_title_pt',
+                'image_caption', 'image_caption_es', 'image_caption_pt',
+                'image_description', 'image_description_es', 'image_description_pt',
+            ),
+            'classes': ('collapse',)
         }),
         ('Features', {
             'fields': (
@@ -195,6 +228,15 @@ class EarlyBookingOfferAdmin(admin.ModelAdmin):
         }),
         ('Display Settings', {
             'fields': ('badge_text', 'badge_text_es', 'badge_text_pt', 'banner_image', 'background_color')
+        }),
+        ('Banner Image SEO', {
+            'fields': (
+                'banner_image_alt', 'banner_image_alt_es', 'banner_image_alt_pt',
+                'banner_image_title', 'banner_image_title_es', 'banner_image_title_pt',
+                'banner_image_caption', 'banner_image_caption_es', 'banner_image_caption_pt',
+                'banner_image_description', 'banner_image_description_es', 'banner_image_description_pt',
+            ),
+            'classes': ('collapse',)
         }),
         ('Status', {
             'fields': ('is_active', 'is_featured', 'sort_order')

@@ -6,6 +6,10 @@ export interface Tour {
   short_description: string;
   description: string;
   featured_image: string;
+  image_alt?: string;
+  image_title?: string;
+  image_caption?: string;
+  image_description?: string;
   category: TourCategory;
   tour_type: 'package' | 'day_tour' | 'nile_cruise' | 'multi_country';
   destinations: Destination[];
@@ -40,6 +44,10 @@ export interface TourCategory {
   icon: string;
   image: string;
   tour_count: number;
+  image_alt?: string;
+  image_title?: string;
+  image_caption?: string;
+  image_description?: string;
 }
 
 export interface TourHighlight {
@@ -58,6 +66,10 @@ export interface TourItinerary {
   meals_included: string;
   accommodation: string;
   image: string | null;
+  image_alt?: string;
+  image_title?: string;
+  image_caption?: string;
+  image_description?: string;
 }
 
 export interface TourInclusion {
@@ -99,6 +111,10 @@ export interface Destination {
   tagline: string;
   description: string;
   featured_image: string;
+  image_alt?: string;
+  image_title?: string;
+  image_caption?: string;
+  image_description?: string;
   banner_image: string | null;
   country: string;
   region: string;
@@ -117,6 +133,8 @@ export interface DestinationImage {
   image: string;
   caption: string;
   alt_text: string;
+  title?: string;
+  description?: string;
 }
 
 export interface Area {
@@ -133,6 +151,10 @@ export interface Activity {
   name: string;
   description: string;
   image: string | null;
+  image_alt?: string;
+  image_title?: string;
+  image_caption?: string;
+  image_description?: string;
   price_from: number | null;
   price_to: number | null;
   duration: string;
@@ -217,6 +239,9 @@ export interface ReviewImage {
   id: number;
   image: string;
   caption: string;
+  alt_text?: string;
+  title?: string;
+  description?: string;
 }
 
 export interface Testimonial {
@@ -238,6 +263,10 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   featured_image: string;
+  featured_image_alt?: string;
+  featured_image_title?: string;
+  featured_image_caption?: string;
+  featured_image_description?: string;
   category: BlogCategory;
   author_display: string;
   published_at: string;
@@ -256,6 +285,10 @@ export interface BlogCategory {
   description: string;
   image: string | null;
   post_count: number;
+  image_alt?: string;
+  image_title?: string;
+  image_caption?: string;
+  image_description?: string;
 }
 
 export interface BlogTag {

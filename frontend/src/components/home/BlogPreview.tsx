@@ -24,6 +24,8 @@ interface BlogPost {
   slug: string;
   excerpt: string;
   featured_image: string | null;
+  featured_image_alt?: string;
+  featured_image_title?: string;
   category: BlogCategory | null;
   published_date: string;
   reading_time: number;
@@ -122,7 +124,8 @@ export function BlogPreview() {
                     {post.featured_image ? (
                       <Image
                         src={post.featured_image}
-                        alt={post.title}
+                        alt={post.featured_image_alt || post.title}
+                        title={post.featured_image_title || undefined}
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-110"

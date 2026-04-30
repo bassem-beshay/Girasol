@@ -11,6 +11,15 @@ class CategoryAdmin(admin.ModelAdmin):
         ('Basic', {'fields': ('name', 'slug', 'image', 'is_active')}),
         ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
         ('Translations', {'fields': ('name_es', 'name_pt'), 'classes': ('collapse',)}),
+        ('Image SEO', {
+            'fields': (
+                'image_alt', 'image_alt_es', 'image_alt_pt',
+                'image_title', 'image_title_es', 'image_title_pt',
+                'image_caption', 'image_caption_es', 'image_caption_pt',
+                'image_description', 'image_description_es', 'image_description_pt',
+            ),
+            'classes': ('collapse',)
+        }),
     )
 
 
@@ -49,6 +58,14 @@ class PostAdmin(admin.ModelAdmin):
         }),
         ('Media', {
             'fields': ('featured_image', 'featured_image_alt', 'featured_image_alt_es', 'featured_image_alt_pt')
+        }),
+        ('Featured Image SEO', {
+            'fields': (
+                'featured_image_title', 'featured_image_title_es', 'featured_image_title_pt',
+                'featured_image_caption', 'featured_image_caption_es', 'featured_image_caption_pt',
+                'featured_image_description', 'featured_image_description_es', 'featured_image_description_pt',
+            ),
+            'classes': ('collapse',)
         }),
         ('Classification', {
             'fields': ('category', 'tags')

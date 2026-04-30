@@ -7,7 +7,7 @@ from .models import Category, Tag, Post, Comment
 
 
 class CategorySerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
-    TRANSLATABLE_FIELDS = ['name', 'description']
+    TRANSLATABLE_FIELDS = ['name', 'description', 'image_alt', 'image_title', 'image_caption', 'image_description']
     post_count = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -15,7 +15,11 @@ class CategorySerializer(MultiLanguageSerializerMixin, serializers.ModelSerializ
         fields = [
             'id', 'name', 'name_es', 'name_pt', 'slug',
             'description', 'description_es', 'description_pt',
-            'image', 'post_count'
+            'image', 'post_count',
+            'image_alt', 'image_alt_es', 'image_alt_pt',
+            'image_title', 'image_title_es', 'image_title_pt',
+            'image_caption', 'image_caption_es', 'image_caption_pt',
+            'image_description', 'image_description_es', 'image_description_pt',
         ]
 
 
@@ -61,7 +65,10 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 
 class PostListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
-    TRANSLATABLE_FIELDS = ['title', 'excerpt']
+    TRANSLATABLE_FIELDS = [
+        'title', 'excerpt',
+        'featured_image_alt', 'featured_image_title', 'featured_image_caption', 'featured_image_description',
+    ]
     category = CategorySerializer(read_only=True)
     author_display = serializers.SerializerMethodField()
     comment_count = serializers.SerializerMethodField()
@@ -70,7 +77,12 @@ class PostListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializ
         model = Post
         fields = [
             'id', 'title', 'title_es', 'title_pt', 'slug',
-            'excerpt', 'excerpt_es', 'excerpt_pt', 'featured_image',
+            'excerpt', 'excerpt_es', 'excerpt_pt',
+            'featured_image',
+            'featured_image_alt', 'featured_image_alt_es', 'featured_image_alt_pt',
+            'featured_image_title', 'featured_image_title_es', 'featured_image_title_pt',
+            'featured_image_caption', 'featured_image_caption_es', 'featured_image_caption_pt',
+            'featured_image_description', 'featured_image_description_es', 'featured_image_description_pt',
             'category', 'author_display', 'published_at',
             'reading_time', 'view_count', 'comment_count', 'is_featured'
         ]
@@ -87,7 +99,10 @@ class PostListSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializ
 
 
 class PostDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
-    TRANSLATABLE_FIELDS = ['title', 'excerpt', 'content']
+    TRANSLATABLE_FIELDS = [
+        'title', 'excerpt', 'content',
+        'featured_image_alt', 'featured_image_title', 'featured_image_caption', 'featured_image_description',
+    ]
     category = CategorySerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     author_display = serializers.SerializerMethodField()
@@ -100,7 +115,11 @@ class PostDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerial
             'id', 'title', 'title_es', 'title_pt', 'slug',
             'excerpt', 'excerpt_es', 'excerpt_pt',
             'content', 'content_es', 'content_pt',
-            'featured_image', 'featured_image_alt', 'featured_image_alt_es', 'featured_image_alt_pt',
+            'featured_image',
+            'featured_image_alt', 'featured_image_alt_es', 'featured_image_alt_pt',
+            'featured_image_title', 'featured_image_title_es', 'featured_image_title_pt',
+            'featured_image_caption', 'featured_image_caption_es', 'featured_image_caption_pt',
+            'featured_image_description', 'featured_image_description_es', 'featured_image_description_pt',
             'category', 'tags', 'author_display',
             'published_at', 'reading_time', 'view_count',
             'comments', 'allow_comments', 'related_posts',

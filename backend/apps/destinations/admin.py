@@ -5,7 +5,13 @@ from .models import Destination, DestinationImage, Activity
 class DestinationImageInline(admin.TabularInline):
     model = DestinationImage
     extra = 1
-    fields = ['image', 'caption', 'caption_es', 'caption_pt', 'alt_text', 'alt_text_es', 'alt_text_pt', 'sort_order']
+    fields = [
+        'image', 'caption', 'caption_es', 'caption_pt',
+        'alt_text', 'alt_text_es', 'alt_text_pt',
+        'title', 'title_es', 'title_pt',
+        'description', 'description_es', 'description_pt',
+        'sort_order'
+    ]
 
 
 class ActivityInline(admin.StackedInline):
@@ -16,6 +22,15 @@ class ActivityInline(admin.StackedInline):
         ('Name', {'fields': ('name', 'name_es', 'name_pt')}),
         ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
         ('Details', {'fields': ('price_from', 'price_to', 'duration')}),
+        ('Image SEO', {
+            'fields': (
+                'image_alt', 'image_alt_es', 'image_alt_pt',
+                'image_title', 'image_title_es', 'image_title_pt',
+                'image_caption', 'image_caption_es', 'image_caption_pt',
+                'image_description', 'image_description_es', 'image_description_pt',
+            ),
+            'classes': ('collapse',)
+        }),
     )
 
 
@@ -31,6 +46,15 @@ class DestinationAdmin(admin.ModelAdmin):
         (None, {'fields': ('name', 'name_es', 'name_pt', 'slug', 'tagline', 'tagline_es', 'tagline_pt')}),
         ('Content', {'fields': ('description', 'description_es', 'description_pt')}),
         ('Media', {'fields': ('featured_image',)}),
+        ('Image SEO', {
+            'fields': (
+                'image_alt', 'image_alt_es', 'image_alt_pt',
+                'image_title', 'image_title_es', 'image_title_pt',
+                'image_caption', 'image_caption_es', 'image_caption_pt',
+                'image_description', 'image_description_es', 'image_description_pt',
+            ),
+            'classes': ('collapse',)
+        }),
         ('Location', {'fields': ('country', 'region', 'latitude', 'longitude')}),
         ('Travel Info', {
             'fields': (
@@ -63,4 +87,13 @@ class ActivityAdmin(admin.ModelAdmin):
         ('Name', {'fields': ('name', 'name_es', 'name_pt')}),
         ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
         ('Details', {'fields': ('price_from', 'price_to', 'duration')}),
+        ('Image SEO', {
+            'fields': (
+                'image_alt', 'image_alt_es', 'image_alt_pt',
+                'image_title', 'image_title_es', 'image_title_pt',
+                'image_caption', 'image_caption_es', 'image_caption_pt',
+                'image_description', 'image_description_es', 'image_description_pt',
+            ),
+            'classes': ('collapse',)
+        }),
     )
