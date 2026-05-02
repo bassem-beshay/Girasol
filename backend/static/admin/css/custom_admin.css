@@ -2187,6 +2187,55 @@ tr.add-row a {
     color: #ff6b6b !important;
 }
 
+/* ============================================
+   FIELD WRAPPING - Force fields to wrap
+   ============================================ */
+/* Stacked inline fieldset rows - wrap fields */
+.inline-related .form-row,
+.inline-related fieldset .form-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+.inline-related .form-row > div,
+.inline-related .form-row > p,
+.inline-related .form-row .field-box,
+.inline-related .form-row .fieldBox {
+    min-width: 200px !important;
+    flex: 1 1 auto !important;
+}
+
+/* Main form fieldsets - wrap fields */
+#content-main .form-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+#content-main .form-row > div,
+#content-main .form-row > p,
+#content-main .form-row .field-box,
+#content-main .form-row .fieldBox {
+    min-width: 200px !important;
+    flex: 1 1 auto !important;
+}
+
+/* Ensure text inputs take full width of their container */
+.inline-related input[type="text"],
+.inline-related input[type="number"],
+.inline-related input[type="url"],
+.inline-related textarea,
+.inline-related select,
+#content-main input[type="text"],
+#content-main input[type="number"],
+#content-main input[type="url"],
+#content-main textarea,
+#content-main select {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
 /* Login page logo */
 .jazzmin-login-page .login-logo img {
   max-width: 350px !important;
