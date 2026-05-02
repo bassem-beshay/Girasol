@@ -2,16 +2,16 @@ from django.contrib import admin
 from .models import Destination, DestinationImage, Activity
 
 
-class DestinationImageInline(admin.TabularInline):
+class DestinationImageInline(admin.StackedInline):
     model = DestinationImage
     extra = 1
-    fields = [
-        'image', 'caption', 'caption_es', 'caption_pt',
-        'alt_text', 'alt_text_es', 'alt_text_pt',
-        'title', 'title_es', 'title_pt',
-        'description', 'description_es', 'description_pt',
-        'sort_order'
-    ]
+    fieldsets = (
+        (None, {'fields': ('image', 'sort_order')}),
+        ('Caption', {'fields': ('caption', 'caption_es', 'caption_pt')}),
+        ('Alt Text', {'fields': ('alt_text', 'alt_text_es', 'alt_text_pt')}),
+        ('Title', {'fields': ('title', 'title_es', 'title_pt')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+    )
 
 
 class ActivityInline(admin.StackedInline):

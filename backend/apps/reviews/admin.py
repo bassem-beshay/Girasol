@@ -2,15 +2,16 @@ from django.contrib import admin
 from .models import Review, ReviewImage, Testimonial
 
 
-class ReviewImageInline(admin.TabularInline):
+class ReviewImageInline(admin.StackedInline):
     model = ReviewImage
     extra = 1
-    fields = [
-        'image', 'caption', 'caption_es', 'caption_pt',
-        'alt_text', 'alt_text_es', 'alt_text_pt',
-        'title', 'title_es', 'title_pt',
-        'description', 'description_es', 'description_pt',
-    ]
+    fieldsets = (
+        (None, {'fields': ('image',)}),
+        ('Caption', {'fields': ('caption', 'caption_es', 'caption_pt')}),
+        ('Alt Text', {'fields': ('alt_text', 'alt_text_es', 'alt_text_pt')}),
+        ('Title', {'fields': ('title', 'title_es', 'title_pt')}),
+        ('Description', {'fields': ('description', 'description_es', 'description_pt')}),
+    )
 
 
 @admin.register(Review)
