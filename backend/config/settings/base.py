@@ -467,7 +467,7 @@ JAZZMIN_UI_TWEAKS = {
 
     # Navbar
     'brand_colour': 'navbar-dark',
-    'accent': 'accent-warning',
+    'accent': 'accent-dark',
     'navbar': 'navbar-dark',
     'no_navbar_border': True,
 
@@ -478,7 +478,7 @@ JAZZMIN_UI_TWEAKS = {
     'sidebar_fixed': True,
 
     # Sidebar
-    'sidebar': 'sidebar-dark-warning',
+    'sidebar': 'sidebar-dark-primary',
     'sidebar_nav_small_text': False,
     'sidebar_disable_expand': False,
     'sidebar_nav_child_indent': True,

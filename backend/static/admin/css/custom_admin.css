@@ -1989,6 +1989,24 @@ table.table,
     margin: 0 !important;
 }
 
+/* Force all table links to black */
+#result_list a,
+#changelist .results a,
+.table tbody td a,
+#content-main a,
+.dashboard-table a {
+    color: #1a1a1a !important;
+}
+
+#result_list a:hover,
+#changelist .results a:hover,
+.table tbody td a:hover,
+#content-main a:hover,
+.dashboard-table a:hover {
+    color: #000000 !important;
+    text-decoration: underline !important;
+}
+
 /* Compact cells */
 .tabular td, .tabular th,
 table.table td, table.table th,
