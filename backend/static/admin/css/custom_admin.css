@@ -13,11 +13,11 @@
     --primary-dark: #152a45;
     --primary-darker: #0d1b2a;
 
-    /* Secondary - Rich Gold (Luxury & Excellence) */
-    --gold: #d4a853;
-    --gold-light: #e9c97a;
-    --gold-dark: #b8923d;
-    --gold-darker: #8b6914;
+    /* Secondary - Sleek Black (Modern & Elegant) */
+    --gold: #1a1a1a;
+    --gold-light: #333333;
+    --gold-dark: #0d0d0d;
+    --gold-darker: #000000;
 
     /* Accent - Warm Terracotta (Egypt/Desert vibes) */
     --accent: #c76f4e;
@@ -73,7 +73,7 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    font-size: 14px;
+    font-size: 16px;
     background: var(--off-white) !important;
     color: var(--text-primary);
     line-height: 1.6;
@@ -102,7 +102,7 @@ body {
 }
 
 .main-header .navbar-nav .nav-link:hover {
-    color: var(--gold-light) !important;
+    color: var(--white) !important;
     background: rgba(255,255,255,0.1);
 }
 
@@ -255,7 +255,7 @@ body.layout-navbar-fixed .main-sidebar {
 }
 
 .user-panel .info a:hover {
-    color: var(--gold-light) !important;
+    color: var(--white) !important;
 }
 
 /* Sidebar Navigation Container */
@@ -277,7 +277,7 @@ body.layout-navbar-fixed .main-sidebar {
 .nav-header {
     font-size: 10px !important;
     font-weight: 800 !important;
-    color: var(--gold) !important;
+    color: rgba(255,255,255,0.5) !important;
     text-transform: uppercase;
     letter-spacing: 2px;
     padding: 25px 18px 10px !important;
@@ -332,8 +332,8 @@ body.layout-navbar-fixed .main-sidebar {
 /* Active State */
 .nav-sidebar > .nav-item > .nav-link.active,
 .nav-sidebar > .nav-item.menu-open > .nav-link {
-    background: linear-gradient(90deg, rgba(212, 168, 83, 0.25), rgba(212, 168, 83, 0.08)) !important;
-    color: var(--gold-light) !important;
+    background: linear-gradient(90deg, rgba(26, 26, 26, 0.25), rgba(26, 26, 26, 0.08)) !important;
+    color: var(--white) !important;
 }
 
 .nav-sidebar > .nav-item > .nav-link.active::before,
@@ -356,14 +356,14 @@ body.layout-navbar-fixed .main-sidebar {
 }
 
 .nav-sidebar .nav-link:hover .nav-icon {
-    color: var(--gold-light);
+    color: var(--white);
     background: rgba(255,255,255,0.05);
 }
 
 .nav-sidebar .nav-link.active .nav-icon,
 .nav-sidebar .menu-open > .nav-link .nav-icon {
-    color: var(--gold);
-    background: rgba(212, 168, 83, 0.15);
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 /* Link Text */
@@ -417,17 +417,17 @@ body.layout-navbar-fixed .main-sidebar {
 }
 
 .nav-treeview .nav-link:hover::before {
-    background: var(--gold-light);
+    background: var(--white);
 }
 
 .nav-treeview .nav-link.active {
-    color: var(--gold-light) !important;
-    background: rgba(212, 168, 83, 0.12) !important;
+    color: var(--white) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .nav-treeview .nav-link.active::before {
-    background: var(--gold);
-    box-shadow: 0 0 6px var(--gold);
+    background: var(--white);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
 }
 
 /* Menu Arrow */
@@ -437,7 +437,7 @@ body.layout-navbar-fixed .main-sidebar {
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 12px;
+    font-size: 14px;
     color: rgba(255,255,255,0.4);
     transition: all 0.25s ease;
 }
@@ -445,7 +445,7 @@ body.layout-navbar-fixed .main-sidebar {
 .nav-sidebar .menu-open > .nav-link > .right,
 .nav-sidebar .menu-open > .nav-link p > .right {
     transform: translateY(-50%) rotate(-90deg);
-    color: var(--gold);
+    color: var(--white);
 }
 
 /* Sidebar Mini State */
@@ -511,7 +511,7 @@ body.layout-navbar-fixed .main-sidebar {
     background: transparent;
     padding: 5px 0 0 0;
     margin: 0;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .breadcrumb-item a {
@@ -588,7 +588,7 @@ body.layout-navbar-fixed .main-sidebar {
    BUTTONS - Elegant Navy & Gold Style
    ============================================ */
 .btn {
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 600 !important;
     padding: 10px 20px !important;
     border-radius: var(--radius-sm) !important;
@@ -598,7 +598,7 @@ body.layout-navbar-fixed .main-sidebar {
 }
 
 .btn-sm {
-    font-size: 12px !important;
+    font-size: 14px !important;
     padding: 7px 14px !important;
 }
 
@@ -639,8 +639,8 @@ body.layout-navbar-fixed .main-sidebar {
 
 .btn-warning {
     background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
-    color: var(--primary-dark) !important;
-    box-shadow: 0 2px 8px rgba(212, 168, 83, 0.3);
+    color: var(--white) !important;
+    box-shadow: 0 2px 8px rgba(26, 26, 26, 0.3);
 }
 
 .btn-warning:hover {
@@ -679,7 +679,7 @@ body.layout-navbar-fixed .main-sidebar {
    TABLES - Professional Look
    ============================================ */
 .table {
-    font-size: 13px;
+    font-size: 15px;
     margin-bottom: 0;
 }
 
@@ -711,7 +711,7 @@ body.layout-navbar-fixed .main-sidebar {
 }
 
 .table tbody tr:hover {
-    background: linear-gradient(90deg, rgba(212, 168, 83, 0.06), transparent) !important;
+    background: linear-gradient(90deg, rgba(26, 26, 26, 0.06), transparent) !important;
 }
 
 .table tbody tr:last-child td {
@@ -723,7 +723,7 @@ body.layout-navbar-fixed .main-sidebar {
 }
 
 .table-striped tbody tr:nth-of-type(odd):hover {
-    background: linear-gradient(90deg, rgba(212, 168, 83, 0.08), var(--off-white)) !important;
+    background: linear-gradient(90deg, rgba(26, 26, 26, 0.08), var(--off-white)) !important;
 }
 
 /* Result List */
@@ -763,7 +763,7 @@ input:focus,
 textarea:focus,
 select:focus {
     border-color: var(--gold) !important;
-    box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.15) !important;
+    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.15) !important;
     outline: none !important;
 }
 
@@ -774,7 +774,7 @@ textarea::placeholder {
 }
 
 label {
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 600 !important;
     color: var(--text-primary) !important;
     margin-bottom: 6px !important;
@@ -783,7 +783,7 @@ label {
 
 .help-block,
 .helptext {
-    font-size: 12px !important;
+    font-size: 14px !important;
     color: var(--text-muted) !important;
     margin-top: 5px;
 }
@@ -837,7 +837,7 @@ fieldset legend,
 }
 
 .nav-tabs .nav-link {
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 600 !important;
     padding: 12px 20px !important;
     border: none !important;
@@ -869,7 +869,7 @@ fieldset legend,
 }
 
 .page-link {
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 500 !important;
     padding: 10px 15px !important;
     border: 1px solid var(--medium-gray) !important;
@@ -911,7 +911,7 @@ fieldset legend,
 .badge-warning,
 .badge.bg-warning {
     background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
-    color: var(--primary-dark) !important;
+    color: var(--white) !important;
 }
 
 .badge-danger,
@@ -952,7 +952,7 @@ fieldset legend,
 
 .alert-warning,
 .messagelist .warning {
-    background: linear-gradient(135deg, rgba(212, 168, 83, 0.15), rgba(212, 168, 83, 0.05)) !important;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.15), rgba(26, 26, 26, 0.05)) !important;
     color: var(--gold-dark) !important;
     border-left-color: var(--gold) !important;
 }
@@ -992,7 +992,7 @@ fieldset legend,
     background: var(--white) !important;
     border-top: 1px solid var(--medium-gray) !important;
     padding: 15px 30px !important;
-    font-size: 13px;
+    font-size: 15px;
     color: var(--text-muted);
 }
 
@@ -1019,7 +1019,7 @@ fieldset legend,
 }
 
 #changelist-filter h3 {
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 600 !important;
     margin: 15px 0 8px !important;
     color: var(--text-primary) !important;
@@ -1037,7 +1037,7 @@ fieldset legend,
 
 #changelist-filter a {
     color: var(--text-secondary) !important;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 #changelist-filter a:hover {
@@ -1126,7 +1126,7 @@ fieldset legend,
 .inline-related h3 {
     background: var(--light-gray) !important;
     padding: 12px 18px !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 600 !important;
     margin: 0 !important;
     color: var(--primary) !important;
@@ -1146,7 +1146,7 @@ fieldset legend,
     border: 1px solid var(--border-gray) !important;
     border-radius: var(--radius-sm) !important;
     color: var(--text-secondary) !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     padding: 8px 14px !important;
 }
 
@@ -1175,7 +1175,7 @@ fieldset legend,
 
 .datetimeshortcuts a {
     color: var(--gold-dark) !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
 .datetimeshortcuts a:hover {
@@ -1287,7 +1287,7 @@ fieldset legend,
     .table thead th,
     .table tbody td {
         padding: 12px 14px !important;
-        font-size: 12px !important;
+        font-size: 14px !important;
     }
 
     #changelist-search {
@@ -1338,11 +1338,11 @@ fieldset legend,
 
     .btn {
         padding: 8px 14px !important;
-        font-size: 12px !important;
+        font-size: 14px !important;
     }
 
     .table {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .table thead th {
@@ -1368,12 +1368,12 @@ fieldset legend,
 
     .nav-tabs .nav-link {
         padding: 10px 14px !important;
-        font-size: 12px !important;
+        font-size: 14px !important;
     }
 
     .pagination .page-link {
         padding: 8px 12px !important;
-        font-size: 12px !important;
+        font-size: 14px !important;
     }
 
     .small-box .inner h3 {
@@ -1381,7 +1381,7 @@ fieldset legend,
     }
 
     .small-box .inner p {
-        font-size: 12px !important;
+        font-size: 14px !important;
     }
 }
 
@@ -1399,7 +1399,7 @@ a:hover {
 }
 
 ::selection {
-    background: rgba(212, 168, 83, 0.3);
+    background: rgba(26, 26, 26, 0.3);
     color: var(--primary-dark);
 }
 
@@ -1438,7 +1438,7 @@ a:hover {
 
 .login-card-body .btn-primary {
     background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
-    color: var(--primary-dark) !important;
+    color: var(--white) !important;
 }
 
 .login-card-body .btn-primary:hover {
@@ -1489,7 +1489,7 @@ a:hover {
 }
 
 .dashboard-stat-box .info-box-text {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -1520,7 +1520,7 @@ a:hover {
 
 .bg-stat-destinations {
     background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
-    color: var(--primary-dark) !important;
+    color: var(--white) !important;
 }
 
 .bg-stat-subscribers {
@@ -1582,7 +1582,7 @@ a:hover {
     padding: 12px 20px !important;
     vertical-align: middle !important;
     border-bottom: 1px solid var(--light-gray) !important;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .dashboard-table tbody tr:last-child td {
@@ -1590,7 +1590,7 @@ a:hover {
 }
 
 .dashboard-table tbody tr:hover {
-    background: linear-gradient(90deg, rgba(212, 168, 83, 0.04), transparent) !important;
+    background: linear-gradient(90deg, rgba(26, 26, 26, 0.04), transparent) !important;
 }
 
 .dashboard-table tbody td a {
@@ -1635,7 +1635,7 @@ a:hover {
 
     .dashboard-table tbody td {
         padding: 10px 14px !important;
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .dashboard-table .btn-group .btn {
@@ -1697,7 +1697,7 @@ body.layout-navbar-fixed .wrapper .main-header {
     background: rgba(255,255,255,0.1) !important;
     border: 1px solid rgba(255,255,255,0.15) !important;
     color: var(--white) !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     padding: 10px 14px !important;
     border-radius: var(--radius-sm) 0 0 var(--radius-sm) !important;
     height: auto !important;
@@ -1716,10 +1716,10 @@ body.layout-navbar-fixed .wrapper .main-header {
 .sidebar-search-form .btn {
     background: var(--gold) !important;
     border: 1px solid var(--gold) !important;
-    color: var(--primary-dark) !important;
+    color: var(--white) !important;
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
     padding: 10px 14px !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
 }
 
 .sidebar-search-form .btn:hover {
@@ -1786,7 +1786,7 @@ body.change-form #content-main .row > .col-12.col-lg-3 .card-body .form-group in
     width: auto !important;
     min-width: auto !important;
     padding: 8px 20px !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 500 !important;
     border-radius: 6px !important;
 }
@@ -1797,7 +1797,7 @@ body.change-form #content-main .row > .col-12.col-lg-3 .card-body .btn-block {
     display: inline-block !important;
     width: auto !important;
     padding: 8px 20px !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
 }
 
 /* Remove sticky positioning */
@@ -2003,7 +2003,7 @@ table.table td, table.table th,
 .tabular input[type="number"],
 .tabular select {
     padding: 3px 5px !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     min-width: 80px !important;
 }
 
@@ -2060,14 +2060,14 @@ span.datetimeshortcuts {
     padding: 6px 8px !important;
     vertical-align: middle !important;
     border: none !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
 }
 
 .tabular th {
     background: var(--primary, #1e3a5f) !important;
     color: white !important;
     font-weight: 600 !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
     padding: 8px !important;
@@ -2089,7 +2089,7 @@ span.datetimeshortcuts {
     border: 1px solid #cbd5e1 !important;
     border-radius: 4px !important;
     padding: 5px 8px !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     height: 32px !important;
     width: 100% !important;
     min-width: 70px !important;
@@ -2099,7 +2099,7 @@ span.datetimeshortcuts {
     border: 1px solid #cbd5e1 !important;
     border-radius: 4px !important;
     padding: 4px 6px !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     height: 32px !important;
     min-width: 100px !important;
 }
@@ -2129,7 +2129,7 @@ tr.add-row td {
 tr.add-row a {
     padding: 6px 16px !important;
     border-radius: 6px !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
 }
 
 /* Stacked inlines - also compact */
@@ -2149,7 +2149,7 @@ tr.add-row a {
 .tabular .original p {
     margin: 0 !important;
     padding: 0 !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
 
