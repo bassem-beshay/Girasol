@@ -49,7 +49,7 @@
     --shadow-xl: 0 20px 40px rgba(30, 58, 95, 0.15);
 
     /* Dimensions */
-    --sidebar-width: 50px;
+    --sidebar-width: 18px;
     --navbar-height: 60px;
     --radius-sm: 6px;
     --radius-md: 10px;
@@ -1237,7 +1237,7 @@ fieldset legend,
    ============================================ */
 @media (max-width: 991.98px) {
     :root {
-        --sidebar-width: 50px;
+        --sidebar-width: 18px;
     }
 
     .main-sidebar {
@@ -1807,65 +1807,61 @@ body.change-form .sticky-top {
 }
 
 /* ============================================
-   SIDEBAR: Auto-collapse with hover expand
+   SIDEBAR: Arrow-only collapse with hover expand
    ============================================ */
 
-/* Hide text/labels when collapsed */
-.main-sidebar .nav-link p,
-.main-sidebar .brand-text,
+/* Hide ALL sidebar content when collapsed */
+.main-sidebar .nav-sidebar,
+.main-sidebar .brand-link,
 .main-sidebar .nav-header,
 .main-sidebar .user-panel,
 .main-sidebar .form-inline,
 .main-sidebar .sidebar-search,
 .main-sidebar form[role="search"],
-.main-sidebar .nav-link .right,
-.main-sidebar .nav-link .badge {
+.main-sidebar .input-group,
+.main-sidebar [data-widget="sidebar-search"],
+.main-sidebar .sidebar-search-results,
+.sidebar-search,
+.main-sidebar form,
+.main-sidebar .os-host {
     display: none !important;
 }
 
-/* Center icons */
-.main-sidebar .nav-sidebar .nav-link {
-    padding: 10px 0 !important;
-    text-align: center !important;
-    justify-content: center !important;
+/* Arrow indicator in center of collapsed sidebar */
+.main-sidebar::after {
+    content: "\203A";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 18px;
+    transform: translateY(-50%);
+    font-size: 22px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity 0.2s ease;
 }
 
-.main-sidebar .nav-sidebar .nav-icon,
-.main-sidebar .nav-sidebar > .nav-item > .nav-link > i {
-    margin: 0 !important;
-    font-size: 16px !important;
-    width: 50px !important;
-    text-align: center !important;
-}
-
-/* Brand - icon only */
-.main-sidebar .brand-link {
-    padding: 12px 0 !important;
-    text-align: center !important;
-}
-
-.main-sidebar .brand-image {
-    margin: 0 auto !important;
-    float: none !important;
-    max-height: 28px !important;
-}
-
-/* === HOVER: Expand to full === */
+/* === HOVER: Expand to full sidebar === */
 .main-sidebar:hover {
     width: 260px !important;
-    box-shadow: 4px 0 20px rgba(0,0,0,0.4) !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4) !important;
 }
 
-.main-sidebar:hover .nav-link p,
-.main-sidebar:hover .brand-text,
+/* Hide arrow when expanded */
+.main-sidebar:hover::after {
+    opacity: 0;
+}
+
+/* Show all content on hover */
+.main-sidebar:hover .nav-sidebar,
+.main-sidebar:hover .brand-link,
 .main-sidebar:hover .nav-header,
 .main-sidebar:hover .user-panel,
-.main-sidebar:hover .nav-link .right,
-.main-sidebar:hover .nav-link .badge {
-    display: inline-block !important;
-}
-
-.main-sidebar:hover .nav-header {
+.main-sidebar:hover .os-host {
     display: block !important;
 }
 
@@ -1877,6 +1873,10 @@ body.change-form .sticky-top {
     padding: 8px 16px !important;
     text-align: left !important;
     justify-content: flex-start !important;
+}
+
+.main-sidebar:hover .nav-sidebar .nav-link p {
+    display: inline-block !important;
 }
 
 .main-sidebar:hover .nav-sidebar .nav-icon,
@@ -1895,21 +1895,14 @@ body.change-form .sticky-top {
     float: left !important;
 }
 
+.main-sidebar:hover .nav-link .right,
+.main-sidebar:hover .nav-link .badge {
+    display: inline-block !important;
+}
+
 /* Hide pushmenu button */
 .nav-link[data-widget="pushmenu"] {
     display: none !important;
-}
-
-
-/* Hide sidebar search completely */
-.main-sidebar .input-group,
-.main-sidebar [data-widget="sidebar-search"],
-.main-sidebar .sidebar-search-results,
-.sidebar-search,
-.main-sidebar form {
-    display: none !important;
-    height: 0 !important;
-    overflow: hidden !important;
 }
 
 /* ============================================
