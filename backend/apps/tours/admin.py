@@ -73,10 +73,13 @@ class TourItineraryInline(admin.StackedInline):
     )
 
 
-class TourInclusionInline(admin.TabularInline):
+class TourInclusionInline(admin.StackedInline):
     model = TourInclusion
     extra = 2
-    fields = ['item', 'item_es', 'item_pt', 'is_included', 'sort_order']
+    fieldsets = (
+        (None, {'fields': ('is_included', 'sort_order')}),
+        ('Item', {'fields': ('item', 'item_es', 'item_pt')}),
+    )
 
 
 class TourPricingInline(admin.TabularInline):
