@@ -66,10 +66,6 @@ export interface TourItinerary {
   meals_included: string;
   accommodation: string;
   image: string | null;
-  image_alt?: string;
-  image_title?: string;
-  image_caption?: string;
-  image_description?: string;
 }
 
 export interface TourInclusion {

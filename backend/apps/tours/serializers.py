@@ -68,10 +68,7 @@ class TourHighlightSerializer(MultiLanguageSerializerMixin, serializers.ModelSer
 
 
 class TourItinerarySerializer(MultiLanguageSerializerMixin, serializers.ModelSerializer):
-    TRANSLATABLE_FIELDS = [
-        'title', 'description', 'locations', 'meals_included', 'accommodation',
-        'image_alt', 'image_title', 'image_caption', 'image_description',
-    ]
+    TRANSLATABLE_FIELDS = ['title', 'description', 'locations', 'meals_included', 'accommodation']
 
     class Meta:
         model = TourItinerary
@@ -82,11 +79,7 @@ class TourItinerarySerializer(MultiLanguageSerializerMixin, serializers.ModelSer
             'locations', 'locations_es', 'locations_pt',
             'meals_included', 'meals_included_es', 'meals_included_pt',
             'accommodation', 'accommodation_es', 'accommodation_pt',
-            'image',
-            'image_alt', 'image_alt_es', 'image_alt_pt',
-            'image_title', 'image_title_es', 'image_title_pt',
-            'image_caption', 'image_caption_es', 'image_caption_pt',
-            'image_description', 'image_description_es', 'image_description_pt',
+            'image'
         ]
 
 
