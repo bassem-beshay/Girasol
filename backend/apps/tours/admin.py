@@ -82,13 +82,16 @@ class TourInclusionInline(admin.StackedInline):
     )
 
 
-class TourPricingInline(admin.TabularInline):
+class TourPricingInline(admin.StackedInline):
     model = TourPricing
     extra = 1
-    fields = ['season_name', 'season_name_es', 'season_name_pt', 'start_date', 'end_date', 'price_per_person', 'single_supplement']
+    fieldsets = (
+        (None, {'fields': ('start_date', 'end_date', 'price_per_person', 'single_supplement')}),
+        ('Season Name', {'fields': ('season_name', 'season_name_es', 'season_name_pt')}),
+    )
 
 
-class TourDepartureInline(admin.TabularInline):
+class TourDepartureInline(admin.StackedInline):
     model = TourDeparture
     extra = 1
 
