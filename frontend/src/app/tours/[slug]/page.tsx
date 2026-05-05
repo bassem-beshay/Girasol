@@ -239,6 +239,7 @@ export default function TourDetailPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('overview');
   const [openSections, setOpenSections] = useState<Set<string>>(new Set(['overview']));
+  const [showAllDepartures, setShowAllDepartures] = useState(false);
 
   const toggleSection = (id: string) => {
     setOpenSections(prev => {
@@ -855,7 +856,7 @@ export default function TourDetailPage() {
                   >
                     <div className="px-6 pb-6">
                   <div className="space-y-3">
-                    {tour.departures.slice(0, 8).map((departure) => (
+                    {(showAllDepartures ? tour.departures : tour.departures.slice(0, 8)).map((departure) => (
                       <div
                         key={departure.id}
                         className={`p-4 rounded-xl border-2 transition-colors ${
@@ -952,11 +953,14 @@ export default function TourDetailPage() {
                       </div>
                     ))}
                   </div>
-                  {tour.departures.length > 8 && (
+                  {tour.departures.length > 8 && !showAllDepartures && (
                     <div className="mt-4 text-center">
-                      <p className="text-sm text-gray-500">
+                      <button
+                        onClick={() => setShowAllDepartures(true)}
+                        className="text-sm text-primary-600 hover:text-primary-800 font-medium cursor-pointer hover:underline transition-colors"
+                      >
                         {t(tourDetailT, language, 'moreDepartures').replace('{count}', String(tour.departures.length - 8))}
-                      </p>
+                      </button>
                     </div>
                   )}
                     </div>
