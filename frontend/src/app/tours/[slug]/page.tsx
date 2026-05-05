@@ -37,7 +37,8 @@ import {
 import { InquiryForm } from '@/components/tours/InquiryForm';
 import { RichText } from '@/components/ui/RichText';
 import { useLanguageStore } from '@/store/languageStore';
-import { tourDetailT, t } from '@/lib/translations';
+import { tourDetailT, t, trustpilotT } from '@/lib/translations';
+import { TRUSTPILOT_URL, totalReviews, avgRating, trustpilotReviews, StarRating } from '@/components/home/TrustpilotReviews';
 
 interface TourDetail {
   id: number;
@@ -299,6 +300,19 @@ export default function TourDetailPage() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle hash scroll (e.g. #trustpilot from tour cards)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      setTimeout(() => {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 800);
+    }
   }, []);
 
   const { data: tour, isLoading, error } = useQuery<TourDetail>({
@@ -1113,6 +1127,58 @@ export default function TourDetailPage() {
                   <MessageSquare className="w-5 h-5 flex-shrink-0" />
                   <span className="font-semibold text-sm">{t(tourDetailT, language, 'askWhatsApp')}</span>
                 </a>
+
+                {/* Trustpilot Reviews Widget */}
+                <div id="trustpilot" className="mt-4 bg-white rounded-2xl p-5 shadow-lg">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-bold text-gray-900 text-sm">{t(trustpilotT, language, 'travelerReviews')}</h3>
+                    <a
+                      href={TRUSTPILOT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#00b67a] text-xs font-semibold hover:underline"
+                    >
+                      Trustpilot
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2 mb-4 pb-3 border-b">
+                    <StarRating rating={4} />
+                    <span className="text-lg font-bold text-gray-900">{avgRating}</span>
+                    <span className="text-xs text-gray-500">({totalReviews} {t(trustpilotT, language, 'reviews')})</span>
+                  </div>
+                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
+                    {trustpilotReviews.slice(0, 5).map((review, idx) => (
+                      <div key={idx} className="pb-3 border-b border-gray-100 last:border-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <div
+                            className="w-7 h-7 rounded-full flex items-center justify-center text-white font-bold text-[10px] flex-shrink-0"
+                            style={{ backgroundColor: ['#00b67a', '#0077b6', '#e85d04', '#7209b7', '#d62828'][idx] }}
+                          >
+                            {review.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase()}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-medium text-gray-900 text-xs truncate">{review.name}</p>
+                          </div>
+                          <div className="ml-auto flex gap-0.5">
+                            {[1,2,3,4,5].map(s => (
+                              <Star key={s} className={`w-3 h-3 ${s <= review.rating ? 'text-[#00b67a] fill-[#00b67a]' : 'text-gray-300'}`} />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-xs font-medium text-gray-800 mb-0.5">{review.title}</p>
+                        <p className="text-[11px] text-gray-500 line-clamp-2">{review.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <a
+                    href={TRUSTPILOT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block mt-3 text-center text-xs text-[#00b67a] font-semibold hover:underline"
+                  >
+                    {t(trustpilotT, language, 'viewAll')} →
+                  </a>
+                </div>
               </div>
             </div>
           </div>

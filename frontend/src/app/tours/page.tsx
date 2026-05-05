@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { toursApi, fixImageUrl } from '@/lib/api';
 import { MapPin, Clock, Star, Users, Sparkles, Plane } from 'lucide-react';
 import Link from 'next/link';
@@ -83,6 +83,7 @@ export default function ToursPage() {
 
 function ToursContent() {
   const { language } = useLanguageStore();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const typeParam = searchParams.get('type');
   const earlyBookingParam = searchParams.get('early_booking');
@@ -307,8 +308,11 @@ function ToursContent() {
                       <span className="truncate">{tour.destination_names.join(', ')}</span>
                     </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                    {/* Rating - Clickable to Trustpilot section */}
+                    <div
+                      className="flex items-center gap-2 mb-2 sm:mb-3 cursor-pointer hover:opacity-75 transition-opacity"
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push(`/tours/${tour.slug}#trustpilot`); }}
+                    >
                       <div className="flex items-center">
                         <Star className="w-3 sm:w-4 h-3 sm:h-4 text-yellow-400 fill-current" />
                         <span className="ml-1 text-xs sm:text-sm font-medium">

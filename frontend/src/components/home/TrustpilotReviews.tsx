@@ -14,7 +14,7 @@ import { useInView } from '@/hooks/useInView';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const TRUSTPILOT_URL = 'https://www.trustpilot.com/review/girasoltours.com';
+export const TRUSTPILOT_URL = 'https://www.trustpilot.com/review/girasoltours.com';
 
 const AVATAR_COLORS = [
   '#00b67a', '#0077b6', '#e85d04', '#7209b7', '#d62828',
@@ -195,10 +195,11 @@ const reviews: Review[] = [
 ];
 
 // Real Trustpilot stats (not calculated from filtered array)
-const totalReviews = 27;
-const avgRating = '4.3';
+export const totalReviews = 27;
+export const avgRating = '4.3';
+export { reviews as trustpilotReviews };
 
-function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'lg' }) {
+export function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'lg' }) {
   const sizeClass = size === 'lg' ? 'w-5 h-5' : 'w-4 h-4';
   return (
     <div className="flex gap-0.5">

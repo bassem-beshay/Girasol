@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { toursApi, fixImageUrl } from '@/lib/api';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { ChevronRight, Star, MapPin, Clock, Loader2, Globe2, Plane } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
@@ -43,6 +44,7 @@ interface ToursResponse {
 export function MultiDestinationTours() {
   const [ref, isInView] = useInView<HTMLElement>({ rootMargin: '200px' });
   const { language } = useLanguageStore();
+  const router = useRouter();
 
   const { data, isLoading, error } = useQuery<ToursResponse>({
     queryKey: ['multi-destination-tours'],
@@ -196,8 +198,11 @@ export function MultiDestinationTours() {
                       </span>
                     </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center gap-2 mb-3">
+                    {/* Rating - Clickable to Trustpilot section */}
+                    <div
+                      className="flex items-center gap-2 mb-3 cursor-pointer hover:opacity-75 transition-opacity"
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push(`/tours/${tour.slug}#trustpilot`); }}
+                    >
                       <div className="flex items-center">
                         <Star className="w-4 h-4 text-gold-400 fill-current" />
                         <span className="ml-1 text-sm font-medium">{tour.average_rating || '5.0'}</span>
