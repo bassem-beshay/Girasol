@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 
 
 class NewsletterThrottle(AnonRateThrottle):
-    """Custom throttle for newsletter subscription - 5 requests per hour."""
-    rate = '5/hour'
+    """Custom throttle for newsletter subscription - 30 requests per hour."""
+    rate = '30/hour'
 
 
 class InquiryCreateView(generics.CreateAPIView):
