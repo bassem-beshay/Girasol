@@ -426,12 +426,15 @@ class Command(BaseCommand):
             )
 
         # ===== PRICING =====
+        from datetime import date
         TourPricing.objects.filter(tour=tour).delete()
         TourPricing.objects.create(
             tour=tour,
             season_name='Summer',
             season_name_es='Verano',
             season_name_pt='Ver\u00e3o',
+            start_date=date(2026, 5, 1),
+            end_date=date(2026, 9, 30),
             price_per_person=1077.00,
             single_supplement=630.00,
         )
