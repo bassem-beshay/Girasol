@@ -291,9 +291,9 @@ class TourInclusion(TimeStampedModel, SortableModel):
     """What's included in the tour."""
 
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='inclusions')
-    item = models.CharField(max_length=200)
-    item_es = models.CharField('Item (Spanish)', max_length=200, blank=True)
-    item_pt = models.CharField('Item (Portuguese)', max_length=200, blank=True)
+    item = models.CharField(max_length=500)
+    item_es = models.CharField('Item (Spanish)', max_length=500, blank=True)
+    item_pt = models.CharField('Item (Portuguese)', max_length=500, blank=True)
     is_included = models.BooleanField(default=True)  # True = Included, False = Excluded
 
     class Meta:
