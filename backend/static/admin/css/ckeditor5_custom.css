@@ -10,16 +10,16 @@
     line-height: 1.7;
 }
 
-/* Evenly-spaced words for justified blocks; enable hyphenation so
-   long words break instead of leaving huge gaps. */
+/* Evenly-spaced words for justified blocks; disable hyphenation so
+   words are never broken with hyphens. */
 .ck-content [style*="text-align:justify"],
 .ck-content [style*="text-align: justify"],
 .ck-content p[style*="justify"],
 .ck-content li[style*="justify"] {
     text-justify: inter-word;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
     word-spacing: 0.02em;
     text-align: justify;
 }
