@@ -209,7 +209,7 @@ export default function AboutPage() {
         setOffices(data);
       }
     }).catch(() => {});
-  }, []);
+  }, [language]);
 
   return (
     <div className="min-h-screen">
