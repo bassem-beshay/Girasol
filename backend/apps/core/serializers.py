@@ -30,10 +30,12 @@ class MultiLanguageSerializerMixin:
         language = 'en'
 
         if request:
-            # Try Accept-Language header first
+            # Try ?lang= query param first (cache-busting), then Accept-Language header
+            lang_param = request.query_params.get('lang', '')
             accept_lang = request.headers.get('Accept-Language', 'en')
-            if accept_lang in ['es', 'pt', 'en']:
-                language = accept_lang
+            resolved = lang_param or accept_lang
+            if resolved in ['es', 'pt', 'en']:
+                language = resolved
 
         # If language is English, no changes needed (base fields are in English)
         if language == 'en':

@@ -32,11 +32,9 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Language header is set via api.defaults.headers by providers.tsx
-    // Fallback to reading from the default header (already set on the axios instance)
-    if (!config.headers['Accept-Language']) {
-      config.headers['Accept-Language'] = 'en';
-    }
+    // Language: set both header and query param to bust HTTP/browser cache
+    const lang = config.headers['Accept-Language'] || 'en';
+    config.params = { ...config.params, lang };
 
     return config;
   },
