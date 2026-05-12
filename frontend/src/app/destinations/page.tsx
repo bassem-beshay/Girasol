@@ -36,7 +36,7 @@ interface DestinationsResponse {
 export default function DestinationsPage() {
   const { language } = useLanguageStore();
   const { data, isLoading, error } = useQuery<DestinationsResponse>({
-    queryKey: ['destinations'],
+    queryKey: ['destinations', language],
     queryFn: async () => {
       const response = await destinationsApi.getAll();
       return response.data;

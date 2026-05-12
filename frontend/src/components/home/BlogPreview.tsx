@@ -41,7 +41,7 @@ export function BlogPreview() {
   const { language } = useLanguageStore();
 
   const { data, isLoading, error } = useQuery<BlogResponse>({
-    queryKey: ['latest-blog'],
+    queryKey: ['latest-blog', language],
     queryFn: async () => {
       const response = await blogApi.getLatest();
       return response.data;

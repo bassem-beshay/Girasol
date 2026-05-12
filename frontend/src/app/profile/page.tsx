@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@/store/authStore';
+import { useLanguageStore } from '@/store/languageStore';
 import { bookingsApi } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
 
@@ -70,6 +71,7 @@ interface Booking {
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { language } = useLanguageStore();
   const { user, isAuthenticated, isLoading, updateProfile, logout } = useAuthStore();
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [isEditing, setIsEditing] = useState(false);
@@ -77,7 +79,7 @@ export default function ProfilePage() {
 
   // Fetch bookings
   const { data: bookingsData, isLoading: bookingsLoading } = useQuery<{ results: Booking[] }>({
-    queryKey: ['user-bookings'],
+    queryKey: ['user-bookings', language],
     queryFn: async () => {
       const response = await bookingsApi.getAll();
       return response.data;

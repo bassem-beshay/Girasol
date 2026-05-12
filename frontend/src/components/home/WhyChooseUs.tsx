@@ -135,7 +135,7 @@ export function WhyChooseUs() {
   const { language } = useLanguageStore();
 
   const { data: statisticsData } = useQuery<StatisticsResponse>({
-    queryKey: ['statistics'],
+    queryKey: ['statistics', language],
     queryFn: async () => {
       const response = await contactApi.getStatistics();
       return response.data;

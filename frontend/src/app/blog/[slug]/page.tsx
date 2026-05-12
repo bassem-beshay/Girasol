@@ -66,7 +66,7 @@ export default function BlogPostPage() {
   const slug = params.slug as string;
 
   const { data: post, isLoading, error } = useQuery<BlogPost>({
-    queryKey: ['blog-post', slug],
+    queryKey: ['blog-post', slug, language],
     queryFn: async () => {
       const response = await blogApi.getPost(slug);
       return response.data;
@@ -76,7 +76,7 @@ export default function BlogPostPage() {
 
   // Fetch related posts (latest posts for now)
   const { data: relatedData } = useQuery<RelatedPostsResponse>({
-    queryKey: ['blog-latest'],
+    queryKey: ['blog-latest', language],
     queryFn: async () => {
       const response = await blogApi.getLatest();
       return response.data;

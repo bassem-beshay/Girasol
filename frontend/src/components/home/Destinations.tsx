@@ -34,7 +34,7 @@ export function Destinations() {
   const { language } = useLanguageStore();
 
   const { data, isLoading, error } = useQuery<DestinationsResponse>({
-    queryKey: ['featured-destinations'],
+    queryKey: ['featured-destinations', language],
     queryFn: async () => {
       const response = await destinationsApi.getFeatured();
       return response.data;

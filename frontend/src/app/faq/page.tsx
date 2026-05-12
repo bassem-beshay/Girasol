@@ -65,7 +65,7 @@ export default function FAQPage() {
   ];
 
   const { data: faqsData, isLoading, error } = useQuery<{ count: number; results: FAQ[] }>({
-    queryKey: ['faqs', activeCategory],
+    queryKey: ['faqs', activeCategory, language],
     queryFn: async () => {
       const response = await contactApi.getFaqs(activeCategory === 'all' ? undefined : activeCategory);
       return response.data;

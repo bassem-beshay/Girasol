@@ -64,7 +64,7 @@ export default function BlogPage() {
 
   // Fetch blog posts
   const { data: postsData, isLoading: postsLoading, isFetching } = useQuery<BlogPostsResponse>({
-    queryKey: ['blog-posts', selectedCategory],
+    queryKey: ['blog-posts', selectedCategory, language],
     queryFn: async () => {
       const params: Record<string, unknown> = {};
       if (selectedCategory !== 'all') {
@@ -78,7 +78,7 @@ export default function BlogPage() {
 
   // Fetch categories
   const { data: categoriesData } = useQuery<CategoriesResponse>({
-    queryKey: ['blog-categories'],
+    queryKey: ['blog-categories', language],
     queryFn: async () => {
       const response = await blogApi.getCategories();
       return response.data;
@@ -87,7 +87,7 @@ export default function BlogPage() {
 
   // Fetch featured posts
   const { data: featuredData } = useQuery<BlogPostsResponse>({
-    queryKey: ['blog-featured'],
+    queryKey: ['blog-featured', language],
     queryFn: async () => {
       const response = await blogApi.getFeatured();
       return response.data;

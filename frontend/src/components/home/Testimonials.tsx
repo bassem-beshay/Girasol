@@ -30,7 +30,7 @@ export function Testimonials() {
   const { language } = useLanguageStore();
 
   const { data, isLoading, error } = useQuery<TestimonialsResponse>({
-    queryKey: ['testimonials'],
+    queryKey: ['testimonials', language],
     queryFn: async () => {
       const response = await reviewsApi.getTestimonials();
       return response.data;

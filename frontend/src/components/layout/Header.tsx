@@ -68,8 +68,6 @@ export function Header() {
   const handleLanguageChange = (langCode: Language) => {
     setLanguage(langCode);
     setIsLangDropdownOpen(false);
-    // Trigger a page refresh to reload data with new language
-    window.location.reload();
   };
 
   // Close language dropdown when clicking outside

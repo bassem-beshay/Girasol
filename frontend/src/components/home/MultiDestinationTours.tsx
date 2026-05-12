@@ -47,7 +47,7 @@ export function MultiDestinationTours() {
   const router = useRouter();
 
   const { data, isLoading, error } = useQuery<ToursResponse>({
-    queryKey: ['multi-destination-tours'],
+    queryKey: ['multi-destination-tours', language],
     queryFn: async () => {
       const response = await toursApi.getMultiDestination();
       return response.data;

@@ -108,7 +108,7 @@ function ToursContent() {
         : t(toursPageT, language, 'exploreOurTours');
 
   const { data, isLoading, error } = useQuery<ToursResponse>({
-    queryKey: ['tours', typeParam, earlyBookingParam, multiDestParam],
+    queryKey: ['tours', typeParam, earlyBookingParam, multiDestParam, language],
     queryFn: async () => {
       const params: Record<string, string> = {};
       // For multi-destination, only use is_multi_destination filter (not tour_type)

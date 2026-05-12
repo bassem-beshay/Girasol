@@ -316,7 +316,7 @@ export default function TourDetailPage() {
   }, []);
 
   const { data: tour, isLoading, error } = useQuery<TourDetail>({
-    queryKey: ['tour', slug],
+    queryKey: ['tour', slug, language],
     queryFn: async () => {
       const response = await toursApi.getBySlug(slug);
       return response.data;
@@ -511,7 +511,7 @@ export default function TourDetailPage() {
                       <div className="text-center">
                         <Calendar className="w-8 h-8 text-primary-500 mx-auto mb-2" />
                         <div className="text-sm text-gray-500">{t(tourDetailT, language, 'difficulty')}</div>
-                        <div className="font-semibold capitalize">{tour.difficulty_level}</div>
+                        <div className="font-semibold capitalize">{{ easy: { en: 'Easy', es: 'Fácil', pt: 'Fácil' }, moderate: { en: 'Moderate', es: 'Moderado', pt: 'Moderado' }, challenging: { en: 'Challenging', es: 'Desafiante', pt: 'Desafiante' } }[tour.difficulty_level as 'easy' | 'moderate' | 'challenging']?.[language] || tour.difficulty_level}</div>
                       </div>
                     </div>
                   </div>

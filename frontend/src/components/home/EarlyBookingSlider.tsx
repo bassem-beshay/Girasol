@@ -150,7 +150,7 @@ export function EarlyBookingSlider() {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const { data, isLoading, error } = useQuery<EarlyBookingResponse>({
-    queryKey: ['early-booking-slider'],
+    queryKey: ['early-booking-slider', language],
     queryFn: async () => {
       const response = await toursApi.getEarlyBookingOffers();
       return response.data;

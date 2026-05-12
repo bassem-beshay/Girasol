@@ -94,7 +94,7 @@ export default function DestinationDetailPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const { data: destination, isLoading, error } = useQuery<DestinationDetail>({
-    queryKey: ['destination', slug],
+    queryKey: ['destination', slug, language],
     queryFn: async () => {
       const response = await destinationsApi.getBySlug(slug);
       return response.data;
@@ -103,7 +103,7 @@ export default function DestinationDetailPage() {
   });
 
   const { data: toursData } = useQuery({
-    queryKey: ['destination-tours', slug],
+    queryKey: ['destination-tours', slug, language],
     queryFn: async () => {
       const response = await toursApi.getByDestination(slug);
       return response.data;

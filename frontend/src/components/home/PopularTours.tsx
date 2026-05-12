@@ -51,7 +51,7 @@ export function PopularTours() {
   const router = useRouter();
 
   const { data, isLoading, error } = useQuery<ToursResponse>({
-    queryKey: ['featured-tours'],
+    queryKey: ['featured-tours', language],
     queryFn: async () => {
       const response = await toursApi.getFeatured();
       return response.data;

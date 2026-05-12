@@ -91,7 +91,7 @@ export function HeroSection() {
 
   // Fetch statistics from API
   const { data: statisticsData } = useQuery<StatisticsResponse>({
-    queryKey: ['statistics'],
+    queryKey: ['statistics', language],
     queryFn: async () => {
       const response = await contactApi.getStatistics();
       return response.data;
