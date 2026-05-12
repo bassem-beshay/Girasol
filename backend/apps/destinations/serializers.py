@@ -55,6 +55,7 @@ class DestinationDetailSerializer(MultiLanguageSerializerMixin, serializers.Mode
     TRANSLATABLE_FIELDS = [
         'name', 'tagline', 'description',
         'image_alt', 'image_title', 'image_caption', 'image_description',
+        'best_time_to_visit', 'getting_there', 'climate_info',
     ]
     images = DestinationImageSerializer(many=True, read_only=True)
     activities = ActivitySerializer(many=True, read_only=True)
@@ -72,7 +73,9 @@ class DestinationDetailSerializer(MultiLanguageSerializerMixin, serializers.Mode
             'image_caption', 'image_caption_es', 'image_caption_pt',
             'image_description', 'image_description_es', 'image_description_pt',
             'country', 'region', 'latitude', 'longitude',
-            'best_time_to_visit', 'getting_there', 'climate_info',
+            'best_time_to_visit', 'best_time_to_visit_es', 'best_time_to_visit_pt',
+            'getting_there', 'getting_there_es', 'getting_there_pt',
+            'climate_info', 'climate_info_es', 'climate_info_pt',
             'is_featured', 'tour_count', 'images', 'activities',
             'meta_title', 'meta_description'
         ]
