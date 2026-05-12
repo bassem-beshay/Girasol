@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useLanguageStore } from '@/store/languageStore';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -33,9 +32,11 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Add language header directly from Zustand store (in-memory, no race condition)
-    const language = useLanguageStore.getState().language || 'en';
-    config.headers['Accept-Language'] = language;
+    // Language header is set via api.defaults.headers by providers.tsx
+    // Fallback to reading from the default header (already set on the axios instance)
+    if (!config.headers['Accept-Language']) {
+      config.headers['Accept-Language'] = 'en';
+    }
 
     return config;
   },

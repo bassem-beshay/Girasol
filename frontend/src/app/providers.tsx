@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { useState, useEffect, useRef } from 'react';
 import { useImagePreloader } from '@/components/ui/ImagePreloader';
 import { useLanguageStore } from '@/store/languageStore';
+import { api } from '@/lib/api';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useImagePreloader();
@@ -24,11 +25,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
       })
   );
 
-  // Force all queries to reset and refetch when language changes
+  // Always keep axios Accept-Language header in sync with current language
+  // This runs on EVERY render, ensuring the header is correct before any API call
+  api.defaults.headers.common['Accept-Language'] = language;
+
+  // Reset all queries when language changes so they refetch with new header
   useEffect(() => {
     if (prevLang.current !== language) {
       prevLang.current = language;
-      // Reset all queries: clears cached data + triggers immediate refetch
       queryClient.resetQueries();
     }
   }, [language, queryClient]);
