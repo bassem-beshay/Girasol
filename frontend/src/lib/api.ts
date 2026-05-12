@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useLanguageStore } from '@/store/languageStore';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -32,19 +33,9 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Add language header from localStorage (set by languageStore)
-    if (typeof window !== 'undefined') {
-      const languageStorage = localStorage.getItem('language-storage');
-      if (languageStorage) {
-        try {
-          const parsed = JSON.parse(languageStorage);
-          const language = parsed.state?.language || 'en';
-          config.headers['Accept-Language'] = language;
-        } catch {
-          config.headers['Accept-Language'] = 'en';
-        }
-      }
-    }
+    // Add language header directly from Zustand store (in-memory, no race condition)
+    const language = useLanguageStore.getState().language || 'en';
+    config.headers['Accept-Language'] = language;
 
     return config;
   },

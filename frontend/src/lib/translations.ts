@@ -514,6 +514,7 @@ export const footerT: TranslationDict = {
     about: 'About Us',
     blog: 'Blog',
     contact: 'Contact',
+    gizaEgypt: 'Giza, Egypt',
   },
   es: {
     quickLinks: 'Enlaces Rápidos',
@@ -531,6 +532,7 @@ export const footerT: TranslationDict = {
     about: 'Quiénes somos',
     blog: 'Blog',
     contact: 'Contacto',
+    gizaEgypt: 'Guiza, Egipto',
   },
   pt: {
     quickLinks: 'Links Rapidos',
@@ -548,6 +550,7 @@ export const footerT: TranslationDict = {
     about: 'Sobre Nos',
     blog: 'Blog',
     contact: 'Contato',
+    gizaEgypt: 'Giza, Egito',
   },
 };
 
@@ -675,7 +678,7 @@ export const commonT: TranslationDict = {
     duration: 'Duración',
     groupSize: 'Tamaño del Grupo',
     languages: 'Idiomas',
-    overview: 'Descripcion General',
+    overview: 'Descripción General',
     highlights: 'Destacados',
     itinerary: 'Itinerario',
     inclusions: 'Inclusiones',
@@ -973,6 +976,7 @@ export const contactT: TranslationDict = {
     tourType_spiritual: 'Spiritual & Meditation Tours',
     tourType_corporate: 'Corporate Events',
     tourType_other: 'Other',
+    gizaEgypt: 'Giza, Egypt 12512',
   },
   es: {
     contactUs: 'Contáctanos',
@@ -1020,6 +1024,7 @@ export const contactT: TranslationDict = {
     tourType_spiritual: 'Tours Espirituales y de Meditacion',
     tourType_corporate: 'Eventos Corporativos',
     tourType_other: 'Otro',
+    gizaEgypt: 'Guiza, Egipto 12512',
   },
   pt: {
     contactUs: 'Fale Conosco',
@@ -1067,6 +1072,7 @@ export const contactT: TranslationDict = {
     tourType_spiritual: 'Passeios Espirituais e de Meditacao',
     tourType_corporate: 'Eventos Corporativos',
     tourType_other: 'Outro',
+    gizaEgypt: 'Giza, Egito 12512',
   },
 };
 
@@ -1576,11 +1582,11 @@ export const tourDetailT: TranslationDict = {
     bestSeller: 'Mas Vendido',
     new: 'Nuevo',
     off: 'DESC.',
-    overview: 'Descripcion',
+    overview: 'Descripción',
     photos: 'Fotos',
     highlights: 'Destacados',
     itinerary: 'Itinerario',
-    inclusions: 'Incluye',
+    inclusions: 'Inclusiones',
     pricing: 'Precios',
     departures: 'Salidas',
     faqs: 'Preguntas',

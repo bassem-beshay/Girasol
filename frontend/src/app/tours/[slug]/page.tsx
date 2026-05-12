@@ -584,7 +584,7 @@ export default function TourDetailPage() {
                     onClick={() => toggleSection('highlights')}
                     className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                   >
-                    <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'tourHighlights')}</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">✨ {t(tourDetailT, language, 'tourHighlights')}</h2>
                     <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('highlights') ? 'rotate-180' : ''}`} />
                   </button>
                   <motion.div
@@ -619,7 +619,7 @@ export default function TourDetailPage() {
                     onClick={() => toggleSection('itinerary')}
                     className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                   >
-                    <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'dayByDayItinerary')}</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">📅 {t(tourDetailT, language, 'dayByDayItinerary')}</h2>
                     <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('itinerary') ? 'rotate-180' : ''}`} />
                   </button>
                   <motion.div
@@ -671,7 +671,7 @@ export default function TourDetailPage() {
                   onClick={() => toggleSection('inclusions')}
                   className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                 >
-                  <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'whatsIncluded')}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">✅ {t(tourDetailT, language, 'whatsIncluded')}</h2>
                   <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('inclusions') ? 'rotate-180' : ''}`} />
                 </button>
                 <motion.div

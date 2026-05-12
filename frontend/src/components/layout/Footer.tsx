@@ -226,7 +226,7 @@ export function Footer() {
                     <MapPin className="w-4 h-4 text-orange-300" />
                   </div>
                   <span className="text-white/80 text-base">
-                    Giza, Egypt
+                    {t(footerT, language, 'gizaEgypt')}
                   </span>
                 </li>
                 <li className="flex items-center gap-3">

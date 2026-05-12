@@ -97,7 +97,7 @@ export default function ContactPage() {
         'Panorama Pyramids Tower',
         'Entrance 1, Apt. 202 - 2nd floor',
         'Al Haram St. Mashaal, Al Haram',
-        'Giza, Egypt 12512',
+        t(contactT, language, 'gizaEgypt'),
       ],
     },
     {
