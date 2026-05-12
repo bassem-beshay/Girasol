@@ -2,11 +2,14 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useImagePreloader } from '@/components/ui/ImagePreloader';
+import { useLanguageStore } from '@/store/languageStore';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useImagePreloader();
+  const { language } = useLanguageStore();
+  const prevLang = useRef(language);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -20,6 +23,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
         },
       })
   );
+
+  // Force all queries to refetch when language changes
+  useEffect(() => {
+    if (prevLang.current !== language) {
+      prevLang.current = language;
+      queryClient.invalidateQueries();
+    }
+  }, [language, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
