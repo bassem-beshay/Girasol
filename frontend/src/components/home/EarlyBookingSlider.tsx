@@ -310,9 +310,8 @@ export function EarlyBookingSlider() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 className="text-sm sm:text-base md:text-lg lg:text-xl text-white/80 mb-4 sm:mb-8 max-w-2xl mx-auto"
-              >
-                {getField(currentOffer, "subtitle", language) || getField(currentOffer, "description", language)}
-              </motion.p>
+                dangerouslySetInnerHTML={{ __html: getField(currentOffer, "subtitle", language) || getField(currentOffer, "description", language) }}
+              />
 
               {/* Countdown */}
               <motion.div
