@@ -24,10 +24,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
       })
   );
 
-  // Force all queries to refetch when language changes
+  // Force all queries to clear cache and refetch when language changes
   useEffect(() => {
     if (prevLang.current !== language) {
       prevLang.current = language;
+      // Remove all cached data so components show loading + fetch fresh
+      queryClient.removeQueries();
+      // Then invalidate to trigger refetch for any mounted queries
       queryClient.invalidateQueries();
     }
   }, [language, queryClient]);
