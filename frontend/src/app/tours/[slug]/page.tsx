@@ -441,12 +441,12 @@ export default function TourDetailPage() {
           <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
             {[
               { id: 'overview', label: t(tourDetailT, language, 'overview') },
-              { id: 'gallery', label: t(tourDetailT, language, 'photos'), show: tour.images && tour.images.length > 0 },
               { id: 'highlights', label: t(tourDetailT, language, 'highlights'), show: tour.highlights && tour.highlights.length > 0 },
               { id: 'itinerary', label: t(tourDetailT, language, 'itinerary'), show: tour.itinerary && tour.itinerary.length > 0 },
               { id: 'inclusions', label: t(tourDetailT, language, 'inclusions'), show: tour.inclusions && tour.inclusions.length > 0 },
               { id: 'pricing', label: t(tourDetailT, language, 'pricing'), show: tour.seasonal_pricing && tour.seasonal_pricing.length > 0 },
               { id: 'departures', label: t(tourDetailT, language, 'departures'), show: tour.departures && tour.departures.length > 0 },
+              { id: 'gallery', label: t(tourDetailT, language, 'photos'), show: tour.images && tour.images.length > 0 },
               { id: 'faqs', label: t(tourDetailT, language, 'faqs'), show: tour.faqs && tour.faqs.length > 0 },
             ]
               .filter(item => item.show !== false)
@@ -517,65 +517,6 @@ export default function TourDetailPage() {
                   </div>
                 </motion.div>
               </div>
-
-              {/* Photo Gallery */}
-              {tour.images && tour.images.length > 0 && (
-                <div ref={sectionRefs.gallery} className="bg-white rounded-2xl shadow-md overflow-hidden">
-                  <button
-                    onClick={() => toggleSection('gallery')}
-                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <Camera className="w-6 h-6 text-purple-600" />
-                      </div>
-                      <div>
-                        <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'photoGallery')}</h2>
-                        <p className="text-sm text-gray-500">{tour.images.length} {t(tourDetailT, language, 'photosCount')}</p>
-                      </div>
-                    </div>
-                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('gallery') ? 'rotate-180' : ''}`} />
-                  </button>
-                  <motion.div
-                    initial={false}
-                    animate={{ height: openSections.has('gallery') ? 'auto' : 0, opacity: openSections.has('gallery') ? 1 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-6 pb-6">
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {tour.images.map((image, index) => (
-                          <div
-                            key={image.id}
-                            className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group"
-                            onClick={() => {
-                              setCurrentImageIndex(index);
-                              setGalleryOpen(true);
-                            }}
-                          >
-                            <Image
-                              src={image.image}
-                              alt={image.alt_text || image.caption || `Tour photo ${index + 1}`}
-                              title={image.title || undefined}
-                              fill
-                              sizes="(max-width: 768px) 50vw, 33vw"
-                              className="object-cover transition-transform duration-300 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                              <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </div>
-                            {image.caption && (
-                              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
-                                <p className="text-white text-sm truncate">{image.caption}</p>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
 
               {/* Highlights */}
               {tour.highlights && tour.highlights.length > 0 && (
@@ -977,6 +918,65 @@ export default function TourDetailPage() {
                       </button>
                     </div>
                   )}
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+
+              {/* Photo Gallery */}
+              {tour.images && tour.images.length > 0 && (
+                <div ref={sectionRefs.gallery} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                  <button
+                    onClick={() => toggleSection('gallery')}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <Camera className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'photoGallery')}</h2>
+                        <p className="text-sm text-gray-500">{tour.images.length} {t(tourDetailT, language, 'photosCount')}</p>
+                      </div>
+                    </div>
+                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('gallery') ? 'rotate-180' : ''}`} />
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: openSections.has('gallery') ? 'auto' : 0, opacity: openSections.has('gallery') ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {tour.images.map((image, index) => (
+                          <div
+                            key={image.id}
+                            className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group"
+                            onClick={() => {
+                              setCurrentImageIndex(index);
+                              setGalleryOpen(true);
+                            }}
+                          >
+                            <Image
+                              src={image.image}
+                              alt={image.alt_text || image.caption || `Tour photo ${index + 1}`}
+                              title={image.title || undefined}
+                              fill
+                              sizes="(max-width: 768px) 50vw, 33vw"
+                              className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                              <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                            {image.caption && (
+                              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
+                                <p className="text-white text-sm truncate">{image.caption}</p>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </motion.div>
                 </div>
