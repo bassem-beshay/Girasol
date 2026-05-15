@@ -84,7 +84,10 @@ class PostAdmin(admin.ModelAdmin):
             'fields': (
                 'meta_title', 'meta_title_es', 'meta_title_pt',
                 'meta_description', 'meta_description_es', 'meta_description_pt',
-                'meta_keywords', 'meta_keywords_es', 'meta_keywords_pt'
+                'focus_keyphrase', 'focus_keyphrase_es', 'focus_keyphrase_pt',
+                'semantic_keywords', 'semantic_keywords_es', 'semantic_keywords_pt',
+                'lsi_keywords', 'lsi_keywords_es', 'lsi_keywords_pt',
+                'long_tail_phrases', 'long_tail_phrases_es', 'long_tail_phrases_pt',
             ),
             'classes': ('collapse',)
         }),

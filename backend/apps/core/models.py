@@ -68,9 +68,22 @@ class SEOModel(models.Model):
     meta_description = models.CharField(max_length=160, blank=True)
     meta_description_es = models.CharField('Meta Description (Spanish)', max_length=160, blank=True)
     meta_description_pt = models.CharField('Meta Description (Portuguese)', max_length=160, blank=True)
-    meta_keywords = models.CharField(max_length=255, blank=True)
-    meta_keywords_es = models.CharField('Meta Keywords (Spanish)', max_length=255, blank=True)
-    meta_keywords_pt = models.CharField('Meta Keywords (Portuguese)', max_length=255, blank=True)
+    focus_keyphrase = models.CharField('Focus Key Phrase', max_length=255, blank=True,
+        help_text='Main keyword to rank for. Place in H1, URL, Meta Title, first 100 words.')
+    focus_keyphrase_es = models.CharField('Focus Key Phrase (Spanish)', max_length=255, blank=True)
+    focus_keyphrase_pt = models.CharField('Focus Key Phrase (Portuguese)', max_length=255, blank=True)
+    semantic_keywords = models.TextField('Semantic Keywords', blank=True,
+        help_text='5-10 related terms, comma-separated. E.g.: Valley of the Kings, Karnak Temple, 5 star Nile cruise')
+    semantic_keywords_es = models.TextField('Semantic Keywords (Spanish)', blank=True)
+    semantic_keywords_pt = models.TextField('Semantic Keywords (Portuguese)', blank=True)
+    lsi_keywords = models.TextField('LSI Keywords', blank=True,
+        help_text='Synonyms and variations, comma-separated. E.g.: Egypt package, Nile trip, Cairo Luxor tour')
+    lsi_keywords_es = models.TextField('LSI Keywords (Spanish)', blank=True)
+    lsi_keywords_pt = models.TextField('LSI Keywords (Portuguese)', blank=True)
+    long_tail_phrases = models.TextField('Long Tail Phrases', blank=True,
+        help_text='Specific search queries, one per line. E.g.: How much does the Nile Splendor 8 day tour cost?')
+    long_tail_phrases_es = models.TextField('Long Tail Phrases (Spanish)', blank=True)
+    long_tail_phrases_pt = models.TextField('Long Tail Phrases (Portuguese)', blank=True)
 
     class Meta:
         abstract = True

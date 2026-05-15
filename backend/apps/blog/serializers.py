@@ -102,6 +102,8 @@ class PostDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerial
     TRANSLATABLE_FIELDS = [
         'title', 'excerpt', 'content',
         'featured_image_alt', 'featured_image_title', 'featured_image_caption', 'featured_image_description',
+        'meta_title', 'meta_description',
+        'focus_keyphrase', 'semantic_keywords', 'lsi_keywords', 'long_tail_phrases',
     ]
     category = CategorySerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
@@ -123,7 +125,8 @@ class PostDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerial
             'category', 'tags', 'author_display',
             'published_at', 'reading_time', 'view_count',
             'comments', 'allow_comments', 'related_posts',
-            'meta_title', 'meta_description'
+            'meta_title', 'meta_description',
+            'focus_keyphrase', 'semantic_keywords', 'lsi_keywords', 'long_tail_phrases'
         ]
 
     def get_author_display(self, obj):

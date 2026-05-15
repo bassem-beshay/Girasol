@@ -198,6 +198,8 @@ class TourDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerial
     TRANSLATABLE_FIELDS = [
         'name', 'short_description', 'description',
         'image_alt', 'image_title', 'image_caption', 'image_description',
+        'meta_title', 'meta_description',
+        'focus_keyphrase', 'semantic_keywords', 'lsi_keywords', 'long_tail_phrases',
     ]
     category = TourCategorySerializer(read_only=True)
     tour_type = TourTypeSerializer(read_only=True)
@@ -243,6 +245,7 @@ class TourDetailSerializer(MultiLanguageSerializerMixin, serializers.ModelSerial
             'images', 'highlights', 'itinerary', 'inclusions',
             'seasonal_pricing', 'departures', 'faqs',
             'meta_title', 'meta_description',
+            'focus_keyphrase', 'semantic_keywords', 'lsi_keywords', 'long_tail_phrases',
             'created_at', 'updated_at',
             # Early Booking fields
             'is_early_booking', 'early_booking_discount', 'early_booking_price',

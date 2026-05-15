@@ -34,6 +34,10 @@ export interface Tour {
   departures?: TourDeparture[];
   addons?: Addon[];
   faqs?: TourFAQ[];
+  focus_keyphrase?: string;
+  semantic_keywords?: string;
+  lsi_keywords?: string;
+  long_tail_phrases?: string;
 }
 
 export interface TourCategory {
@@ -122,6 +126,10 @@ export interface Destination {
   images?: DestinationImage[];
   areas?: Area[];
   activities?: Activity[];
+  focus_keyphrase?: string;
+  semantic_keywords?: string;
+  lsi_keywords?: string;
+  long_tail_phrases?: string;
 }
 
 export interface DestinationImage {
@@ -272,6 +280,10 @@ export interface BlogPost {
   is_featured: boolean;
   tags?: BlogTag[];
   comments?: Comment[];
+  focus_keyphrase?: string;
+  semantic_keywords?: string;
+  lsi_keywords?: string;
+  long_tail_phrases?: string;
 }
 
 export interface BlogCategory {

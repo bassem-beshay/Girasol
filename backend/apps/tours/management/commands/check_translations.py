@@ -15,7 +15,7 @@ from apps.contact.models import FAQ, Office, Statistic
 
 # Define all models and their translatable fields
 MODELS_CONFIG = [
-    (Tour, ['name', 'short_description', 'description']),
+    (Tour, ['name', 'short_description', 'description', 'focus_keyphrase', 'semantic_keywords', 'lsi_keywords', 'long_tail_phrases']),
     (TourCategory, ['name', 'description']),
     (TourType, ['name', 'description']),
     (TourImage, ['caption', 'alt_text']),
@@ -25,12 +25,12 @@ MODELS_CONFIG = [
     (TourPricing, ['season_name']),
     (TourFAQ, ['question', 'answer']),
     (EarlyBookingOffer, ['title', 'subtitle', 'description', 'terms_conditions', 'cancellation_policy', 'badge_text']),
-    (Destination, ['name', 'tagline', 'description', 'best_time_to_visit', 'getting_there', 'climate_info']),
+    (Destination, ['name', 'tagline', 'description', 'best_time_to_visit', 'getting_there', 'climate_info', 'focus_keyphrase', 'semantic_keywords', 'lsi_keywords', 'long_tail_phrases']),
     (DestinationImage, ['caption', 'alt_text']),
     (Activity, ['name', 'description']),
     (BlogCategory, ['name', 'description']),
     (Tag, ['name']),
-    (Post, ['title', 'excerpt', 'content']),
+    (Post, ['title', 'excerpt', 'content', 'focus_keyphrase', 'semantic_keywords', 'lsi_keywords', 'long_tail_phrases']),
     (Review, ['title', 'content']),
     (ReviewImage, ['caption']),
     (Testimonial, ['quote']),
