@@ -206,7 +206,7 @@ export default function DestinationDetailPage() {
               <div className="flex flex-wrap items-center gap-6 text-white/90">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-5 h-5" />
-                  <span>{translateGeo(destination.region, language)}, {translateGeo(destination.country, language)}</span>
+                  <span>{destination.region ? `${translateGeo(destination.region, language)}, ` : ''}{translateGeo(destination.country, language)}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
@@ -432,7 +432,7 @@ export default function DestinationDetailPage() {
                       <MapPin className="w-5 h-5 text-primary-500 mt-1" />
                       <div>
                         <div className="font-medium text-gray-900">{t(destinationDetailT, language, 'location')}</div>
-                        <div className="text-sm text-gray-600">{translateGeo(destination.region, language)}, {translateGeo(destination.country, language)}</div>
+                        <div className="text-sm text-gray-600">{destination.region ? `${translateGeo(destination.region, language)}, ` : ''}{translateGeo(destination.country, language)}</div>
                       </div>
                     </div>
 

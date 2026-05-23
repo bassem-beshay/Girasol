@@ -258,7 +258,7 @@ export default function DestinationsPage() {
                     <div className="p-4 sm:p-5">
                       <div className="flex items-center text-gray-500 text-xs sm:text-sm mb-1.5 sm:mb-2">
                         <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
-                        <span className="truncate">{translateGeo(destination.region, language)}, {translateGeo(destination.country, language)}</span>
+                        <span className="truncate">{destination.region ? `${translateGeo(destination.region, language)}, ` : ''}{translateGeo(destination.country, language)}</span>
                       </div>
                       <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-1.5 sm:mb-2 group-hover:text-primary-600 transition-colors">
                         {destination.name}
