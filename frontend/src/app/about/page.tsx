@@ -152,21 +152,29 @@ export default function AboutPage() {
       icon: Shield,
       title: t(aboutT, language, 'trustSafety'),
       description: t(aboutT, language, 'trustSafetyDesc'),
+      bullets: t(aboutT, language, 'trustSafetyBullets').split('\n'),
+      closing: t(aboutT, language, 'trustSafetyClosing'),
     },
     {
       icon: Heart,
       title: t(aboutT, language, 'passionTravel'),
       description: t(aboutT, language, 'passionTravelDesc'),
+      bullets: t(aboutT, language, 'passionTravelBullets').split('\n'),
+      closing: t(aboutT, language, 'passionTravelClosing'),
     },
     {
       icon: Star,
       title: t(aboutT, language, 'excellence'),
       description: t(aboutT, language, 'excellenceDesc'),
+      bullets: t(aboutT, language, 'excellenceBullets').split('\n'),
+      closing: t(aboutT, language, 'excellenceClosing'),
     },
     {
       icon: Users,
       title: t(aboutT, language, 'customerFirst'),
       description: t(aboutT, language, 'customerFirstDesc'),
+      bullets: t(aboutT, language, 'customerFirstBullets').split('\n'),
+      closing: t(aboutT, language, 'customerFirstClosing'),
     },
   ];
 
@@ -351,7 +359,7 @@ export default function AboutPage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {values.map((value, index) => (
               <motion.div
                 key={value.title}
@@ -361,11 +369,22 @@ export default function AboutPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow"
               >
-                <div className="w-14 h-14 rounded-xl bg-primary-100 flex items-center justify-center mb-6">
-                  <value.icon className="w-7 h-7 text-primary-600" />
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 rounded-xl bg-primary-100 flex items-center justify-center flex-shrink-0">
+                    <value.icon className="w-7 h-7 text-primary-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">{value.title}</h3>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
-                <p className="text-gray-600">{value.description}</p>
+                <p className="text-gray-600 mb-4">{value.description}</p>
+                <ul className="space-y-2 mb-4">
+                  {value.bullets.map((bullet, i) => (
+                    <li key={i} className="flex items-start gap-2 text-gray-600 text-sm">
+                      <CheckCircle className="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-gray-700 font-medium text-sm italic">{value.closing}</p>
               </motion.div>
             ))}
           </div>
