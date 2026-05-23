@@ -25,6 +25,34 @@ import { useLanguageStore } from '@/store/languageStore';
 import { destinationDetailT, t } from '@/lib/translations';
 import { RichText } from '@/components/ui/RichText';
 
+const geoTranslations: Record<string, Record<string, string>> = {
+  es: {
+    'Egypt': 'Egipto', 'Morocco': 'Marruecos', 'Jordan': 'Jordania',
+    'Turkey': 'Turquía', 'UAE': 'EAU', 'Oman': 'Omán',
+    'Upper Egypt': 'Alto Egipto', 'Lower Egypt': 'Bajo Egipto',
+    'Red Sea': 'Mar Rojo', 'Red Sea Coast': 'Costa del Mar Rojo',
+    'Sinai': 'Sinaí', 'Sinai Peninsula': 'Península del Sinaí',
+    'Western Desert': 'Desierto Occidental', 'Nubia': 'Nubia',
+    'Mediterranean Coast': 'Costa Mediterránea',
+    'North Africa': 'Norte de África', 'Middle East': 'Oriente Medio',
+  },
+  pt: {
+    'Egypt': 'Egito', 'Morocco': 'Marrocos', 'Jordan': 'Jordânia',
+    'Turkey': 'Turquia', 'UAE': 'EAU', 'Oman': 'Omã',
+    'Upper Egypt': 'Alto Egito', 'Lower Egypt': 'Baixo Egito',
+    'Red Sea': 'Mar Vermelho', 'Red Sea Coast': 'Costa do Mar Vermelho',
+    'Sinai': 'Sinai', 'Sinai Peninsula': 'Península do Sinai',
+    'Western Desert': 'Deserto Ocidental', 'Nubia': 'Núbia',
+    'Mediterranean Coast': 'Costa Mediterrânea',
+    'North Africa': 'Norte da África', 'Middle East': 'Oriente Médio',
+  },
+};
+
+function translateGeo(value: string, language: string): string {
+  if (language === 'en' || !value) return value;
+  return geoTranslations[language]?.[value] || value;
+}
+
 interface Activity {
   id: number;
   name: string;
@@ -178,7 +206,7 @@ export default function DestinationDetailPage() {
               <div className="flex flex-wrap items-center gap-6 text-white/90">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-5 h-5" />
-                  <span>{destination.region}, {destination.country}</span>
+                  <span>{translateGeo(destination.region, language)}, {translateGeo(destination.country, language)}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
@@ -404,7 +432,7 @@ export default function DestinationDetailPage() {
                       <MapPin className="w-5 h-5 text-primary-500 mt-1" />
                       <div>
                         <div className="font-medium text-gray-900">{t(destinationDetailT, language, 'location')}</div>
-                        <div className="text-sm text-gray-600">{destination.region}, {destination.country}</div>
+                        <div className="text-sm text-gray-600">{translateGeo(destination.region, language)}, {translateGeo(destination.country, language)}</div>
                       </div>
                     </div>
 

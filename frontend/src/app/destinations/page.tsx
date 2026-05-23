@@ -10,6 +10,34 @@ import { useLanguageStore } from '@/store/languageStore';
 import { destinationsPageT, t } from '@/lib/translations';
 import { RichText } from '@/components/ui/RichText';
 
+const geoTranslations: Record<string, Record<string, string>> = {
+  es: {
+    'Egypt': 'Egipto', 'Morocco': 'Marruecos', 'Jordan': 'Jordania',
+    'Turkey': 'Turquía', 'UAE': 'EAU', 'Oman': 'Omán',
+    'Upper Egypt': 'Alto Egipto', 'Lower Egypt': 'Bajo Egipto',
+    'Red Sea': 'Mar Rojo', 'Red Sea Coast': 'Costa del Mar Rojo',
+    'Sinai': 'Sinaí', 'Sinai Peninsula': 'Península del Sinaí',
+    'Western Desert': 'Desierto Occidental', 'Nubia': 'Nubia',
+    'Mediterranean Coast': 'Costa Mediterránea',
+    'North Africa': 'Norte de África', 'Middle East': 'Oriente Medio',
+  },
+  pt: {
+    'Egypt': 'Egito', 'Morocco': 'Marrocos', 'Jordan': 'Jordânia',
+    'Turkey': 'Turquia', 'UAE': 'EAU', 'Oman': 'Omã',
+    'Upper Egypt': 'Alto Egito', 'Lower Egypt': 'Baixo Egito',
+    'Red Sea': 'Mar Vermelho', 'Red Sea Coast': 'Costa do Mar Vermelho',
+    'Sinai': 'Sinai', 'Sinai Peninsula': 'Península do Sinai',
+    'Western Desert': 'Deserto Ocidental', 'Nubia': 'Núbia',
+    'Mediterranean Coast': 'Costa Mediterrânea',
+    'North Africa': 'Norte da África', 'Middle East': 'Oriente Médio',
+  },
+};
+
+function translateGeo(value: string, language: string): string {
+  if (language === 'en' || !value) return value;
+  return geoTranslations[language]?.[value] || value;
+}
+
 interface Destination {
   id: number;
   name: string;
@@ -230,7 +258,7 @@ export default function DestinationsPage() {
                     <div className="p-4 sm:p-5">
                       <div className="flex items-center text-gray-500 text-xs sm:text-sm mb-1.5 sm:mb-2">
                         <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
-                        <span className="truncate">{destination.region}, {destination.country}</span>
+                        <span className="truncate">{translateGeo(destination.region, language)}, {translateGeo(destination.country, language)}</span>
                       </div>
                       <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-1.5 sm:mb-2 group-hover:text-primary-600 transition-colors">
                         {destination.name}
