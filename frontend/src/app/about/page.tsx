@@ -89,57 +89,29 @@ function CountUp({ value, duration = 2000 }: { value: string; duration?: number 
   return <div ref={ref} className="text-4xl font-bold text-gray-900 mb-2">{display}</div>;
 }
 
-const leadership = [
+const leadershipData = [
   {
     name: 'Emad Khalifa',
-    role: 'Chairman & CEO',
+    roleKey: 'roleChairman' as const,
     image: '/images/team/emad-khalifa-v2.jpeg',
     description: 'With over 30 years of expertise in the tourism industry, Emad leads Girasol with a visionary approach to showcasing Egypt\'s timeless beauty to the world.',
   },
   {
     name: 'Delzilene Macedo Costa',
-    role: 'Chief Executive',
+    roleKey: 'roleChiefExec' as const,
     image: '/images/team/delzilene-costa.jpeg',
     description: 'Delzilene brings international expertise and strategic leadership, driving Girasol\'s growth and expanding our reach across global markets.',
   },
 ];
 
-const team = [
-  {
-    name: 'Tarek Khalifa',
-    role: 'Director of Italian Operations',
-    image: '/images/team/tarek-khalifa.jpeg',
-  },
-  {
-    name: 'Mostafa Teleb',
-    role: 'Administration & Executive Manager',
-    image: '/images/team/mostafa-teleb.jpeg',
-  },
-  {
-    name: 'Rania Gamal',
-    role: 'Manager of Ticketing Operations',
-    image: '/images/team/rania-gamal.jpeg',
-  },
-  {
-    name: 'Salem Gomaa',
-    role: 'Purchasing Supervisor',
-    image: '/images/team/salem-gomaa.jpeg',
-  },
-  {
-    name: 'Zeinab Gamal',
-    role: 'Senior Reservations & Operations Italian Market',
-    image: '/images/team/zeinab-gamal.jpeg',
-  },
-  {
-    name: 'Nessma Ragab',
-    role: 'Senior Reservations & Operations Brazilian Market',
-    image: '/images/team/nessma-ragab.jpeg',
-  },
-  {
-    name: 'Ibrahim Okel',
-    role: 'Chief Accountant',
-    image: '/images/team/ibrahim-okel.jpeg',
-  },
+const teamData = [
+  { name: 'Tarek Khalifa', roleKey: 'roleItalianOps' as const, image: '/images/team/tarek-khalifa.jpeg' },
+  { name: 'Mostafa Teleb', roleKey: 'roleAdmin' as const, image: '/images/team/mostafa-teleb.jpeg' },
+  { name: 'Rania Gamal', roleKey: 'roleTicketing' as const, image: '/images/team/rania-gamal.jpeg' },
+  { name: 'Salem Gomaa', roleKey: 'rolePurchasing' as const, image: '/images/team/salem-gomaa.jpeg' },
+  { name: 'Zeinab Gamal', roleKey: 'roleSeniorRes' as const, image: '/images/team/zeinab-gamal.jpeg' },
+  { name: 'Nessma Ragab', roleKey: 'roleSeniorRes' as const, image: '/images/team/nessma-ragab.jpeg' },
+  { name: 'Ibrahim Okel', roleKey: 'roleAccountant' as const, image: '/images/team/ibrahim-okel.jpeg' },
 ];
 
 export default function AboutPage() {
@@ -185,6 +157,8 @@ export default function AboutPage() {
     { year: '2018', title: t(aboutT, language, 'milestone4Title'), description: t(aboutT, language, 'milestone4Desc') },
     { year: '2020', title: t(aboutT, language, 'milestone5Title'), description: t(aboutT, language, 'milestone5Desc') },
     { year: '2023', title: t(aboutT, language, 'milestone6Title'), description: t(aboutT, language, 'milestone6Desc') },
+    { year: '2025', title: t(aboutT, language, 'milestone7Title'), description: t(aboutT, language, 'milestone7Desc') },
+    { year: '2026', title: t(aboutT, language, 'milestone8Title'), description: t(aboutT, language, 'milestone8Desc') },
   ];
 
   const services = [
@@ -494,7 +468,7 @@ export default function AboutPage() {
 
           {/* Leadership Row */}
           <div className="grid md:grid-cols-2 gap-6 mb-16">
-            {leadership.map((member, index) => (
+            {leadershipData.map((member, index) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 20 }}
@@ -514,7 +488,7 @@ export default function AboutPage() {
                 </div>
                 <div className="p-6 flex flex-col justify-center">
                   <span className="inline-block px-4 py-1 bg-primary-50 text-primary-600 font-semibold text-sm rounded-full mb-3 w-fit uppercase tracking-wide">
-                    {member.role}
+                    {t(aboutT, language, member.roleKey)}
                   </span>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">{member.name}</h3>
                   <p className="text-gray-600 leading-relaxed">{member.description}</p>
@@ -525,7 +499,7 @@ export default function AboutPage() {
 
           {/* Team Members */}
           <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-4">
-            {team.map((member, index) => (
+            {teamData.map((member, index) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 20 }}
@@ -545,7 +519,7 @@ export default function AboutPage() {
                 </div>
                 <div className="p-2.5 text-center">
                   <h3 className="text-sm font-bold text-gray-900 mb-0.5">{member.name}</h3>
-                  <p className="text-primary-600 font-medium text-xs leading-tight">{member.role}</p>
+                  <p className="text-primary-600 font-medium text-xs leading-tight">{t(aboutT, language, member.roleKey)}</p>
                 </div>
               </motion.div>
             ))}
@@ -585,7 +559,7 @@ export default function AboutPage() {
                 <h3 className="font-bold text-gray-900">
                   {office.city}{office.is_headquarters ? ' (HQ)' : ''}
                 </h3>
-                <p className="text-gray-500 text-sm">Egypt</p>
+                <p className="text-gray-500 text-sm">{t(aboutT, language, 'egypt')}</p>
               </motion.div>
             ))}
           </div>
