@@ -34,7 +34,7 @@ const geoTranslations: Record<string, Record<string, string>> = {
     'Sinai': 'Sinaí', 'Sinai Peninsula': 'Península del Sinaí',
     'Western Desert': 'Desierto Occidental', 'Nubia': 'Nubia',
     'Mediterranean Coast': 'Costa Mediterránea',
-    'North Africa': 'Norte de África', 'Middle East': 'Oriente Medio',
+    'North Africa': 'Norte de África', 'Middle East': 'Medio Oriente',
   },
   pt: {
     'Egypt': 'Egito', 'Morocco': 'Marrocos', 'Jordan': 'Jordânia',
