@@ -256,7 +256,7 @@ class Command(BaseCommand):
                 'meta_description_pt': 'Passeio guiado de dia inteiro de 8 horas pelas Pirâmides de Gizé, Esfinge, Templo do Vale e Museu Nacional da Civilização Egípcia com Sala das Múmias Reais. Traslados inclusos.',
 
                 # Published
-                'status': 'published',
+                'is_published': True,
             }
         )
 
