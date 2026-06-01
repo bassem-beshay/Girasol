@@ -247,13 +247,13 @@ class Command(BaseCommand):
                 'departure_city': 'Cairo',
                 'languages': 'English, Spanish, Portuguese',
 
-                # SEO
-                'meta_title': 'Giza Pyramids & Egyptian Civilization Museum Tour | 1-Day Cairo',
-                'meta_title_es': 'Tour Pirámides de Guiza y Museo de la Civilización Egipcia | 1 Día Cairo',
-                'meta_title_pt': 'Passeio Pirâmides de Gizé e Museu da Civilização Egípcia | 1 Dia Cairo',
-                'meta_description': 'Full-day 8-hour guided tour of the Giza Pyramids, Sphinx, Valley Temple, and the National Museum of Egyptian Civilization with Royal Mummies Hall. Transfers included.',
-                'meta_description_es': 'Tour guiado de día completo de 8 horas por las Pirámides de Guiza, la Esfinge, el Templo del Valle y el Museo Nacional de la Civilización Egipcia con Sala de Momias Reales. Traslados incluidos.',
-                'meta_description_pt': 'Passeio guiado de dia inteiro de 8 horas pelas Pirâmides de Gizé, Esfinge, Templo do Vale e Museu Nacional da Civilização Egípcia com Sala das Múmias Reais. Traslados inclusos.',
+                # SEO (meta_title max 70, meta_description max 160)
+                'meta_title': 'Giza Pyramids & Civilization Museum Tour | 1 Day',
+                'meta_title_es': 'Pirámides de Guiza y Museo Civilización | 1 Día',
+                'meta_title_pt': 'Pirâmides de Gizé e Museu Civilização | 1 Dia',
+                'meta_description': '8-hour guided tour: Giza Pyramids, Sphinx, Valley Temple & Egyptian Civilization Museum with Royal Mummies Hall. Transfers included.',
+                'meta_description_es': 'Tour guiado de 8 horas: Pirámides de Guiza, Esfinge, Templo del Valle y Museo de la Civilización Egipcia con Momias Reales. Traslados incluidos.',
+                'meta_description_pt': 'Passeio guiado de 8 horas: Pirâmides de Gizé, Esfinge, Templo do Vale e Museu da Civilização Egípcia com Múmias Reais. Traslados inclusos.',
 
                 # Published
                 'is_published': True,
