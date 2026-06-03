@@ -270,20 +270,20 @@ export function Header() {
               {/* Language Selection for Mobile */}
               <div className="mb-3">
                 <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 px-2">{t(headerT, language, 'language')}</p>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
                       onClick={() => handleLanguageChange(lang.code)}
                       className={cn(
-                        'flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border transition-all',
+                        'flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border transition-all min-w-0',
                         language === lang.code
                           ? 'border-primary-500 bg-primary-50 text-primary-700'
                           : 'border-gray-200 text-gray-600 hover:border-gray-300'
                       )}
                     >
-                      <span>{lang.flag}</span>
-                      <span className="text-sm font-medium">{lang.code.toUpperCase()}</span>
+                      <span className="text-sm">{lang.flag}</span>
+                      <span className="text-xs font-medium">{lang.code.toUpperCase()}</span>
                     </button>
                   ))}
                 </div>

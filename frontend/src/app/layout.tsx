@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 import { Providers } from './providers';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import RecaptchaScript from "@/components/RecaptchaScript";
 
 const inter = Inter({
@@ -120,6 +121,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <WhatsAppButton />
           </div>
         </Providers>
       </body>

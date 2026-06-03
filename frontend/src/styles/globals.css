@@ -337,6 +337,10 @@
 .rich-text {
   line-height: 1.7;
   word-break: break-word;
+  text-align: start !important;
+}
+.rich-text * {
+  text-align: inherit !important;
 }
 .rich-text p {
   margin: 0 0 0.75em 0;

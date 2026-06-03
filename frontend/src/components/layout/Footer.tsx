@@ -54,6 +54,7 @@ export function Footer() {
     { name: t(footerT, language, 'destinations'), href: '/destinations' },
     { name: t(footerT, language, 'about'), href: '/about' },
     { name: t(footerT, language, 'blog'), href: '/blog' },
+    { name: t(footerT, language, 'faq'), href: '/faq' },
     { name: t(footerT, language, 'contact'), href: '/contact' },
   ];
 

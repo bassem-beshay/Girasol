@@ -446,8 +446,8 @@ export default function TourDetailPage() {
               { id: 'inclusions', label: t(tourDetailT, language, 'inclusions'), show: tour.inclusions && tour.inclusions.length > 0 },
               { id: 'pricing', label: t(tourDetailT, language, 'pricing'), show: tour.seasonal_pricing && tour.seasonal_pricing.length > 0 },
               { id: 'departures', label: t(tourDetailT, language, 'departures'), show: tour.departures && tour.departures.length > 0 },
-              { id: 'gallery', label: t(tourDetailT, language, 'photos'), show: tour.images && tour.images.length > 0 },
               { id: 'faqs', label: t(tourDetailT, language, 'faqs'), show: tour.faqs && tour.faqs.length > 0 },
+              { id: 'gallery', label: t(tourDetailT, language, 'photos'), show: tour.images && tour.images.length > 0 },
             ]
               .filter(item => item.show !== false)
               .map((item) => (
@@ -923,6 +923,44 @@ export default function TourDetailPage() {
                 </div>
               )}
 
+              {/* FAQs */}
+              {tour.faqs && tour.faqs.length > 0 && (
+                <div ref={sectionRefs.faqs} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                  <button
+                    onClick={() => toggleSection('faqs')}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                        <HelpCircle className="w-6 h-6 text-primary-600" />
+                      </div>
+                      <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'faqTitle')}</h2>
+                    </div>
+                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('faqs') ? 'rotate-180' : ''}`} />
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: openSections.has('faqs') ? 'auto' : 0, opacity: openSections.has('faqs') ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
+                      <div className="space-y-3">
+                        {tour.faqs.map((faq, index) => (
+                          <FAQItem
+                            key={faq.id}
+                            question={faq.question}
+                            answer={faq.answer}
+                            isOpen={openFAQ === index}
+                            onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+
               {/* Photo Gallery */}
               {tour.images && tour.images.length > 0 && (
                 <div ref={sectionRefs.gallery} className="bg-white rounded-2xl shadow-md overflow-hidden">
@@ -975,44 +1013,6 @@ export default function TourDetailPage() {
                               </div>
                             )}
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-
-              {/* FAQs */}
-              {tour.faqs && tour.faqs.length > 0 && (
-                <div ref={sectionRefs.faqs} className="bg-white rounded-2xl shadow-md overflow-hidden">
-                  <button
-                    onClick={() => toggleSection('faqs')}
-                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                        <HelpCircle className="w-6 h-6 text-primary-600" />
-                      </div>
-                      <h2 className="text-2xl font-bold text-gray-900">{t(tourDetailT, language, 'faqTitle')}</h2>
-                    </div>
-                    <ChevronDown className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${openSections.has('faqs') ? 'rotate-180' : ''}`} />
-                  </button>
-                  <motion.div
-                    initial={false}
-                    animate={{ height: openSections.has('faqs') ? 'auto' : 0, opacity: openSections.has('faqs') ? 1 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-6 pb-6">
-                      <div className="space-y-3">
-                        {tour.faqs.map((faq, index) => (
-                          <FAQItem
-                            key={faq.id}
-                            question={faq.question}
-                            answer={faq.answer}
-                            isOpen={openFAQ === index}
-                            onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                          />
                         ))}
                       </div>
                     </div>
