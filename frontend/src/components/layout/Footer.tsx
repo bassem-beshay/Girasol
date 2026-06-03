@@ -170,8 +170,8 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-white/15 py-5 px-5 text-[11px] text-white/50">
-          <p className="text-start mb-1">© {new Date().getFullYear()} Girasol Egypt Travel and Tours. {t(footerT, language, 'allRightsReserved')}</p>
+        <div className="border-t border-white/15 py-5 px-5 text-[11px] text-white/50 text-center">
+          <p className="mb-1">© {new Date().getFullYear()} Girasol Egypt Travel and Tours. {t(footerT, language, 'allRightsReserved')}</p>
           <div className="flex items-center justify-center gap-3">
             <Link href="/terms" className="hover:text-white transition-colors">{t(footerT, language, 'termsConditions')}</Link>
             <span className="text-white/20">|</span>
@@ -314,11 +314,11 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/20 bg-black/40">
           <div className="container-custom py-5 px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-xs text-white/70">
-              <p className="text-center md:text-left">
+            <div className="flex flex-col items-center gap-2 text-xs text-white/70 text-center">
+              <p>
                 © {new Date().getFullYear()} Girasol Egypt Travel and Tours. {t(footerT, language, 'allRightsReserved')}
               </p>
-              <div className="flex items-center gap-3 md:gap-4 md:ml-auto md:mr-[10%] whitespace-nowrap">
+              <div className="flex items-center gap-3 whitespace-nowrap">
                 <Link href="/terms" className="hover:text-white transition-colors">
                   {t(footerT, language, 'termsConditions')}
                 </Link>
