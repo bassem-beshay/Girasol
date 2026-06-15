@@ -27,11 +27,11 @@ const cairo = Cairo({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Girasol Egypt - Travel and Tours | Discover Egypt with Excellence',
-    template: '%s | Girasol Egypt Tours',
+    default: 'Girasol Egypt Travel and Tours | Complete Egypt Packages: Pyramids + Nile Cruise',
+    template: '%s | Girasol Egypt Travel and Tours',
   },
   description:
-    'Experience the magic of Egypt with Girasol Egypt Travel and Tours. Tailor-made tours, Nile cruises, and unforgettable experiences. Born from a partnership between Egypt and Brazil.',
+    'Complete Egypt packages: pyramids + Nile cruise. Travel with safety and comfort. Your journey starts now! Tailor-made tours and unforgettable experiences with Girasol Egypt Travel and Tours.',
   keywords: [
     'Egypt tours',
     'Nile cruise',
@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     'Girasol Egypt',
     'Egypt Brazil tourism',
   ],
-  authors: [{ name: 'Girasol Egypt' }],
-  creator: 'Girasol Egypt',
+  authors: [{ name: 'Girasol Egypt Travel and Tours' }],
+  creator: 'Girasol Egypt Travel and Tours',
   publisher: 'Girasol Egypt Travel and Tours',
   formatDetection: {
     email: false,
@@ -63,16 +63,16 @@ export const metadata: Metadata = {
     shortcut: '/favicon.png',
   },
   openGraph: {
-    title: 'Girasol Egypt - Travel and Tours',
-    description: 'Tailor-made tours, Nile cruises & unforgettable experiences in Egypt',
+    title: 'Girasol Egypt Travel and Tours',
+    description: 'Complete Egypt packages: pyramids + Nile cruise. Travel with safety and comfort. Your journey starts now!',
     url: 'https://girasoltours.com',
-    siteName: 'Girasol Egypt',
+    siteName: 'Girasol Egypt Travel and Tours',
     images: [
       {
-        url: '/images/og-image.png',
+        url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Girasol Egypt - Travel and Tours',
+        alt: 'Girasol Egypt Travel and Tours - Pyramids, Nile Cruise & Abu Simbel',
       },
     ],
     locale: 'en_US',
@@ -80,9 +80,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Girasol Egypt - Travel and Tours',
-    description: 'Tailor-made tours, Nile cruises & unforgettable experiences in Egypt',
-    images: ['/images/og-image.png'],
+    title: 'Girasol Egypt Travel and Tours',
+    description: 'Complete Egypt packages: pyramids + Nile cruise. Travel with safety and comfort. Your journey starts now!',
+    images: ['/images/og-image.jpg'],
   },
   robots: {
     index: true,
