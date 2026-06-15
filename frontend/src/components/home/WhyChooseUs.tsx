@@ -164,7 +164,7 @@ export function WhyChooseUs() {
         <div className="text-center mx-auto mb-16">
           <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-600 font-semibold text-sm uppercase tracking-widest px-5 py-2 rounded-full mb-6">
             <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse" />
-            Why Choose Us
+            {t(whyChooseUsT, language, 'whyChooseUs')}
           </div>
           <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold text-primary-600 mb-4 whitespace-nowrap">
             {t(whyChooseUsT, language, 'mainTitle')}
@@ -240,7 +240,9 @@ export function WhyChooseUs() {
                       value={stat.value}
                       className="text-3xl md:text-4xl font-bold text-gray-900 mb-1 tabular-nums"
                     />
-                    <div className="text-gray-500 text-sm font-medium">{stat.label}</div>
+                    <div className="text-gray-500 text-sm font-medium">
+                      {language === 'es' ? stat.label_es : language === 'pt' ? stat.label_pt : stat.label}
+                    </div>
                   </div>
                 );
               })}
