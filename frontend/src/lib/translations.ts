@@ -1764,8 +1764,8 @@ export const destinationsPageT: TranslationDict = {
   en: {
     loadingDestinations: 'Loading destinations...',
     errorLoading: 'Error loading destinations. Please try again later.',
-    exploreEgypt: 'Explore Egypt',
-    heroSubtitle: 'From ancient temples to pristine beaches, discover the diverse wonders of Egypt',
+    exploreEgypt: 'Explore Egypt and other destinations',
+    heroSubtitle: 'From ancient temples to pristine beaches, discover the wonders of Egypt and other fascinating places.',
     topPicks: 'Top Picks',
     featuredDestinations: 'Featured Destinations',
     featuredSubtitle: 'Our most popular destinations, handpicked for unforgettable experiences',
@@ -1786,8 +1786,8 @@ export const destinationsPageT: TranslationDict = {
   es: {
     loadingDestinations: 'Cargando destinos...',
     errorLoading: 'Error al cargar los destinos. Inténtelo más tarde.',
-    exploreEgypt: 'Explora Egipto',
-    heroSubtitle: 'Desde templos antiguos hasta playas pristinas, descubre las diversas maravillas de Egipto',
+    exploreEgypt: 'Explora Egipto y otros destinos',
+    heroSubtitle: 'Desde templos antiguos hasta playas vírgenes, descubre las maravillas de Egipto y de otros lugares fascinantes.',
     topPicks: 'Selección Top',
     featuredDestinations: 'Destinos Destacados',
     featuredSubtitle: 'Nuestros destinos más populares, seleccionados para experiencias inolvidables',
@@ -1808,8 +1808,8 @@ export const destinationsPageT: TranslationDict = {
   pt: {
     loadingDestinations: 'Carregando destinos...',
     errorLoading: 'Erro ao carregar os destinos. Tente novamente mais tarde.',
-    exploreEgypt: 'Explore o Egito',
-    heroSubtitle: 'De templos antigos a praias intocadas, descubra as diversas maravilhas do Egito',
+    exploreEgypt: 'Explore o Egito e outros destinos',
+    heroSubtitle: 'De templos antigos a praias paradisíacas, descubra as maravilhas do Egito e de outros lugares fascinantes.',
     topPicks: 'Destaques',
     featuredDestinations: 'Destinos em Destaque',
     featuredSubtitle: 'Nossos destinos mais populares, selecionados para experiencias inesqueciveis',
